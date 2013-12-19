@@ -1,0 +1,157 @@
+#!/bin/bash
+
+POSTGRESQL_DATA_PATH="/var/lib/postgresql/9.0/main"
+MIGRATION_LOG_FILE="/var/log/xivo-database-migration.log"
+
+export LC_ALL=$LANG
+
+if [ ! -d $POSTGRESQL_DATA_PATH ]; then
+    echo "ERROR: directory $POSTGRESQL_DATA_PATH doesn't exist."
+    echo "PostgreSQL is not installed."
+    exit 1
+fi
+
+EXISTING_DB_SIZE=$(du -s $POSTGRESQL_DATA_PATH | awk '{print $1}')
+((EXISTING_DB_SIZE_MIB = $EXISTING_DB_SIZE / 1024 ))
+FREE_SPACE=$(df -P $POSTGRESQL_DATA_PATH | tail -n1 | awk '{print $4}')
+
+validate_free_space() {
+    if [ $EXISTING_DB_SIZE -ge $FREE_SPACE ]; then
+        cat <<EOF
+        ERROR: Not enough free space available in /var to upgrade PostgreSQL
+               You need at least ${EXISTING_DB_SIZE_MIB} MiB of free space in /var.
+
+        NOTE:  You can free some disk space by removing old backups from
+               /var/backups/xivo
+
+        Stopping upgrade...
+EOF
+        exit 1
+    fi
+}
+
+dump_infos() {
+    ((freespace_size_mib = $FREE_SPACE / 1024 ))
+    ((estimated_time_second = $EXISTING_DB_SIZE_MIB / 8 + 30 ))
+    ((estimate_time_minute = $estimated_time_second / 60 ))
+    if [ "$estimate_time_minute" -eq 0 ]; then
+        estimate_time_minute=1
+    fi
+    cat <<EOF
+
+    ***************************************************************************
+
+    PostgreSQL will be upgraded from version 9.0 to 9.1.
+
+    Database size: ${EXISTING_DB_SIZE_MIB} MiB
+    Free space in /var: ${freespace_size_mib} MiB
+    Estimated migration time: ${estimate_time_minute} minutes
+
+    You can backup your database using this following command:
+        $ /usr/sbin/xivo-backup db /var/backups/xivo/pg_migration_90_to_91
+
+    ***************************************************************************
+
+EOF
+    validate_free_space
+}
+
+continue_upgrade() {
+    read -p 'Would you like to upgrade your database now [y/N]? ' answer
+    answer="${answer:-N}"
+    if [ "$answer" == 'n' -o "$answer" == 'N' ]; then
+        exit 3
+    fi
+}
+
+prepare_configuration() {
+    cd /tmp
+    echo "Preparing configuration..."
+    echo "Downloading and installing postgresql..."
+    apt-get update >>$MIGRATION_LOG_FILE
+    apt-get install -y postgresql-9.1 postgresql-plpython-9.1 psmisc >>$MIGRATION_LOG_FILE
+}
+
+validate_configuration() {
+    echo "Validating configuration..."
+    local global_status=0
+    local versions="9.0 9.1"
+    for version in $versions; do
+        local pg_status=$(pg_lsclusters | grep "^$version" | awk '{print $4}')
+        if [ "$pg_status" == 'online' ]; then
+            local pg_port=$(pg_lsclusters | grep "^$version" | awk '{print $3}')
+            echo -e "\tpostgresql-$version:\t$pg_status (port: $pg_port)"
+            if [ "$version" == "9.0" -a "$pg_port" != "5432" ]; then
+                echo "ERROR: PostgreSQL $version running on bad port: $pg_port"
+            elif [ "$version" == "9.1" -a "$pg_port" != "5433" ]; then
+                echo "ERROR: PostgreSQL $version running on bad port: $pg_port"
+            fi
+        elif [ "$pg_status" == 'down' ]; then
+            echo -e "\tpostgresql-$version:\t$pg_status"
+            if [ $global_status -eq 0 ]; then
+                global_status=1
+            fi
+        else
+            echo -e "\tpostgresql-$version\tfailed"
+            global_status=2
+        fi
+    done
+    if [ $global_status -gt 0 ]; then
+        echo "Stopping upgrade..."
+        exit 1
+    fi
+}
+
+stop_services() {
+    echo "Stopping services..."
+    xivo-service stop
+    /etc/init.d/cron stop >>$MIGRATION_LOG_FILE
+    killall xivo-stat &>>$MIGRATION_LOG_FILE
+    killall xivo-call-logs &>>$MIGRATION_LOG_FILE
+}
+
+migrate_db() {
+    echo "Migrating database..."
+    sudo -u postgres pg_dumpall -p 5432 | sudo -u postgres psql -p 5433 &>>$MIGRATION_LOG_FILE
+    local status=$?
+    if [ $status -gt 0 ]; then
+        echo "ERROR: migration failed, see $MIGRATION_LOG_FILE for more info."
+        exit 1
+    fi
+    /etc/init.d/postgresql stop >>$MIGRATION_LOG_FILE
+}
+
+update_pg_config() {
+    echo "Upgrading PostgreSQL configuration..."
+    sed -i 's/^port = 5432/port = 5433/g' /etc/postgresql/9.0/main/postgresql.conf
+    sed -i 's/^port = 5433/port = 5432/g' /etc/postgresql/9.1/main/postgresql.conf
+    sed -i 's/^auto/disabled/g' /etc/postgresql/9.0/main/start.conf
+}
+
+start_services() {
+    echo "Starting services..."
+    /etc/init.d/postgresql restart >>$MIGRATION_LOG_FILE
+    xivo-service start
+    /etc/init.d/cron start >>$MIGRATION_LOG_FILE
+}
+
+purge_old_database() {
+    echo "Purging old database..."
+    apt-get -y purge postgresql-9.0 postgresql-client-9.0 postgresql-plpython-9.0 >>$MIGRATION_LOG_FILE
+}
+
+dump_infos
+continue_upgrade
+prepare_configuration
+validate_configuration
+stop_services
+migrate_db
+update_pg_config
+start_services
+purge_old_database
+
+cat <<EOF
+
+  *********** PostgreSQL migration from 9.0 to 9.1 successful ************
+
+EOF

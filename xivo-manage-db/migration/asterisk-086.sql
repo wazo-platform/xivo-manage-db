@@ -1,6 +1,6 @@
 /*
  * XiVO BASe-Config
- * Copyright (C) 2012  Avencall
+ * Copyright (C) 2012-2014  Avencall
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License AS published by

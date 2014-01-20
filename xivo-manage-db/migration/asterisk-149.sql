@@ -22,5 +22,7 @@ UPDATE "dialaction" SET "actionarg1" = replace("actionarg1", 'pf-xivo', 'xivo') 
 UPDATE "ctimain" SET "tlscertfile" = replace("tlscertfile", 'pf-xivo', 'xivo') WHERE "tlscertfile" LIKE '%pf-xivo%';
 UPDATE "ctimain" SET "tlsprivkeyfile" = replace("tlsprivkeyfile", 'pf-xivo', 'xivo') WHERE "tlsprivkeyfile" LIKE '%pf-xivo%';
 UPDATE "ctisheetactions" SET "sheet_qtui" = replace("sheet_qtui", 'pf-xivo', 'xivo') WHERE "sheet_qtui" LIKE '%pf-xivo%';
+UPDATE "staticsip" SET "var_val" = replace("var_val", 'pf-xivo', 'xivo') WHERE "var_val" LIKE '%pf-xivo%';
+UPDATE "schedule" SET "fallback_actionid" = replace("fallback_actionid", 'pf-xivo', 'xivo') WHERE "fallback_actionid" LIKE '%pf-xivo%';
 
 COMMIT;

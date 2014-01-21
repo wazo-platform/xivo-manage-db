@@ -1,0 +1,3 @@
+bin/* usr/bin/
+migration usr/share/xivo-manage-db/
+datastorage usr/share/xivo-manage-db/

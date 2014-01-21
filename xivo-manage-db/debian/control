@@ -1,0 +1,15 @@
+Source: xivo-manage-db
+Section: admin
+Priority: extra
+Maintainer: XiVO DEV Team <dev@avencall.com>
+Uploaders: XiVO Builder Team <release@xivo.fr>
+Build-Depends: debhelper (>= 9)
+Standards-Version: 3.9.4
+Homepage: http://wiki.xivo.fr
+
+Package: xivo-manage-db
+Architecture: any
+Pre-Depends: postgresql
+Depends: ${misc:Depends}, xivo-upgrade
+Description: XiVO database tools manager
+ This package provide XiVO managing database tools

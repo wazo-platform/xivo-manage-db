@@ -1,0 +1,23 @@
+xivo-manage-db (14.01~20140120.170250.423a69c-wheezy-2) xivo-dev; urgency=low
+
+  * fix syntax in postinst
+
+ -- Pascal Cadotte Michaud <pcadottemichaud@avencall.com>  Mon, 20 Jan 2014 13:00:11 -0500
+
+xivo-manage-db (14.01~20140120.162452.bd87dce-wheezy-2) xivo-dev; urgency=low
+
+  * add test in postinst if postgres is running
+
+ -- Sebastien Duthil <sduthil@avencall.com>  Mon, 20 Jan 2014 11:48:51 -0500
+
+xivo-manage-db (14.01~20140115.142549.bd34694-wheezy-2) xivo-dev; urgency=low
+
+  * handle existing xivo-update-db files
+
+ -- Sebastien Duthil <sduthil@avencall.com>  Wed, 15 Jan 2014 10:51:12 -0500
+
+xivo-manage-db (0.1-0) xivo-dev; urgency=low
+
+  * Initial release
+
+ -- Cedric Abunar <cabunar@avencall.com>  Thu, 19 Dec 2013 13:13:36 -0500

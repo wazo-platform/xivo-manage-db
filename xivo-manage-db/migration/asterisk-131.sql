@@ -39,6 +39,8 @@ CREATE UNIQUE INDEX "user_line_extension__uidx__user_id_line_id" ON "user_line"(
 
 UPDATE linefeatures SET iduserfeatures = 0 WHERE iduserfeatures <> 0 AND iduserfeatures NOT IN (SELECT id FROM userfeatures);
 
+UPDATE "linefeatures" SET "number" = '' WHERE "number" NOT IN (SELECT "exten" FROM "extensions");
+
 INSERT INTO "user_line" ("user_id", "line_id", "extension_id", "main_user", "main_line")
 SELECT
   "iduserfeatures" AS "user_id",

@@ -42,7 +42,7 @@ DECLARE
             typevalextenumbersright::INT        AS destination_id,
             label                               AS label,
             supervision::BOOLEAN                AS blf,
-            fknum - 1                           AS position
+            fknum                               AS position
         FROM
             phonefunckey
         WHERE

@@ -81,9 +81,15 @@ ALTER TABLE "userfeatures"
     ADD "func_key_template_id"              INTEGER     NULL    REFERENCES "func_key_template"("id"),
     ADD "func_key_private_template_id"      INTEGER     NULL    REFERENCES "func_key_template"("id");
 
-GRANT ALL ON "func_key_template" TO asterisk;
-GRANT ALL ON "func_key_type" TO asterisk;
 GRANT ALL ON "func_key" TO asterisk;
+GRANT ALL ON "func_key_id_seq" TO asterisk;
+GRANT ALL ON "func_key_template" TO asterisk;
+GRANT ALL ON "func_key_template_id_seq" TO asterisk;
+GRANT ALL ON "func_key_type" TO asterisk;
+GRANT ALL ON "func_key_type_id_seq" TO asterisk;
 GRANT ALL ON "func_key_mapping" TO asterisk;
+GRANT ALL ON "func_key_destination_type" TO asterisk;
+GRANT ALL ON "func_key_destination_type_id_seq" TO asterisk;
+GRANT ALL ON "func_key_dest_user" TO asterisk;
 
 COMMIT;

@@ -36,7 +36,7 @@ DECLARE
                 AND phonefunckey.typevalextenumbers IS NULL
                 AND userfeatures.id = phonefunckey.iduserfeatures;
 
-    func_keys_cursor CURSOR (user_id INTEGER) FOR
+    func_keys_cursor CURSOR (selected_user_id INTEGER) FOR
         SELECT
             iduserfeatures                      AS user_id,
             typevalextenumbersright::INT        AS destination_id,
@@ -49,7 +49,7 @@ DECLARE
             typeextenumbersright = 'user'
             AND phonefunckey.typeextenumbers IS NULL
             AND phonefunckey.typevalextenumbers IS NULL
-            AND iduserfeatures = user_id;
+            AND iduserfeatures = selected_user_id;
 
 BEGIN
     SELECT id FROM func_key_type WHERE name = 'speeddial' INTO STRICT speeddial_type_id;

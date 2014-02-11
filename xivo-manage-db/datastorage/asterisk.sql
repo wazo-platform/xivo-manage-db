@@ -975,7 +975,7 @@ CREATE TABLE "func_key_mapping" (
     PRIMARY KEY("template_id", "func_key_id"),
     FOREIGN KEY("func_key_id", "destination_type_id") REFERENCES "func_key"("id", "destination_type_id"),
     UNIQUE("template_id", "position"),
-    CHECK("position" >= 0)
+    CHECK("position" > 0)
 );
 
 DROP TABLE IF EXISTS "paging" CASCADE;

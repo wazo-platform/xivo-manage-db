@@ -199,17 +199,17 @@ CREATE TABLE "call_log" (
 
 DROP TABLE IF EXISTS "cel" CASCADE;
 CREATE TABLE "cel" (
- "id" serial , 
+ "id" serial ,
  "eventtype" VARCHAR (30) NOT NULL ,
  "eventtime" timestamp NOT NULL ,
  "userdeftype" VARCHAR(255) NOT NULL ,
- "cid_name" VARCHAR (80) NOT NULL , 
+ "cid_name" VARCHAR (80) NOT NULL ,
  "cid_num" VARCHAR (80) NOT NULL ,
- "cid_ani" VARCHAR (80) NOT NULL , 
+ "cid_ani" VARCHAR (80) NOT NULL ,
  "cid_rdnis" VARCHAR (80) NOT NULL ,
  "cid_dnid" VARCHAR (80) NOT NULL ,
  "exten" VARCHAR (80) NOT NULL ,
- "context" VARCHAR (80) NOT NULL , 
+ "context" VARCHAR (80) NOT NULL ,
  "channame" VARCHAR (80) NOT NULL ,
  "appname" VARCHAR (80) NOT NULL ,
  "appdata" VARCHAR (512) NOT NULL ,
@@ -217,7 +217,7 @@ CREATE TABLE "cel" (
  "accountcode" VARCHAR (20) NOT NULL ,
  "peeraccount" VARCHAR (20) NOT NULL ,
  "uniqueid" VARCHAR (150) NOT NULL ,
- "linkedid" VARCHAR (150) NOT NULL , 
+ "linkedid" VARCHAR (150) NOT NULL ,
  "userfield" VARCHAR (255) NOT NULL ,
  "peer" VARCHAR (80) NOT NULL ,
  "call_log_id" INTEGER REFERENCES "call_log"("id") ON DELETE SET NULL DEFAULT NULL,
@@ -633,7 +633,7 @@ INSERT INTO "ctidisplays" VALUES(DEFAULT, 'switchboard', '{ "10": [ "", "status"
 
 DROP TABLE IF EXISTS "ctimain" CASCADE;
 CREATE TABLE "ctimain" (
- "id" SERIAL, 
+ "id" SERIAL,
  "commandset" VARCHAR(20),
  "ami_ip" VARCHAR(16),
  "ami_port" INTEGER,
@@ -1017,7 +1017,7 @@ CREATE TABLE "parkinglot" (
  "positions"     INTEGER NOT NULL,           -- NUMBER OF POSITIONS, (positions starts at extension + 1)
  "next"          INTEGER NOT NULL DEFAULT 1, -- BOOLEAN
  "duration"      INTEGER,
- 
+
  "calltransfers" VARCHAR(8) DEFAULT NULL::character varying,
  "callreparking" VARCHAR(8) DEFAULT NULL::character varying,
  "callhangup"    VARCHAR(8) DEFAULT NULL::character varying,
@@ -2331,7 +2331,7 @@ CREATE TABLE "usersip" (
  "registertrying" INTEGER, -- BOOLEAN
  "timert1" INTEGER,
  "timerb" INTEGER,
- 
+
  "qualifyfreq" INTEGER,
  "contactpermit" VARCHAR(1024) DEFAULT NULL::character varying,
  "contactdeny" VARCHAR(1024) DEFAULT NULL::character varying,
@@ -2734,7 +2734,7 @@ CREATE TABLE "agent_membership_status" (
     PRIMARY KEY("agent_id", "queue_id")
 );
 
---DDL for recordings: 
+--DDL for recordings:
 DROP TABLE IF EXISTS recording;
 DROP TABLE IF EXISTS record_campaign;
 

@@ -19,7 +19,6 @@ BEGIN;
 
 DO $$
 DECLARE
-    created_func_key_template_id INTEGER;
     created_func_key_id INTEGER;
     speeddial_type_id INTEGER;
     user_destination_type_id INTEGER;
@@ -27,7 +26,8 @@ DECLARE
     users_cursor CURSOR FOR
         SELECT DISTINCT
             userfeatures.id                                         AS id,
-            userfeatures.firstname || ' ' || userfeatures.lastname  AS name
+            userfeatures.firstname || ' ' || userfeatures.lastname  AS name,
+            userfeatures.func_key_private_template_id               AS private_template_id
         FROM
             userfeatures
             INNER JOIN phonefunckey
@@ -66,19 +66,6 @@ BEGIN
 
         RAISE NOTICE 'Migrating user func keys for "%" (id %)', user_row.name, user_row.id;
 
-        /* create private template */
-        INSERT INTO func_key_template
-            (name, private)
-        VALUES
-            (user_row.name, TRUE)
-        RETURNING id INTO STRICT created_func_key_template_id;
-
-        /* assign private template to user */
-        UPDATE userfeatures SET
-            func_key_private_template_id = created_func_key_template_id
-        WHERE
-            id = user_row.id;
-
         /* create func keys for user's template */
         FOR func_key_row IN func_keys_cursor(user_row.id) LOOP
 
@@ -95,7 +82,7 @@ BEGIN
             INSERT INTO func_key_mapping
                 (template_id, func_key_id, destination_type_id, label, position, blf)
             VALUES
-                (created_func_key_template_id,
+                (user_row.private_template_id,
                  created_func_key_id,
                  user_destination_type_id,
                  func_key_row.label,

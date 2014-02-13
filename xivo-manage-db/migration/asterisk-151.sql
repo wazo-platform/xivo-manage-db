@@ -55,6 +55,13 @@ BEGIN
     SELECT id FROM func_key_type WHERE name = 'speeddial' INTO STRICT speeddial_type_id;
     SELECT id FROM func_key_destination_type WHERE name = 'user' INTO STRICT user_destination_type_id;
 
+    /* delete old func keys that point towards users that no longer exist */
+    DELETE FROM phonefunckey
+    WHERE typeextenumbersright = 'user'
+        AND typeextenumbers IS NULL
+        AND typevalextenumbers IS NULL
+        AND typevalextenumbersright::int NOT IN (SELECT id FROM userfeatures);
+
     FOR user_row IN users_cursor LOOP
 
         RAISE NOTICE 'Migrating user func keys for "%" (id %)', user_row.name, user_row.id;

@@ -81,6 +81,45 @@ ALTER TABLE "userfeatures"
     ADD "func_key_template_id"              INTEGER     NULL    REFERENCES "func_key_template"("id"),
     ADD "func_key_private_template_id"      INTEGER     NULL    REFERENCES "func_key_template"("id");
 
+
+DO $$
+DECLARE
+    created_func_key_template_id INTEGER;
+
+    user_cursor CURSOR FOR
+        SELECT
+            id                              AS id,
+            firstname || ' ' || lastname    AS fullname
+        FROM
+            userfeatures;
+BEGIN
+
+    FOR user_row IN user_cursor LOOP
+
+        /* create a private template for each user */
+        INSERT INTO
+            func_key_template
+            (name, private)
+        VALUES
+            (user_row.fullname, TRUE)
+        RETURNING
+            id
+        INTO STRICT
+            created_func_key_template_id;
+
+        /* assign the private template to the user */
+        UPDATE
+            userfeatures
+        SET
+            func_key_private_template_id = created_func_key_template_id
+        WHERE
+            userfeatures.id = user_row.id;
+
+    END LOOP;
+
+END
+$$;
+
 GRANT ALL ON "func_key" TO asterisk;
 GRANT ALL ON "func_key_id_seq" TO asterisk;
 GRANT ALL ON "func_key_template" TO asterisk;

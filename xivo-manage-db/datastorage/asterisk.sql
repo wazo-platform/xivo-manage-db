@@ -935,7 +935,7 @@ INSERT INTO "features" VALUES (DEFAULT,1,0,0,'features.conf','featuremap','atxfe
 DROP TABLE IF EXISTS "func_key_template" CASCADE;
 CREATE TABLE "func_key_template" (
     "id"        SERIAL          PRIMARY KEY,
-    "name"      VARCHAR(128)    NOT NULL,
+    "name"      VARCHAR(128)    NULL,
     "private"   BOOLEAN         NOT NULL    DEFAULT FALSE
 );
 

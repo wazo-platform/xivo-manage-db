@@ -2114,7 +2114,7 @@ CREATE TABLE "userfeatures" (
  "commented" INTEGER NOT NULL DEFAULT 0, -- BOOLEAN
  "description" text NOT NULL,
  "func_key_template_id" INTEGER NULL REFERENCES "func_key_template"("id"),
- "func_key_private_template_id" INTEGER NULL REFERENCES "func_key_template"("id"),
+ "func_key_private_template_id" INTEGER NOT NULL REFERENCES "func_key_template"("id") UNIQUE,
  PRIMARY KEY("id")
 );
 

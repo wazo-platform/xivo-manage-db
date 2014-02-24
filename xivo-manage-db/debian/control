@@ -9,7 +9,7 @@ Homepage: http://wiki.xivo.fr
 
 Package: xivo-manage-db
 Architecture: any
-Pre-Depends: postgresql
+Pre-Depends: postgresql, postgresql-9.1
 Depends: ${misc:Depends}, xivo-upgrade
 Description: XiVO database tools manager
  This package provide XiVO managing database tools

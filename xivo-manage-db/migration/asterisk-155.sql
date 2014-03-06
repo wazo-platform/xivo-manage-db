@@ -28,10 +28,9 @@ END;
 $body$
   LANGUAGE plpgsql STABLE;
 
-UPDATE "linefeatures" 
+UPDATE "linefeatures"
 SET "context" = protocol_context("protocol", "protocolid")
-WHERE "context" is NULL;
-
+WHERE "context" IS NULL OR "context" = '';
 
 DROP FUNCTION protocol_context(protocol trunk_protocol, protocolid integer);
 

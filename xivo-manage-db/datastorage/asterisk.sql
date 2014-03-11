@@ -953,7 +953,8 @@ CREATE TABLE "func_key_destination_type" (
     "name"      VARCHAR(128)    NOT NULL
 );
 
-INSERT INTO "func_key_destination_type" (id, name) VALUES (1, 'user');
+INSERT INTO "func_key_destination_type" (id, name) VALUES (1, 'user'),
+                                                          (2, 'group');
 
 DROP TABLE IF EXISTS "func_key" CASCADE;
 CREATE TABLE "func_key" (
@@ -1053,6 +1054,17 @@ CREATE TABLE "groupfeatures" (
 CREATE INDEX "groupfeatures__idx__name" ON "groupfeatures"("name");
 CREATE INDEX "groupfeatures__idx__number" ON "groupfeatures"("number");
 CREATE INDEX "groupfeatures__idx__context" ON "groupfeatures"("context");
+
+
+DROP TABLE IF EXISTS "func_key_dest_group" CASCADE;
+CREATE TABLE "func_key_dest_group" (
+    "func_key_id"               INTEGER         NOT NULL,
+    "destination_type_id"       INTEGER         NOT NULL        DEFAULT 2       CHECK ("destination_type_id" = 2),
+    "group_id"                  INTEGER         NOT NULL        REFERENCES "groupfeatures"("id"),
+
+    PRIMARY KEY("func_key_id", "destination_type_id", "group_id"),
+    FOREIGN KEY("func_key_id", "destination_type_id") REFERENCES "func_key"("id", "destination_type_id")
+);
 
 
 DROP TABLE IF EXISTS "incall" CASCADE;

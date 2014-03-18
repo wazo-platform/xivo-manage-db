@@ -954,7 +954,8 @@ CREATE TABLE "func_key_destination_type" (
 );
 
 INSERT INTO "func_key_destination_type" (id, name) VALUES (1, 'user'),
-                                                          (2, 'group');
+                                                          (2, 'group'),
+                                                          (3, 'queue');
 
 DROP TABLE IF EXISTS "func_key" CASCADE;
 CREATE TABLE "func_key" (
@@ -1505,6 +1506,17 @@ CREATE TABLE "queuefeatures" (
 CREATE INDEX "queuefeatures__idx__number" ON "queuefeatures"("number");
 CREATE INDEX "queuefeatures__idx__context" ON "queuefeatures"("context");
 CREATE UNIQUE INDEX "queuefeatures__uidx__name" ON "queuefeatures"("name");
+
+
+DROP TABLE IF EXISTS "func_key_dest_queue" CASCADE;
+CREATE TABLE "func_key_dest_queue" (
+    "func_key_id"               INTEGER         NOT NULL,
+    "destination_type_id"       INTEGER         NOT NULL        DEFAULT 3       CHECK ("destination_type_id" = 3),
+    "queue_id"                  INTEGER         NOT NULL        REFERENCES "queuefeatures"("id"),
+
+    PRIMARY KEY("func_key_id", "destination_type_id", "queue_id"),
+    FOREIGN KEY("func_key_id", "destination_type_id") REFERENCES "func_key"("id", "destination_type_id")
+);
 
 
 DROP TABLE IF EXISTS "queuemember" CASCADE;

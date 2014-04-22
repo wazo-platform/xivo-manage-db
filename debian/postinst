@@ -2,6 +2,25 @@
 
 set -e
 
+exec_pg_command() {
+    local cmd="$1"
+    su - postgres -c "$cmd" >/dev/null
+    return $?
+}
+
+migrate_entity_and_user_tables() {
+    if exec_pg_command 'psql xivo -c "\d \"entity\""' ; then
+        exec_pg_command "psql asterisk -c \"DROP TYPE IF EXISTS \"user_meta\"\""
+        exec_pg_command "psql asterisk -c \"CREATE TYPE \"user_meta\" AS ENUM ('user','admin','root')\""
+        exec_pg_command 'pg_dump -t entity xivo | psql asterisk'
+        if exec_pg_command 'psql xivo -c "\d \"user\""' ; then
+            exec_pg_command 'pg_dump -t user xivo | psql asterisk'
+            exec_pg_command 'psql xivo -c "DROP TABLE \"user\""'
+        fi
+        exec_pg_command 'psql xivo -c "DROP TABLE \"entity\""'
+    fi
+}
+
 case "$1" in
     configure)
         new_dir=/var/lib/xivo-manage-db/update-db
@@ -11,10 +30,13 @@ case "$1" in
                 rm -fr "$old_dir"
             fi
         done
+        
+        migrate_entity_and_user_tables
+        
         # When installing from ISO, Postgres is not running
         pg_status=$(pg_lsclusters | grep '^9.1' | awk '{print $4}')
         if [ "$pg_status" = 'online' ]; then
-            /usr/bin/xivo-update-db
+            xivo-update-db
         fi
     ;;
 

@@ -38,4 +38,11 @@ CREATE TABLE "entity_filter" (
  PRIMARY KEY("id")
 );
 
+GRANT ALL ON SEQUENCE "entity_id_seq" TO "asterisk";
+GRANT ALL ON TABLE "entity" TO "asterisk";
+GRANT ALL ON SEQUENCE "entity_filter_id_seq" TO "asterisk";
+GRANT ALL ON TABLE "entity_filter" TO "asterisk";
+GRANT ALL ON SEQUENCE "user_id_seq" TO "asterisk";
+GRANT ALL ON TABLE "user" TO "asterisk";
+
 COMMIT;

@@ -9,15 +9,16 @@ exec_pg_command() {
 }
 
 migrate_entity_and_user_tables() {
-    if exec_pg_command 'psql xivo -c "\d \"entity\""' ; then
+    if ! exec_pg_command 'psql asterisk -c "\d \"entity\""' ; then
+        # the entity table must be in the xivo database
         exec_pg_command "psql asterisk -c \"DROP TYPE IF EXISTS \"user_meta\"\""
         exec_pg_command "psql asterisk -c \"CREATE TYPE \"user_meta\" AS ENUM ('user','admin','root')\""
         exec_pg_command 'pg_dump -t entity xivo | psql asterisk'
-        if exec_pg_command 'psql xivo -c "\d \"user\""' ; then
-            exec_pg_command 'pg_dump -t user xivo | psql asterisk'
-            exec_pg_command 'psql xivo -c "DROP TABLE \"user\""'
-        fi
+        exec_pg_command 'pg_dump -t user xivo | psql asterisk'
+    fi
+    if exec_pg_command 'psql xivo -c "\d \"entity\""' ; then
         exec_pg_command 'psql xivo -c "DROP TABLE \"entity\""'
+        exec_pg_command 'psql xivo -c "DROP TABLE \"user\""'
     fi
 }
 

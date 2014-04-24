@@ -71,32 +71,6 @@ INSERT INTO "directories" VALUES (DEFAULT,'internal' , NULL, 'internal' , '', 'X
 INSERT INTO "directories" VALUES (DEFAULT,'phonebook', NULL, 'phonebook', '', 'XiVO phonebook');
 
 
-DROP TABLE IF EXISTS "entity";
-CREATE TABLE "entity" (
- "id" SERIAL,
- "name" varchar(64) NOT NULL DEFAULT '',
- "displayname" varchar(128) NOT NULL DEFAULT '',
- "phonenumber" varchar(40) NOT NULL DEFAULT '',
- "faxnumber" varchar(40) NOT NULL DEFAULT '',
- "email" varchar(255) NOT NULL DEFAULT '',
- "url" varchar(255) NOT NULL DEFAULT '',
- "address1" varchar(30) NOT NULL DEFAULT '',
- "address2" varchar(30) NOT NULL DEFAULT '',
- "city" varchar(128) NOT NULL DEFAULT '',
- "state" varchar(128) NOT NULL DEFAULT '',
- "zipcode" varchar(16) NOT NULL DEFAULT '',
- "country" varchar(3) NOT NULL DEFAULT '',
- "disable" INTEGER NOT NULL DEFAULT 0, -- BOOLEAN
- "dcreate" INTEGER NOT NULL DEFAULT 0,
- "description" text NOT NULL,
- PRIMARY KEY("id")
-);
-
-CREATE INDEX "entity__idx__displayname" ON "entity"("displayname");
-CREATE INDEX "entity__idx__disable" ON "entity"("disable");
-CREATE UNIQUE INDEX "entity__uidx__name" ON "entity"("name");
-
-
 DROP TABLE IF EXISTS "iproute";
 CREATE TABLE "iproute" (
  "id" SERIAL,
@@ -245,33 +219,6 @@ CREATE TABLE "session" (
 
 CREATE INDEX "session__idx__expire" ON "session"("expire");
 CREATE INDEX "session__idx__identifier" ON "session"("identifier");
-
-
-DROP TABLE IF EXISTS "user";
-DROP TYPE  IF EXISTS "user_meta";
-
-CREATE TYPE "user_meta" AS ENUM ('user','admin','root');
-CREATE TABLE "user" (
- "id" SERIAL,
- "login" varchar(64) NOT NULL DEFAULT '',
- "passwd" varchar(64) NOT NULL DEFAULT '',
- "meta" user_meta NOT NULL DEFAULT 'user',
- "valid" INTEGER NOT NULL DEFAULT 1, -- BOOLEAN
- "time" INTEGER NOT NULL DEFAULT 0,
- "dcreate" INTEGER NOT NULL DEFAULT 0, -- TIMESTAMP
- "dupdate" INTEGER NOT NULL DEFAULT 0, -- TIMESTAMP
- "obj" TEXT NOT NULL, -- BYTEA
- PRIMARY KEY("id")
-);
-
-CREATE INDEX "user__idx__login" ON "user"("login");
-CREATE INDEX "user__idx__passwd" ON "user"("passwd");
-CREATE INDEX "user__idx__meta" ON "user"("meta");
-CREATE INDEX "user__idx__valid" ON "user"("valid");
-CREATE INDEX "user__idx__time" ON "user"("time");
-CREATE UNIQUE INDEX "user__uidx__login_meta" ON "user"("login","meta");
-
-INSERT INTO "user" VALUES (DEFAULT,'root','proformatique','root',1,0,EXTRACT(EPOCH from now()),0,'');
 
 
 DROP TABLE IF EXISTS "dhcp";

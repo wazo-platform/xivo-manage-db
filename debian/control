@@ -3,13 +3,14 @@ Section: admin
 Priority: extra
 Maintainer: XiVO DEV Team <dev@avencall.com>
 Uploaders: XiVO Builder Team <release@xivo.fr>
-Build-Depends: debhelper (>= 9)
+Build-Depends: debhelper (>= 9), dh-python, python-all (>=2.7)
 Standards-Version: 3.9.4
-Homepage: http://wiki.xivo.fr
+X-Python-Version: >= 2.7
+Homepage: http://projects.xivo.fr
 
 Package: xivo-manage-db
 Architecture: any
 Pre-Depends: postgresql, postgresql-9.1
-Depends: ${misc:Depends}, xivo-upgrade
+Depends: ${python:Depends}, ${misc:Depends}, xivo-upgrade
 Description: XiVO database tools manager
  This package provide XiVO managing database tools

@@ -821,32 +821,6 @@ CREATE TABLE "dialpattern" (
 CREATE INDEX "dialpattern__idx__type_typeid" ON "dialpattern"("type","typeid");
 
 
-DROP TABLE IF EXISTS "entity";
-CREATE TABLE "entity" (
- "id" SERIAL,
- "name" varchar(64) NOT NULL DEFAULT '',
- "displayname" varchar(128) NOT NULL DEFAULT '',
- "phonenumber" varchar(40) NOT NULL DEFAULT '',
- "faxnumber" varchar(40) NOT NULL DEFAULT '',
- "email" varchar(255) NOT NULL DEFAULT '',
- "url" varchar(255) NOT NULL DEFAULT '',
- "address1" varchar(30) NOT NULL DEFAULT '',
- "address2" varchar(30) NOT NULL DEFAULT '',
- "city" varchar(128) NOT NULL DEFAULT '',
- "state" varchar(128) NOT NULL DEFAULT '',
- "zipcode" varchar(16) NOT NULL DEFAULT '',
- "country" varchar(3) NOT NULL DEFAULT '',
- "disable" INTEGER NOT NULL DEFAULT 0, -- BOOLEAN
- "dcreate" INTEGER NOT NULL DEFAULT 0,
- "description" text NOT NULL,
- PRIMARY KEY("id")
-);
-
-CREATE INDEX "entity__idx__displayname" ON "entity"("displayname");
-CREATE INDEX "entity__idx__disable" ON "entity"("disable");
-CREATE UNIQUE INDEX "entity__uidx__name" ON "entity"("name");
-
-
 DROP TYPE  IF EXISTS "extenumbers_type";
 
 CREATE TYPE "extenumbers_type" AS ENUM ('extenfeatures',
@@ -2090,33 +2064,6 @@ CREATE INDEX "trunkfeatures__idx__registerid" ON "trunkfeatures"("registerid");
 CREATE INDEX "trunkfeatures__idx__registercommented" ON "trunkfeatures"("registercommented");
 CREATE UNIQUE INDEX "trunkfeatures__uidx__protocol_protocolid" ON "trunkfeatures"("protocol","protocolid");
 
-DROP TABLE IF EXISTS "user";
-DROP TYPE IF EXISTS "user_meta";
-
-CREATE TYPE "user_meta" AS ENUM ('user','admin','root');
-CREATE TABLE "user" (
- "id" SERIAL,
- "entity_id" INTEGER DEFAULT NULL REFERENCES "entity"("id") ON DELETE RESTRICT,
- "login" varchar(64) NOT NULL DEFAULT '',
- "passwd" varchar(64) NOT NULL DEFAULT '',
- "meta" user_meta NOT NULL DEFAULT 'user',
- "valid" INTEGER NOT NULL DEFAULT 1, -- BOOLEAN
- "time" INTEGER NOT NULL DEFAULT 0,
- "dcreate" INTEGER NOT NULL DEFAULT 0, -- TIMESTAMP
- "dupdate" INTEGER NOT NULL DEFAULT 0, -- TIMESTAMP
- "obj" TEXT NOT NULL, -- BYTEA
- PRIMARY KEY("id")
-);
-
-CREATE INDEX "user__idx__login" ON "user"("login");
-CREATE INDEX "user__idx__passwd" ON "user"("passwd");
-CREATE INDEX "user__idx__meta" ON "user"("meta");
-CREATE INDEX "user__idx__valid" ON "user"("valid");
-CREATE INDEX "user__idx__time" ON "user"("time");
-CREATE UNIQUE INDEX "user__uidx__login_meta" ON "user"("login","meta");
-
-INSERT INTO "user" VALUES (DEFAULT,NULL,'root','proformatique','root',1,0,EXTRACT(EPOCH from now()),0,'');
-
 
 DROP TABLE IF EXISTS "usercustom" CASCADE;
 DROP TYPE  IF EXISTS "usercustom_category";
@@ -2811,27 +2758,6 @@ CREATE TABLE "agent_membership_status" (
     "penalty"         INTEGER      NOT NULL DEFAULT 0,
     PRIMARY KEY("agent_id", "queue_id")
 );
-
-
-DROP TABLE IF EXISTS "entity_filter";
-CREATE TABLE "entity_filter" (
- "id" SERIAL,
- "entity_id" INTEGER NOT NULL REFERENCES "entity"("id") ON DELETE CASCADE,
- "user_id" INTEGER DEFAULT NULL REFERENCES "userfeatures"("id") ON DELETE CASCADE,
- "line_id" INTEGER DEFAULT NULL REFERENCES "linefeatures"("id") ON DELETE CASCADE,
- "queue_id" INTEGER DEFAULT NULL REFERENCES "queuefeatures"("id") ON DELETE CASCADE,
- "group_id" INTEGER DEFAULT NULL REFERENCES "groupfeatures"("id") ON DELETE CASCADE,
- "agent_id" INTEGER DEFAULT NULL REFERENCES "agentfeatures"("id") ON DELETE CASCADE,
- "meetme_id" INTEGER DEFAULT NULL REFERENCES "meetmefeatures"("id") ON DELETE CASCADE,
- "voicemail_id" INTEGER DEFAULT NULL REFERENCES "voicemail"("uniqueid") ON DELETE CASCADE,
- "incall_id" INTEGER DEFAULT NULL REFERENCES "incall"("id") ON DELETE CASCADE,
- "callfilter_id" INTEGER DEFAULT NULL REFERENCES "callfilter"("id") ON DELETE CASCADE,
- "pickup_id" INTEGER DEFAULT NULL REFERENCES "pickup"("id") ON DELETE CASCADE,
- "schedule_id" INTEGER DEFAULT NULL REFERENCES "schedule"("id") ON DELETE CASCADE,
- "device_id" VARCHAR(32) DEFAULT NULL,
- PRIMARY KEY("id")
-);
-
 
 --DDL for recordings:
 DROP TABLE IF EXISTS recording;

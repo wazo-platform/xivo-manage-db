@@ -253,6 +253,7 @@ DROP TYPE  IF EXISTS "user_meta";
 CREATE TYPE "user_meta" AS ENUM ('user','admin','root');
 CREATE TABLE "user" (
  "id" SERIAL,
+ "entity_id" INTEGER DEFAULT NULL REFERENCES "entity"("id") ON DELETE RESTRICT,
  "login" varchar(64) NOT NULL DEFAULT '',
  "passwd" varchar(64) NOT NULL DEFAULT '',
  "meta" user_meta NOT NULL DEFAULT 'user',

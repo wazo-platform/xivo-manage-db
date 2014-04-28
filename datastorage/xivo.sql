@@ -272,7 +272,7 @@ CREATE INDEX "user__idx__valid" ON "user"("valid");
 CREATE INDEX "user__idx__time" ON "user"("time");
 CREATE UNIQUE INDEX "user__uidx__login_meta" ON "user"("login","meta");
 
-INSERT INTO "user" VALUES (DEFAULT,'root','proformatique','root',1,0,EXTRACT(EPOCH from now()),0,'');
+INSERT INTO "user" VALUES (DEFAULT,NULL,'root','proformatique','root',1,0,EXTRACT(EPOCH from now()),0,'');
 
 
 DROP TABLE IF EXISTS "dhcp";

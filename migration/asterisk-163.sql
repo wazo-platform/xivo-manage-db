@@ -21,7 +21,7 @@ DO $$
 DECLARE
     created_func_key_id INTEGER;
     speeddial_type_id INTEGER;
-    conf_destination_type_id INTEGER;
+    conference_destination_type_id INTEGER;
 
     meetmes_cursor CURSOR FOR
         SELECT
@@ -38,19 +38,19 @@ DECLARE
             phonefunckey.supervision::BOOLEAN                AS blf,
             phonefunckey.fknum                               AS position,
             userfeatures.func_key_private_template_id        AS private_template_id,
-            func_key_dest_conf.func_key_id                  AS func_key_id
+            func_key_dest_conference.func_key_id                  AS func_key_id
         FROM
             phonefunckey
             INNER JOIN userfeatures
                 ON phonefunckey.iduserfeatures = userfeatures.id
-            INNER JOIN func_key_dest_conf
-                ON func_key_dest_conf.conf_id = phonefunckey.typevalextenumbersright::INT
+            INNER JOIN func_key_dest_conference
+                ON func_key_dest_conference.conference_id = phonefunckey.typevalextenumbersright::INT
         WHERE
             phonefunckey.typeextenumbersright = 'meetme';
 
 BEGIN
     SELECT id FROM func_key_type WHERE name = 'speeddial' INTO STRICT speeddial_type_id;
-    SELECT id FROM func_key_destination_type WHERE name = 'conf' INTO STRICT conf_destination_type_id;
+    SELECT id FROM func_key_destination_type WHERE name = 'conference' INTO STRICT conference_destination_type_id;
 
     /* delete old func keys that point towards meetmes that no longer exist */
     DELETE FROM phonefunckey
@@ -66,30 +66,30 @@ BEGIN
         INSERT INTO func_key
             (type_id, destination_type_id)
         VALUES
-            (speeddial_type_id, conf_destination_type_id)
+            (speeddial_type_id, conference_destination_type_id)
         RETURNING id INTO STRICT created_func_key_id;
 
         /* associate func key with its destination */
-        INSERT INTO func_key_dest_conf
-            (func_key_id, conf_id)
+        INSERT INTO func_key_dest_conference
+            (func_key_id, conference_id)
         VALUES
             (created_func_key_id, meetme_row.id);
 
     END LOOP;
 
-    /* migrate existing conf func keys into user's private templates */
+    /* migrate existing conference func keys into user's private templates */
     FOR func_key_row IN func_keys_cursor LOOP
 
-        RAISE NOTICE 'Migrating func key for user % with destination conf %', func_key_row.user_id, func_key_row.destination_id;
+        RAISE NOTICE 'Migrating func key for user % with destination conference %', func_key_row.user_id, func_key_row.destination_id;
 
-        /* associate conf destinations with user's private template */
+        /* associate conference destinations with user's private template */
         INSERT INTO func_key_mapping
             (template_id, func_key_id, destination_type_id, label, position, blf)
         VALUES
             (
                 func_key_row.private_template_id,
                 func_key_row.func_key_id,
-                conf_destination_type_id,
+                conference_destination_type_id,
                 func_key_row.label,
                 func_key_row.position,
                 func_key_row.blf

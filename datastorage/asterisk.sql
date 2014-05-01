@@ -956,7 +956,7 @@ CREATE TABLE "func_key_destination_type" (
 INSERT INTO "func_key_destination_type" (id, name) VALUES (1, 'user'),
                                                           (2, 'group'),
                                                           (3, 'queue'),
-                                                          (4, 'conf');
+                                                          (4, 'conference');
 
 DROP TABLE IF EXISTS "func_key" CASCADE;
 CREATE TABLE "func_key" (
@@ -1217,13 +1217,13 @@ CREATE TABLE "meetmeguest" (
 );
 
 
-DROP TABLE IF EXISTS "func_key_dest_conf" CASCADE;
-CREATE TABLE "func_key_dest_conf" (
+DROP TABLE IF EXISTS "func_key_dest_conference" CASCADE;
+CREATE TABLE "func_key_dest_conference" (
     "func_key_id"               INTEGER         NOT NULL,
     "destination_type_id"       INTEGER         NOT NULL        DEFAULT 4       CHECK ("destination_type_id" = 4),
-    "conf_id"                  INTEGER         NOT NULL        REFERENCES "meetmefeatures"("id"),
+    "conference_id"             INTEGER         NOT NULL        REFERENCES "meetmefeatures"("id"),
 
-    PRIMARY KEY("func_key_id", "destination_type_id", "conf_id"),
+    PRIMARY KEY("func_key_id", "destination_type_id", "conference_id"),
     FOREIGN KEY("func_key_id", "destination_type_id") REFERENCES "func_key"("id", "destination_type_id")
 );
 

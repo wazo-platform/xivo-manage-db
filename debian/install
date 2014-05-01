@@ -1,4 +1,5 @@
 bin/xivo-check-db usr/bin/
+bin/xivo-init-db usr/bin/
 bin/xivo-update-db usr/bin/
 bin/xivo-check-db-old /usr/lib/xivo-manage-db/old/
 bin/xivo-update-db-old /usr/lib/xivo-manage-db/old/

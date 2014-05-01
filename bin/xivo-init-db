@@ -1,8 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 
-
-def main():
-    pass
-
+from xivo_db.bin.xivo_init_db import main
 main()

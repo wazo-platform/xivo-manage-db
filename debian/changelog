@@ -1,3 +1,9 @@
+xivo-manage-db (1) testing; urgency=low
+
+  * test
+
+ -- Cedric Abunar <cabunar@avencall.com>  Wed, 30 Apr 2014 15:15:07 -0400
+
 xivo-manage-db (14.01~20140120.170250.423a69c-wheezy-2) xivo-dev; urgency=low
 
   * fix syntax in postinst

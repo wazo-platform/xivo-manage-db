@@ -2,38 +2,17 @@
 # -*- coding: UTF-8 -*-
 
 import os
-import sys
+import subprocess
 
-DB_NAMES = ['asterisk', 'xivo']
-MIGRATION_DIR = '/usr/share/xivo-manage-db/migration'
-STATE_DIR = '/var/lib/xivo-manage-db/update-db'
+OLD_BIN_DIR = '/usr/lib/xivo-manage-db/old'
 
 
 def main():
-    print 'Checking databases...'
-    for db_name in DB_NAMES:
-        latest_executed = get_latest_executed(db_name)
-        latest_available = get_latest_available(db_name)
-        if latest_executed == latest_available:
-            status_msg = 'OK'
-        else:
-            status_msg = 'NOK (last is %s, should be %s)' % (
-                    latest_executed, latest_available)
-        print '\t%s\t\t%s' % (status_msg, db_name + ' db')
-
-
-def get_latest_executed(db_name):
-    filename = os.path.join(STATE_DIR, '%s-last' % db_name)
-    with open(filename) as fobj:
-        content = fobj.read()
-    return content.split('.', 1)[0]
-
-
-def get_latest_available(db_name):
-    files = [file for file in os.listdir(MIGRATION_DIR) if
-             file.startswith(db_name)]
-    latest_file = max(files)
-    return latest_file[len(db_name) + 1:-4]
-
+    filename = os.path.join(OLD_BIN_DIR, 'xivo-check-db-old')
+    args = [filename]
+    popen = subprocess.Popen(args, stdout=subprocess.PIPE)
+    popen.wait()
+    output = popen.stdout.read()
+    print output
 
 main()

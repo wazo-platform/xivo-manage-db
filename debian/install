@@ -1,3 +1,6 @@
-bin/* usr/bin/
+bin/xivo-check-db usr/bin/
+bin/xivo-update-db usr/bin/
+bin/xivo-check-db-old /usr/lib/xivo-manage-db/old/
+bin/xivo-update-db-old /usr/lib/xivo-manage-db/old/
 migration usr/share/xivo-manage-db/
 datastorage usr/share/xivo-manage-db/

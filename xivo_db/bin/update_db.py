@@ -16,13 +16,20 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 import argparse
+import sys
 from xivo_db import old
 
 
 def main():
     parsed_args = _parse_args()
 
-    old.update_db(parsed_args.verbose)
+    if old.is_active():
+        try:
+            old.update_db(parsed_args.verbose)
+        except old.UpdateFailedException:
+            sys.exit(1)
+
+        old.deactivate()
 
 
 def _parse_args():

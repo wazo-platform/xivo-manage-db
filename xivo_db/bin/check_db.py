@@ -19,4 +19,5 @@ from xivo_db import old
 
 
 def main():
-    old.check_db()
+    if old.is_active():
+        old.check_db()

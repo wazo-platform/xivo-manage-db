@@ -3,5 +3,6 @@ bin/xivo-init-db usr/bin/
 bin/xivo-update-db usr/bin/
 bin/xivo-check-db-old /usr/lib/xivo-manage-db/
 bin/xivo-update-db-old /usr/lib/xivo-manage-db/
+bin/xivo-merge-db /usr/lib/xivo-manage-db/
 migration usr/share/xivo-manage-db/
 datastorage usr/share/xivo-manage-db/

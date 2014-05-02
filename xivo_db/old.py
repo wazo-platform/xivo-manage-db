@@ -18,15 +18,13 @@
 import errno
 import os
 import subprocess
+from xivo_db.exception import DBError
 
 _CHECK_DB_PATH = '/usr/lib/xivo-manage-db/xivo-check-db-old'
 _UPDATE_DB_PATH = '/usr/lib/xivo-manage-db/xivo-update-db-old'
+_MERGE_DB_PATH = '/usr/lib/xivo-manage-db/xivo-merge-db'
 _AST_LAST_PATH = '/var/lib/xivo-manage-db/update-db/asterisk-last'
 _XIVO_LAST_PATH = '/var/lib/xivo-manage-db/update-db/xivo-last'
-
-
-class UpdateFailedException(Exception):
-    pass
 
 
 def check_db():
@@ -38,7 +36,13 @@ def update_db(verbose=False):
     if verbose:
         args.append('-v')
     if subprocess.call(args):
-        raise UpdateFailedException()
+        raise DBError()
+
+
+def merge_db():
+    with open(os.devnull) as fobj:
+        if subprocess.call(['su', '-c', _MERGE_DB_PATH, 'postgres'], stdout=fobj, cwd='/tmp'):
+            raise DBError()
 
 
 def is_active():

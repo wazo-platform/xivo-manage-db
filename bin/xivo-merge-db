@@ -1,0 +1,95 @@
+#!/bin/bash
+# This script merge the xivo database into the asterisk database and
+# then drops the xivo database and the xivo user.
+#
+# It must be executed as user postgres.
+
+set -e
+export PGOPTIONS='--client-min-messages=warning'
+
+psql="psql -v ON_ERROR_STOP="
+
+
+# these types are needed later on
+$psql asterisk <<'EOF'
+BEGIN;
+
+DROP TYPE IF EXISTS "ldapserver_securitylayer" CASCADE;
+CREATE TYPE "ldapserver_securitylayer" AS ENUM ('tls', 'ssl');
+
+DROP TYPE IF EXISTS "ldapserver_protocolversion" CASCADE;
+CREATE TYPE "ldapserver_protocolversion" AS ENUM ('2', '3');
+
+DROP TYPE IF EXISTS "netiface_networktype" CASCADE;
+CREATE TYPE "netiface_networktype" AS ENUM ('data','voip');
+
+DROP TYPE IF EXISTS "netiface_type" CASCADE;
+CREATE TYPE "netiface_type" AS ENUM ('iface');
+
+DROP TYPE IF EXISTS "netiface_family" CASCADE;
+CREATE TYPE "netiface_family" AS ENUM ('inet','inet6');
+
+DROP TYPE IF EXISTS "netiface_method" CASCADE;
+CREATE TYPE "netiface_method" AS ENUM ('static','dhcp','manual');
+
+DROP TYPE IF EXISTS "user_meta" CASCADE;
+CREATE TYPE "user_meta" AS ENUM ('user','admin','root');
+
+COMMIT;
+
+EOF
+
+
+# move the tables and associated sequences
+pg_dump \
+	-t accesswebservice \
+	-t dhcp \
+	-t directories \
+	-t entity \
+	-t iproute \
+	-t ldapserver \
+	-t mail \
+	-t monitoring \
+	-t netiface \
+	-t provisioning \
+	-t resolvconf \
+	-t session \
+	-t stats_conf \
+	-t stats_conf_agent \
+	-t stats_conf_group \
+	-t stats_conf_incall \
+	-t stats_conf_queue \
+	-t stats_conf_user \
+	-t stats_conf_xivouser \
+	-t user \
+	xivo | $psql asterisk
+
+
+# set the owner of all tables and sequences to asterisk
+$psql asterisk <<'EOF'
+BEGIN;
+
+DO $$
+DECLARE
+	table_name pg_catalog.name;
+BEGIN
+	FOR table_name IN SELECT tablename FROM pg_tables
+	WHERE schemaname = 'public'
+	LOOP
+		EXECUTE 'ALTER TABLE "' || table_name || '" OWNER TO asterisk';
+	END LOOP;
+END $$;
+
+DROP OWNED BY xivo;
+
+COMMIT;
+
+EOF
+
+
+# drop database xivo and role xivo
+$psql <<'EOF'
+DROP DATABASE xivo;
+DROP ROLE xivo;
+
+EOF

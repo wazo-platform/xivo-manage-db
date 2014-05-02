@@ -26,6 +26,9 @@ def check_db():
     subprocess.call([_CHECK_DB_PATH])
 
 
-def update_db():
+def update_db(verbose=False):
+    args = [_UPDATE_DB_PATH]
+    if verbose:
+        args.append('-v')
     # TODO return exit code / raise exception on error
-    subprocess.call([_UPDATE_DB_PATH])
+    subprocess.call(args)

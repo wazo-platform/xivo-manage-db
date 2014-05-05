@@ -7,4 +7,3 @@ bin/xivo-merge-db /usr/lib/xivo-manage-db/
 alembic usr/share/xivo-manage-db/
 alembic.ini usr/share/xivo-manage-db/
 migration usr/share/xivo-manage-db/
-datastorage usr/share/xivo-manage-db/

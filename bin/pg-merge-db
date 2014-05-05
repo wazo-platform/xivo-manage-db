@@ -46,7 +46,6 @@ pg_dump \
 	-t dhcp \
 	-t directories \
 	-t entity \
-	-t iproute \
 	-t ldapserver \
 	-t mail \
 	-t monitoring \

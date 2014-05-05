@@ -1,0 +1,17 @@
+#!/bin/bash
+# This script drop role and database
+#
+# It must be executed as user postgres.
+
+set -e
+export PGOPTIONS='--client-min-messages=warning'
+
+psql="psql -v ON_ERROR_STOP="
+
+
+$psql <<'EOF'
+
+DROP DATABASE "asterisk";
+DROP ROLE "asterisk";
+
+EOF

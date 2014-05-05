@@ -17,15 +17,21 @@
 
 import argparse
 import logging
+import os
+import subprocess
 
 from sqlalchemy.schema import MetaData
 
 from xivo_dao import alchemy
 from xivo_dao.helpers import db_manager
 from xivo_dao.helpers.db_manager import Base
+from xivo_db.exception import DBError
 
 
 logger = logging.getLogger(__name__)
+
+INIT_DB_PATH = '/usr/lib/xivo-manage-db/pg-init-db'
+DROP_DB_PATH = '/usr/lib/xivo-manage-db/pg-drop-db'
 
 
 def expensive_setup():
@@ -53,6 +59,20 @@ def close():
     db_manager.close()
 
 
+def _drop_db():
+    logger.info('Dropping database...')
+    with open(os.devnull) as fobj:
+        if subprocess.call(['su', '-c', DROP_DB_PATH, 'postgres'], stdout=fobj, cwd='/tmp'):
+            raise DBError()
+
+
+def _init_db():
+    logger.info('Initializing database...')
+    with open(os.devnull) as fobj:
+        if subprocess.call(['su', '-c', INIT_DB_PATH, 'postgres'], stdout=fobj, cwd='/tmp'):
+            raise DBError()
+
+
 def main():
     parsed_args = _parse_args()
 
@@ -61,11 +81,16 @@ def main():
     engine = expensive_setup()
 
     if parsed_args.reset:
-        _drop_tables(engine)
+        _drop_db()
+        _init_db()
         _create_tables(engine)
 
     if parsed_args.drop:
-        _drop_tables(engine)
+        _drop_db()
+
+    if parsed_args.init:
+        _init_db()
+        _create_tables(engine)
 
     close()
 
@@ -76,6 +101,10 @@ def _parse_args():
                         action='store_true',
                         default=False,
                         help='increase verbosity')
+    parser.add_argument('--init',
+                        action='store_true',
+                        default=False,
+                        help='Initialize role and database')
     parser.add_argument('--reset',
                         action='store_true',
                         default=False,

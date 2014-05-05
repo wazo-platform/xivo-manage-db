@@ -22,7 +22,7 @@ from xivo_db.exception import DBError
 
 _CHECK_DB_PATH = '/usr/lib/xivo-manage-db/xivo-check-db-old'
 _UPDATE_DB_PATH = '/usr/lib/xivo-manage-db/xivo-update-db-old'
-_MERGE_DB_PATH = '/usr/lib/xivo-manage-db/xivo-merge-db'
+_MERGE_DB_PATH = '/usr/lib/xivo-manage-db/pg-merge-db'
 _AST_LAST_PATH = '/var/lib/xivo-manage-db/update-db/asterisk-last'
 _XIVO_LAST_PATH = '/var/lib/xivo-manage-db/update-db/xivo-last'
 

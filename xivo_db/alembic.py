@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: UTF-8 -*-
 
 # Copyright (C) 2014 Avencall
 #
@@ -21,6 +21,6 @@ from xivo_db.exception import DBError
 _ALEMBIC_CWD = '/usr/share/xivo-manage-db/'
 
 
-def upgrade():
+def update_db():
     if subprocess.call(['alembic', 'upgrade', 'head'], cwd=_ALEMBIC_CWD):
         raise DBError()

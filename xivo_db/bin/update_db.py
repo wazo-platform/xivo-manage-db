@@ -31,7 +31,7 @@ def main():
             old.merge_db()
             old.deactivate()
 
-        alembic.upgrade()
+        alembic.update_db()
     except DBError:
         sys.exit(1)
 

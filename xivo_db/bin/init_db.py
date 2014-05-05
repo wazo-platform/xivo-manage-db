@@ -91,27 +91,20 @@ def main():
     if parsed_args.init:
         _init_db()
         _create_tables(engine)
+        _populate_tables(engine)
 
     close()
 
 
 def _parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-v', '--verbose',
-                        action='store_true',
-                        default=False,
+    parser.add_argument('-v', '--verbose', action='store_true',
                         help='increase verbosity')
-    parser.add_argument('--init',
-                        action='store_true',
-                        default=False,
+    parser.add_argument('--init', action='store_true',
                         help='Initialize role and database')
-    parser.add_argument('--reset',
-                        action='store_true',
-                        default=False,
+    parser.add_argument('--reset', action='store_true',
                         help='reset database')
-    parser.add_argument('--drop',
-                        action='store_true',
-                        default=False,
+    parser.add_argument('--drop', action='store_true',
                         help='drop tables')
     return parser.parse_args()
 

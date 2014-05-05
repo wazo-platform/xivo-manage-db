@@ -15,12 +15,44 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
+import re
+import collections
 import subprocess
 from xivo_db.exception import DBError
 
 _ALEMBIC_CWD = '/usr/share/xivo-manage-db/'
 
+_AlembicCurrentStatus = collections.namedtuple('_AlembicCurrentStatus', ['revision', 'is_head'])
+
+
+def check_db():
+    print 'Checking database...'
+    p = _new_alembic_popen(['current', '--head-only'], stdout=subprocess.PIPE)
+    output = p.communicate()[0]
+    if p.returncode:
+        raise Exception('alembic command returned %s' % p.returncode)
+
+    status = _parse_alembic_current_output(output)
+    if status.is_head:
+        status_msg = 'OK'
+    else:
+        status_msg = 'NOK (current revision is %s)' % status.revision
+    print '\t%s' % status_msg
+
+
+def _parse_alembic_current_output(output):
+    mobj = re.match(r'^(\w+)( \(head\))?$', output)
+    if not mobj:
+        raise Exception('not a valid alembic current output: %r' % output)
+
+    return _AlembicCurrentStatus(mobj.group(1), True if mobj.group(2) else False)
+
 
 def update_db():
-    if subprocess.call(['alembic', 'upgrade', 'head'], cwd=_ALEMBIC_CWD):
+    if _new_alembic_popen(['upgrade', 'head']).wait():
         raise DBError()
+
+
+def _new_alembic_popen(args, **kwargs):
+    args = ['alembic'] + args
+    return subprocess.Popen(args, cwd=_ALEMBIC_CWD, **kwargs)

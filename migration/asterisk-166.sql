@@ -24,4 +24,16 @@ DROP TABLE IF EXISTS "outcalldundipeer" CASCADE;
 DROP TABLE IF EXISTS "parkinglot" CASCADE;
 DROP TABLE IF EXISTS "voicemenu" CASCADE;
 
+
+ALTER TABLE "accessfeatures" RENAME COLUMN "feature" to "feature_old";
+ALTER TABLE "accessfeatures" ADD COLUMN "feature" VARCHAR(64) DEFAULT 'phonebook' NOT NULL CHECK("feature"='phonebook');
+ALTER TABLE "accessfeatures" DROP COLUMN "feature_old";
+DROP TYPE IF EXISTS "accessfeatures_feature";
+
+
+ALTER TABLE "serverfeatures" RENAME COLUMN "feature" to "feature_old";
+ALTER TABLE "serverfeatures" ADD COLUMN "feature" VARCHAR(64) DEFAULT 'phonebook' NOT NULL CHECK("feature"='phonebook');
+ALTER TABLE "serverfeatures" DROP COLUMN "feature_old";
+DROP TYPE IF EXISTS "serverfeatures_feature";
+
 COMMIT;

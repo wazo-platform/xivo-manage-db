@@ -32,6 +32,7 @@ logger = logging.getLogger(__name__)
 
 INIT_DB_PATH = '/usr/lib/xivo-manage-db/pg-init-db'
 DROP_DB_PATH = '/usr/lib/xivo-manage-db/pg-drop-db'
+POPULATE_DB_PATH = '/usr/lib/xivo-manage-db/pg-populate-db'
 
 
 def expensive_setup():
@@ -57,6 +58,13 @@ def _create_tables(engine):
 def close():
     logger.info('Closing connection...')
     db_manager.close()
+
+
+def _populate_tables():
+    logger.info('Populating database...')
+    with open(os.devnull) as fobj:
+        if subprocess.call(['su', '-c', POPULATE_DB_PATH, 'postgres'], stdout=fobj, cwd='/tmp'):
+            raise DBError()
 
 
 def _drop_db():
@@ -91,7 +99,7 @@ def main():
     if parsed_args.init:
         _init_db()
         _create_tables(engine)
-        _populate_tables(engine)
+        _populate_tables()
 
     close()
 

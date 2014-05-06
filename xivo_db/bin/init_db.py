@@ -18,8 +18,6 @@
 import argparse
 import logging
 
-from sqlalchemy.schema import MetaData
-
 from xivo_dao import alchemy # imports all the sqlalchemy model
 from xivo_dao.helpers import db_manager
 from xivo_dao.helpers.db_manager import Base
@@ -35,13 +33,6 @@ def expensive_setup():
     engine = session.bind
     logger.info('Connected to database')
     return engine
-
-
-def _drop_tables(engine):
-    metadata = MetaData(bind=engine)
-    metadata.reflect()
-    logger.info('Dropping all tables...')
-    metadata.drop_all()
 
 
 def _create_tables(engine):

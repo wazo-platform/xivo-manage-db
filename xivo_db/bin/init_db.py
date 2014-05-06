@@ -68,11 +68,6 @@ def main():
 
     engine = expensive_setup()
 
-    if parsed_args.reset:
-        _drop_db()
-        _init_db()
-        _create_tables(engine)
-
     if parsed_args.drop:
         _drop_db()
 
@@ -88,12 +83,10 @@ def _parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('-v', '--verbose', action='store_true',
                         help='increase verbosity')
-    parser.add_argument('--init', action='store_true',
-                        help='Initialize role and database')
-    parser.add_argument('--reset', action='store_true',
-                        help='reset database')
     parser.add_argument('--drop', action='store_true',
-                        help='drop tables')
+                        help='drop database')
+    parser.add_argument('--init', action='store_true',
+                        help='initialize database')
     return parser.parse_args()
 
 

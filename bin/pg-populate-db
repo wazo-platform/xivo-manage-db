@@ -651,6 +651,7 @@ CREATE TYPE "queue_statistics" AS (
     max_hold_time integer,
     mean_hold_time integer
 );
+ALTER TYPE "queue_statistics" OWNER TO asterisk;
 
 
 DROP FUNCTION IF EXISTS "fill_answered_calls" (text, text);

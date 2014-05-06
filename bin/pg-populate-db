@@ -782,7 +782,7 @@ BEGIN
 END;
 $$
 LANGUAGE plpgsql;
-ALTER FUNCTION "set_agent_on_pauseall" () OWNER TO asterisk
+ALTER FUNCTION "set_agent_on_pauseall" () OWNER TO asterisk;
 
 
 CREATE TRIGGER "change_queue_log_agent"

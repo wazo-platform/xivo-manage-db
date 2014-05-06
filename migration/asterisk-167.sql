@@ -17,17 +17,19 @@
 
 BEGIN;
 
+ALTER TABLE "agentfeatures" ALTER "group" DROP DEFAULT;
 ALTER TABLE "agentgroup" ALTER "description" DROP NOT NULL;
-ALTER TABLE "callfiltermember" ALTER "bstype" SET NOT NULL;
+ALTER TABLE "callfiltermember"
+	ALTER "bstype" SET NOT NULL,
+	ALTER "typeval" SET DEFAULT '0';
 ALTER TABLE "cti_profile" ALTER "name" SET NOT NULL;
 ALTER TABLE "cticontexts" ALTER "description" DROP NOT NULL;
 ALTER TABLE "ctidisplays" ALTER "description" DROP NOT NULL;
 ALTER TABLE "ctiphonehintsgroup" ALTER "name" SET NOT NULL;
 ALTER TABLE "ctipresences" ALTER "name" SET NOT NULL;
 ALTER TABLE "ctistatus" ALTER "name" SET NOT NULL;
-ALTER TABLE "directories" ALTER "name" SET NOT NULL;
-ALTER TABLE "monitoring"
-	ALTER "alert_emails" DROP DEFAULT,
-	ALTER "dahdi_monitor_ports" DROP DEFAULT;
+ALTER TABLE "dialaction"
+	ALTER "actionarg1" DROP DEFAULT,
+	ALTER "actionarg2" DROP DEFAULT;
 
 COMMIT;

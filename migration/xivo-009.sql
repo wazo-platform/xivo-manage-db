@@ -20,4 +20,8 @@ BEGIN;
 DROP TABLE IF EXISTS "iproute" CASCADE;
 DROP TABLE IF EXISTS "server" CASCADE;
 
+ALTER TABLE "monitoring"
+	ALTER "alert_emails" DROP DEFAULT,
+	ALTER "dahdi_monitor_ports" DROP DEFAULT;
+
 COMMIT;

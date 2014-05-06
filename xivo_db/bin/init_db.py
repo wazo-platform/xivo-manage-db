@@ -17,8 +17,6 @@
 
 import argparse
 import logging
-import os
-import subprocess
 
 from sqlalchemy.schema import MetaData
 
@@ -26,14 +24,9 @@ from xivo_dao import alchemy
 from xivo_dao.helpers import db_manager
 from xivo_dao.helpers.db_manager import Base
 from xivo_db import alembic
-from xivo_db.exception import DBError
-
+from xivo_db import postgres
 
 logger = logging.getLogger(__name__)
-
-INIT_DB_PATH = '/usr/lib/xivo-manage-db/pg-init-db'
-DROP_DB_PATH = '/usr/lib/xivo-manage-db/pg-drop-db'
-POPULATE_DB_PATH = '/usr/lib/xivo-manage-db/pg-populate-db'
 
 
 def expensive_setup():
@@ -61,25 +54,19 @@ def close():
     db_manager.close()
 
 
-def _populate_tables():
+def _populate_db():
     logger.info('Populating database...')
-    with open(os.devnull) as fobj:
-        if subprocess.call(['su', '-c', POPULATE_DB_PATH, 'postgres'], stdout=fobj, cwd='/tmp'):
-            raise DBError()
+    postgres.populate_db()
 
 
 def _drop_db():
     logger.info('Dropping database...')
-    with open(os.devnull) as fobj:
-        if subprocess.call(['su', '-c', DROP_DB_PATH, 'postgres'], stdout=fobj, cwd='/tmp'):
-            raise DBError()
+    postgres.drop_db()
 
 
 def _init_db():
     logger.info('Initializing database...')
-    with open(os.devnull) as fobj:
-        if subprocess.call(['su', '-c', INIT_DB_PATH, 'postgres'], stdout=fobj, cwd='/tmp'):
-            raise DBError()
+    postgres.init_db()
     alembic.stamp_head()
 
 
@@ -101,7 +88,7 @@ def main():
     if parsed_args.init:
         _init_db()
         _create_tables(engine)
-        _populate_tables()
+        _populate_db()
 
     close()
 

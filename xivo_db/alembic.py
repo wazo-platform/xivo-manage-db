@@ -18,9 +18,8 @@
 import re
 import collections
 import subprocess
+from xivo_db import path
 from xivo_db.exception import DBError
-
-_ALEMBIC_CWD = '/usr/share/xivo-manage-db/'
 
 _AlembicCurrentStatus = collections.namedtuple('_AlembicCurrentStatus', ['revision', 'is_head'])
 
@@ -60,4 +59,4 @@ def stamp_head():
 
 def _new_alembic_popen(args, **kwargs):
     args = ['alembic'] + args
-    return subprocess.Popen(args, cwd=_ALEMBIC_CWD, **kwargs)
+    return subprocess.Popen(args, cwd=path.USR_SHARE, **kwargs)

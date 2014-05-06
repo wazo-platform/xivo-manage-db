@@ -18,45 +18,34 @@
 import errno
 import os
 import subprocess
+from xivo_db import path
 from xivo_db.exception import DBError
-
-_CHECK_DB_PATH = '/usr/lib/xivo-manage-db/xivo-check-db-old'
-_UPDATE_DB_PATH = '/usr/lib/xivo-manage-db/xivo-update-db-old'
-_MERGE_DB_PATH = '/usr/lib/xivo-manage-db/pg-merge-db'
-_AST_LAST_PATH = '/var/lib/xivo-manage-db/update-db/asterisk-last'
-_XIVO_LAST_PATH = '/var/lib/xivo-manage-db/update-db/xivo-last'
 
 
 def check_db():
-    subprocess.call([_CHECK_DB_PATH])
+    subprocess.call([path.XIVO_CHECK_DB_OLD])
 
 
 def update_db(verbose=False):
-    args = [_UPDATE_DB_PATH]
+    args = [path.XIVO_UPDATE_DB_OLD]
     if verbose:
         args.append('-v')
     if subprocess.call(args):
         raise DBError()
 
 
-def merge_db():
-    with open(os.devnull) as fobj:
-        if subprocess.call(['su', '-c', _MERGE_DB_PATH, 'postgres'], stdout=fobj, cwd='/tmp'):
-            raise DBError()
-
-
 def is_active():
-    return os.path.exists(_AST_LAST_PATH) or os.path.exists(_XIVO_LAST_PATH)
+    return os.path.exists(path.AST_LAST) or os.path.exists(path.XIVO_LAST)
 
 
 def deactivate():
-    _force_unlink(_AST_LAST_PATH)
-    _force_unlink(_XIVO_LAST_PATH)
+    _force_unlink(path.AST_LAST)
+    _force_unlink(path.XIVO_LAST)
 
 
-def _force_unlink(path):
+def _force_unlink(pathname):
     try:
-        os.unlink(path)
+        os.unlink(pathname)
     except OSError as e:
         if e.errno != errno.ENOENT:
             raise

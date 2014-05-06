@@ -16,7 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 import unittest
-from hamcrest import assert_that, equal_to, is_not
+from hamcrest import assert_that, equal_to
 from xivo_db import alembic
 
 
@@ -28,7 +28,7 @@ class TestAlembic(unittest.TestCase):
         status = alembic._parse_alembic_current_output(output)
 
         assert_that(status.revision, equal_to('57cca045b7d4'))
-        assert_that(is_not(status.is_head))
+        assert_that(status.is_head, equal_to(False))
 
     def test_parse_alembic_current_output_head(self):
         output = '57cca045b7d4 (head)\n'
@@ -36,7 +36,7 @@ class TestAlembic(unittest.TestCase):
         status = alembic._parse_alembic_current_output(output)
 
         assert_that(status.revision, equal_to('57cca045b7d4'))
-        assert_that(is_not(status.is_head))
+        assert_that(status.is_head, equal_to(True))
 
     def test_parse_alembic_bad_output(self):
         output = ''

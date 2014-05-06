@@ -25,6 +25,7 @@ from sqlalchemy.schema import MetaData
 from xivo_dao import alchemy
 from xivo_dao.helpers import db_manager
 from xivo_dao.helpers.db_manager import Base
+from xivo_db import alembic
 from xivo_db.exception import DBError
 
 
@@ -79,6 +80,7 @@ def _init_db():
     with open(os.devnull) as fobj:
         if subprocess.call(['su', '-c', INIT_DB_PATH, 'postgres'], stdout=fobj, cwd='/tmp'):
             raise DBError()
+    alembic.stamp_head()
 
 
 def main():

@@ -53,6 +53,11 @@ def update_db():
         raise DBError()
 
 
+def stamp_head():
+    if _new_alembic_popen(['stamp', 'head']).wait():
+        raise DBError()
+
+
 def _new_alembic_popen(args, **kwargs):
     args = ['alembic'] + args
     return subprocess.Popen(args, cwd=_ALEMBIC_CWD, **kwargs)

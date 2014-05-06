@@ -26,7 +26,7 @@ XIVO_LAST = os.path.join(VAR_LIB, 'update-db', 'xivo-last')
 
 PG_DROP_DB = os.path.join(USR_LIB, 'pg-drop-db')
 PG_INIT_DB = os.path.join(USR_LIB, 'pg-init-db')
-PG_MERGE_DB = os.path.join(USR_LIB, 'pg-drop-db')
+PG_MERGE_DB = os.path.join(USR_LIB, 'pg-merge-db')
 PG_POPULATE_DB = os.path.join(USR_LIB, 'pg-populate-db')
 
 XIVO_CHECK_DB_OLD = os.path.join(USR_LIB, 'xivo-check-db-old')

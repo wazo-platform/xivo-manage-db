@@ -9,35 +9,17 @@ export PGOPTIONS='--client-min-messages=warning'
 
 psql="psql -v ON_ERROR_STOP="
 
-
 # merge xivo database into asterisk database
 pg_dump xivo | $psql asterisk
 
-
-# set the owner of all tables and sequences to asterisk
-$psql asterisk <<'EOF'
-BEGIN;
-
-DO $$
-DECLARE
-	table_name pg_catalog.name;
-BEGIN
-	FOR table_name IN SELECT tablename FROM pg_tables
-	WHERE schemaname = 'public'
-	LOOP
-		EXECUTE 'ALTER TABLE "' || table_name || '" OWNER TO asterisk';
-	END LOOP;
-END $$;
-
-DROP OWNED BY xivo;
-
-COMMIT;
-
-EOF
-
+# set the owner of all objects to asterisk
+pg_dump -s asterisk | grep -E 'public\..*OWNER TO' | sed -e 's/OWNER TO.*;$/OWNER TO asterisk;/' | $psql asterisk
 
 # drop database xivo and role xivo
-$psql <<'EOF'
+$psql asterisk <<'EOF'
+DROP OWNED BY xivo;
+
+\connect postgres
 DROP DATABASE xivo;
 DROP ROLE xivo;
 

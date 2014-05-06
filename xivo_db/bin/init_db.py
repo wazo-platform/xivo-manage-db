@@ -40,7 +40,7 @@ def _create_tables(engine):
     Base.metadata.create_all(bind=engine)
 
 
-def close():
+def _close():
     logger.info('Closing connection...')
     db_manager.close()
 
@@ -67,16 +67,16 @@ def main():
     _init_logging(parsed_args.verbose)
 
     engine = expensive_setup()
+    try:
+        if parsed_args.drop:
+            _drop_db()
 
-    if parsed_args.drop:
-        _drop_db()
-
-    if parsed_args.init:
-        _init_db()
-        _create_tables(engine)
-        _populate_db()
-
-    close()
+        if parsed_args.init:
+            _init_db()
+            _create_tables(engine)
+            _populate_db()
+    finally:
+        _close()
 
 
 def _parse_args():

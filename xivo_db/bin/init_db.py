@@ -20,7 +20,7 @@ import logging
 
 from sqlalchemy.schema import MetaData
 
-from xivo_dao import alchemy
+from xivo_dao import alchemy # imports all the sqlalchemy model
 from xivo_dao.helpers import db_manager
 from xivo_dao.helpers.db_manager import Base
 from xivo_db import alembic

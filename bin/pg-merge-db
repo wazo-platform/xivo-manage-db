@@ -18,6 +18,9 @@ pg_dump -s asterisk | grep -E 'public\..*OWNER TO' | sed -e 's/OWNER TO.*;$/OWNE
 # drop database xivo and role xivo
 $psql asterisk <<'EOF'
 DROP OWNED BY xivo;
+REVOKE ALL ON ALL TABLES IN SCHEMA "public" FROM "asterisk";
+REVOKE ALL ON ALL SEQUENCES IN SCHEMA "public" FROM "asterisk";
+REVOKE ALL ON ALL FUNCTIONS IN SCHEMA "public" FROM "asterisk";
 
 \connect postgres
 DROP DATABASE xivo;

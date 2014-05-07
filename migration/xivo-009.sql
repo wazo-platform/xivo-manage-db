@@ -24,4 +24,6 @@ ALTER TABLE "monitoring"
 	ALTER "alert_emails" DROP DEFAULT,
 	ALTER "dahdi_monitor_ports" DROP DEFAULT;
 
+ALTER TABLE "stats_conf" ALTER "description" DROP NOT NULL,
+
 COMMIT;

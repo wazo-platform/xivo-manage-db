@@ -36,4 +36,7 @@ ALTER TABLE "serverfeatures" ADD COLUMN "feature" VARCHAR(64) DEFAULT 'phonebook
 ALTER TABLE "serverfeatures" DROP COLUMN "feature_old";
 DROP TYPE IF EXISTS "serverfeatures_feature";
 
+
+ALTER TABLE "trunkfeatures" ALTER "description" DROP NOT NULL;
+
 COMMIT;

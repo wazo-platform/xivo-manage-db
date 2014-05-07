@@ -145,4 +145,14 @@ DROP INDEX IF EXISTS "ctistatus_presence_name";
 ALTER TABLE "ctistatus"
     ADD CONSTRAINT "ctistatus_presence_id_name_key" UNIQUE (presence_id, name);
 
+
+DROP INDEX IF EXISTS "incall__uidx__exten_context";
+ALTER TABLE "incall"
+    ADD CONSTRAINT "incall_exten_context_key" UNIQUE (exten, context);
+
+
+DROP INDEX IF EXISTS "ldapfilter__uidx__name";
+ALTER TABLE "ldapfilter"
+    ADD CONSTRAINT "ldapfilter_name_key" UNIQUE (name);
+
 COMMIT;

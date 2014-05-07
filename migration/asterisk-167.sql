@@ -90,7 +90,10 @@ ALTER TABLE "user_line"
 	DROP CONSTRAINT "user_line__userfeatures_id_fkey",
 	ADD FOREIGN KEY ("user_id") REFERENCES "userfeatures"("id");
 
+
+DROP INDEX IF EXISTS "usersip__uidx__name";
 ALTER TABLE "usersip"
+	ADD CONSTRAINT "usersip_name_key" UNIQUE (name),
 	ALTER "transport" DROP DEFAULT,
 	ALTER "remotesecret" DROP DEFAULT,
 	ALTER "callbackextension" DROP DEFAULT,

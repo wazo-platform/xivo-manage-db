@@ -101,10 +101,18 @@ ALTER TABLE "resolvconf"
 
 DROP INDEX IF EXISTS "entity__idx__disable";
 DROP INDEX IF EXISTS "entity__idx__displayname";
+DROP INDEX IF EXISTS "entity__uidx__name";
+ALTER TABLE "entity"
+    ADD CONSTRAINT "entity_name_key" UNIQUE (name);
 
 DROP INDEX IF EXISTS "ldapserver__idx__disable";
 DROP INDEX IF EXISTS "ldapserver__idx__host";
 DROP INDEX IF EXISTS "ldapserver__idx__port";
+DROP INDEX IF EXISTS "ldapserver__uidx__host_port";
+DROP INDEX IF EXISTS "ldapserver__uidx__name";
+ALTER TABLE "ldapserver"
+    ADD CONSTRAINT "ldapserver_name_key" UNIQUE (name),
+    ADD CONSTRAINT "ldapserver_host_port_key" UNIQUE (host, port);
 
 DROP INDEX IF EXISTS "user__idx__login";
 DROP INDEX IF EXISTS "user__idx__meta";

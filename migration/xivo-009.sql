@@ -38,6 +38,31 @@ ALTER TABLE "session" ALTER "sessid" TYPE VARCHAR(32);
 
 ALTER TABLE "stats_conf" ALTER "description" DROP NOT NULL;
 
+DROP INDEX IF EXISTS "stats_conf_agent_index";
+ALTER TABLE "stats_conf_agent"
+    ADD CONSTRAINT "stats_conf_agent_pkey" PRIMARY KEY (stats_conf_id, agentfeatures_id);
+
+DROP INDEX IF EXISTS "stats_conf_group_index";
+ALTER TABLE "stats_conf_group"
+    ADD CONSTRAINT "stats_conf_group_pkey" PRIMARY KEY (stats_conf_id, groupfeatures_id);
+
+DROP INDEX IF EXISTS "stats_conf_incall_index";
+ALTER TABLE "stats_conf_incall"
+    ADD CONSTRAINT "stats_conf_incall_pkey" PRIMARY KEY (stats_conf_id, incall_id);
+
+DROP INDEX IF EXISTS "stats_conf_queue_index";
+ALTER TABLE "stats_conf_queue"
+    ADD CONSTRAINT "stats_conf_queue_pkey" PRIMARY KEY (stats_conf_id, queuefeatures_id);
+
+DROP INDEX IF EXISTS "stats_conf_user_index";
+ALTER TABLE "stats_conf_user"
+    ADD CONSTRAINT "stats_conf_user_pkey" PRIMARY KEY (stats_conf_id, userfeatures_id);
+
+DROP INDEX IF EXISTS "stats_conf_xivouser_index";
+ALTER TABLE "stats_conf_xivouser"
+    ADD CONSTRAINT "stats_conf_xivouser_pkey" PRIMARY KEY (stats_conf_id, user_id);
+
+
 DROP INDEX IF EXISTS "accesswebservice__uidx__name";
 ALTER TABLE ONLY "accesswebservice"
     ADD CONSTRAINT "accesswebservice_name_key" UNIQUE (name);

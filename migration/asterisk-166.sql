@@ -135,4 +135,14 @@ DROP INDEX IF EXISTS "voicemail__uidx__mailbox_context";
 ALTER TABLE "voicemail"
     ADD CONSTRAINT "voicemail_mailbox_context_key" UNIQUE (mailbox, context);
 
+
+DROP INDEX IF EXISTS "contexttype__uidx__name";
+ALTER TABLE "contexttype"
+    ADD CONSTRAINT "contexttype_name_key" UNIQUE (name);
+
+
+DROP INDEX IF EXISTS "ctistatus_presence_name";
+ALTER TABLE "ctistatus"
+    ADD CONSTRAINT "ctistatus_presence_id_name_key" UNIQUE (presence_id, name);
+
 COMMIT;

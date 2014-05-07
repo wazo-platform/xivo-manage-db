@@ -36,7 +36,9 @@ ALTER TABLE "resolvconf" ALTER "description" DROP NOT NULL;
 
 ALTER TABLE "session" ALTER "sessid" TYPE VARCHAR(32);
 
+DROP INDEX IF EXISTS "stats_conf__uidx__name";
 ALTER TABLE "stats_conf"
+    ADD CONSTRAINT "stats_conf_name_key" UNIQUE (name),
 	ALTER "default_delta" SET DEFAULT '0',
 	ALTER "period1" SET DEFAULT '0',
 	ALTER "period2" SET DEFAULT '0',

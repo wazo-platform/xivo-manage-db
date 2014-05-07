@@ -38,7 +38,11 @@ ALTER TABLE "serverfeatures" DROP COLUMN "feature_old";
 ALTER TABLE "serverfeatures" ADD CONSTRAINT "serverfeatures_serverid_feature_type_key" UNIQUE (serverid, feature, type);
 DROP TYPE IF EXISTS "serverfeatures_feature";
 
-ALTER TABLE "trunkfeatures" ALTER "description" DROP NOT NULL;
+
+DROP INDEX IF EXISTS "trunkfeatures__uidx__protocol_protocolid";
+ALTER TABLE "trunkfeatures" 
+    ADD CONSTRAINT "trunkfeatures_protocol_protocolid_key" UNIQUE (protocol, protocolid),
+    ALTER "description" DROP NOT NULL;
 
 
 DROP INDEX IF EXISTS "attachment__uidx__object_type__object_id";
@@ -111,5 +115,24 @@ DROP INDEX IF EXISTS "rightcallmember__uidx__rightcallid_type_typeval";
 ALTER TABLE "rightcallmember"
     ADD CONSTRAINT "rightcallmember_rightcallid_type_typeval_key" UNIQUE (rightcallid, type, typeval);
 
+
+DROP INDEX IF EXISTS "user_line_extension__uidx__user_id_line_id";
+ALTER TABLE "user_line"
+    ADD CONSTRAINT "user_line_user_id_line_id_key" UNIQUE (user_id, line_id);
+
+
+DROP INDEX IF EXISTS "usercustom__uidx__interface_intfsuffix_category";
+ALTER TABLE "usercustom"
+    ADD CONSTRAINT "usercustom_interface_intfsuffix_category_key" UNIQUE (interface, intfsuffix, category);
+
+
+DROP INDEX IF EXISTS "useriax__uidx__name";
+ALTER TABLE "useriax"
+    ADD CONSTRAINT "useriax_name_key" UNIQUE (name);
+
+
+DROP INDEX IF EXISTS "voicemail__uidx__mailbox_context";
+ALTER TABLE "voicemail"
+    ADD CONSTRAINT "voicemail_mailbox_context_key" UNIQUE (mailbox, context);
 
 COMMIT;

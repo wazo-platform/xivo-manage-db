@@ -119,23 +119,6 @@ DROP INDEX IF EXISTS "user__idx__meta";
 DROP INDEX IF EXISTS "user__idx__passwd";
 DROP INDEX IF EXISTS "user__idx__time";
 DROP INDEX IF EXISTS "user__idx__valid";
-
-DROP INDEX IF EXISTS "musiconhold__uidx__filename_category_var_name";
-ALTER TABLE "musiconhold"
-    ADD UNIQUE ("filename", "category", "var_name");
-
-DROP INDEX IF EXISTS "queuefeatures__uidx__name";
-ALTER TABLE "queuefeatures"
-    ADD UNIQUE ("name");
-
-DROP INDEX IF EXISTS "queuemember__uidx__queue_name_channel_usertype_userid_category";
-ALTER TABLE "queuemember"
-    ADD UNIQUE ("queue_name", "channel", "usertype", "userid", "category");
-
-DROP INDEX IF EXISTS "queueskill__uidx__name";
-ALTER TABLE "queueskill"
-    ADD UNIQUE ("name");
-
 DROP INDEX IF EXISTS "user__uidx__login_meta";
 ALTER TABLE "user"
     ADD UNIQUE ("login", "meta");

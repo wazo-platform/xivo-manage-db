@@ -90,7 +90,6 @@ ALTER TABLE "user_line"
 	DROP CONSTRAINT "user_line__userfeatures_id_fkey",
 	ADD FOREIGN KEY ("user_id") REFERENCES "userfeatures"("id");
 
-
 DROP INDEX IF EXISTS "usersip__uidx__name";
 ALTER TABLE "usersip"
 	ADD CONSTRAINT "usersip_name_key" UNIQUE (name),
@@ -103,5 +102,21 @@ ALTER TABLE "usersip"
 	ALTER "disallowed_methods" DROP DEFAULT;
 
 DROP INDEX IF EXISTS "queueskill__idx__catid";
+
+DROP INDEX IF EXISTS "musiconhold__uidx__filename_category_var_name";
+ALTER TABLE "musiconhold"
+    ADD UNIQUE ("filename", "category", "var_name");
+
+DROP INDEX IF EXISTS "queuefeatures__uidx__name";
+ALTER TABLE "queuefeatures"
+    ADD UNIQUE ("name");
+
+DROP INDEX IF EXISTS "queuemember__uidx__queue_name_channel_usertype_userid_category";
+ALTER TABLE "queuemember"
+    ADD UNIQUE ("queue_name", "channel", "usertype", "userid", "category");
+
+DROP INDEX IF EXISTS "queueskill__uidx__name";
+ALTER TABLE "queueskill"
+    ADD UNIQUE ("name");
 
 COMMIT;

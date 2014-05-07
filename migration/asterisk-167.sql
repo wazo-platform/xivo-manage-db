@@ -17,9 +17,16 @@
 
 BEGIN;
 
-ALTER TABLE "agentfeatures" ALTER "group" DROP DEFAULT;
+DROP INDEX IF EXISTS "agentfeatures__uidx__number";
+ALTER TABLE "agentfeatures"
+    ADD CONSTRAINT "agentfeatures_number_key" UNIQUE (number),
+    ALTER "group" DROP DEFAULT;
 
 ALTER TABLE "agentgroup" ALTER "description" DROP NOT NULL;
+
+DROP INDEX IF EXISTS "callfilter__uidx__name";
+ALTER TABLE "callfilter"
+    ADD CONSTRAINT "callfilter_name_key" UNIQUE (name);
 
 ALTER TABLE "callfiltermember"
 	ALTER "bstype" SET NOT NULL,

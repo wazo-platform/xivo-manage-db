@@ -36,7 +36,14 @@ ALTER TABLE "resolvconf" ALTER "description" DROP NOT NULL;
 
 ALTER TABLE "session" ALTER "sessid" TYPE VARCHAR(32);
 
-ALTER TABLE "stats_conf" ALTER "description" DROP NOT NULL;
+ALTER TABLE "stats_conf"
+	ALTER "default_delta" SET DEFAULT '0',
+	ALTER "period1" SET DEFAULT '0',
+	ALTER "period2" SET DEFAULT '0',
+	ALTER "period3" SET DEFAULT '0',
+	ALTER "period4" SET DEFAULT '0',
+	ALTER "period5" SET DEFAULT '0',
+	ALTER "description" DROP NOT NULL;
 
 DROP INDEX IF EXISTS "stats_conf_agent_index";
 ALTER TABLE "stats_conf_agent"

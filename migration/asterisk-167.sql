@@ -41,6 +41,10 @@ ALTER TABLE "dialaction"
 	ALTER "actionarg1" DROP DEFAULT,
 	ALTER "actionarg2" DROP DEFAULT;
 
+ALTER TABLE "func_key_mapping"
+	DROP CONSTRAINT "func_key_mapping_pkey",
+	ADD PRIMARY KEY ("template_id", "func_key_id", "destination_type_id");
+
 ALTER TABLE "general" ALTER "exchange_exten" DROP DEFAULT;
 
 DROP INDEX IF EXISTS "outcall__uidx__name";
@@ -70,17 +74,6 @@ ALTER TABLE "schedule_time"
 	ALTER "months" DROP DEFAULT,
 	ALTER "actionid" DROP DEFAULT,
 	ALTER "actionargs" DROP DEFAULT;
-
-ALTER TABLE "stats_conf"
-	ALTER "default_delta" SET DEFAULT '0',
-	ALTER "period1" SET DEFAULT '0',
-	ALTER "period2" SET DEFAULT '0',
-	ALTER "period3" SET DEFAULT '0',
-	ALTER "period4" SET DEFAULT '0',
-	ALTER "period5" SET DEFAULT '0';
-
-ALTER TABLE "stats_conf_queue"
-	ALTER "smallint" SET DEFAULT '0';
 
 ALTER TABLE "usersip"
 	ALTER "transport" DROP DEFAULT,

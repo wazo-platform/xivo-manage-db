@@ -60,4 +60,10 @@ DROP INDEX IF EXISTS "netiface__idx__vlanrawdevice";
 ALTER TABLE "netiface"
     ADD CONSTRAINT "netiface_ifname_key" UNIQUE (ifname);
 
+
+DROP INDEX IF EXISTS "resolvconf__uidx__hostname";
+ALTER TABLE "resolvconf"
+    ADD CONSTRAINT "resolvconf_domain_key" UNIQUE (domain);
+
+
 COMMIT;

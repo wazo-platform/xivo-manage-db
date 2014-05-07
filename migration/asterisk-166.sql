@@ -35,8 +35,8 @@ ALTER TABLE "accessfeatures" ADD CONSTRAINT "accessfeatures_host_feature_key" UN
 ALTER TABLE "serverfeatures" RENAME COLUMN "feature" to "feature_old";
 ALTER TABLE "serverfeatures" ADD COLUMN "feature" VARCHAR(64) DEFAULT 'phonebook' NOT NULL CHECK("feature"='phonebook');
 ALTER TABLE "serverfeatures" DROP COLUMN "feature_old";
+ALTER TABLE "serverfeatures" ADD CONSTRAINT "serverfeatures_serverid_feature_type_key" UNIQUE (serverid, feature, type);
 DROP TYPE IF EXISTS "serverfeatures_feature";
-
 
 ALTER TABLE "trunkfeatures" ALTER "description" DROP NOT NULL;
 
@@ -86,5 +86,30 @@ ALTER TABLE "meetmefeatures"
 DROP INDEX IF EXISTS "paging__uidx__number";
 ALTER TABLE "paging"
     ADD CONSTRAINT "paging_number_key" UNIQUE (number);
+
+
+ALTER TABLE "queue_log"
+    ADD CONSTRAINT "queue_log_pkey" PRIMARY KEY ("time", callid);
+
+
+DROP INDEX IF EXISTS "queueskillcat__uidx__name";
+ALTER TABLE "queueskillcat"
+    ADD CONSTRAINT "queueskillcat_name_key" UNIQUE (name);
+
+
+DROP INDEX IF EXISTS "rightcall__uidx__name";
+ALTER TABLE "rightcall"
+    ADD CONSTRAINT "rightcall_name_key" UNIQUE (name);
+
+
+DROP INDEX IF EXISTS "rightcallexten__uidx__rightcallid_exten";
+ALTER TABLE "rightcallexten"
+    ADD CONSTRAINT "rightcallexten_rightcallid_exten_key" UNIQUE (rightcallid, exten);
+
+
+DROP INDEX IF EXISTS "rightcallmember__uidx__rightcallid_type_typeval";
+ALTER TABLE "rightcallmember"
+    ADD CONSTRAINT "rightcallmember_rightcallid_type_typeval_key" UNIQUE (rightcallid, type, typeval);
+
 
 COMMIT;

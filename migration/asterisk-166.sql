@@ -29,6 +29,7 @@ ALTER TABLE "accessfeatures" RENAME COLUMN "feature" to "feature_old";
 ALTER TABLE "accessfeatures" ADD COLUMN "feature" VARCHAR(64) DEFAULT 'phonebook' NOT NULL CHECK("feature"='phonebook');
 ALTER TABLE "accessfeatures" DROP COLUMN "feature_old";
 DROP TYPE IF EXISTS "accessfeatures_feature";
+ALTER TABLE "accessfeatures" ADD CONSTRAINT "accessfeatures_host_feature_key" UNIQUE ("host", "feature");
 
 
 ALTER TABLE "serverfeatures" RENAME COLUMN "feature" to "feature_old";

@@ -39,5 +39,9 @@ ALTER TABLE "pickup"
 ALTER TABLE "queue" ALTER "defaultrule" DROP DEFAULT;
 ALTER TABLE "rightcall" ALTER "description" DROP NOT NULL;
 ALTER TABLE "rightcallmember" ALTER "typeval" SET DEFAULT '0';
+ALTER TABLE "schedule"
+	ALTER "timezone" DROP DEFAULT,
+	ALTER "fallback_actionid" DROP DEFAULT,
+	ALTER "fallback_actionargs" DROP DEFAULT;
 
 COMMIT;

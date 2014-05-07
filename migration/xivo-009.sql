@@ -99,5 +99,17 @@ DROP INDEX IF EXISTS "resolvconf__uidx__hostname";
 ALTER TABLE "resolvconf"
     ADD CONSTRAINT "resolvconf_domain_key" UNIQUE (domain);
 
+DROP INDEX IF EXISTS "entity__idx__disable";
+DROP INDEX IF EXISTS "entity__idx__displayname";
+
+DROP INDEX IF EXISTS "ldapserver__idx__disable";
+DROP INDEX IF EXISTS "ldapserver__idx__host";
+DROP INDEX IF EXISTS "ldapserver__idx__port";
+
+DROP INDEX IF EXISTS "user__idx__login";
+DROP INDEX IF EXISTS "user__idx__meta";
+DROP INDEX IF EXISTS "user__idx__passwd";
+DROP INDEX IF EXISTS "user__idx__time";
+DROP INDEX IF EXISTS "user__idx__valid";
 
 COMMIT;

@@ -82,6 +82,14 @@ ALTER TABLE "schedule_time"
 	ALTER "actionid" DROP DEFAULT,
 	ALTER "actionargs" DROP DEFAULT;
 
+ALTER TABLE "user_line"
+	DROP CONSTRAINT "user_line__extensions_id_fkey",
+	ADD FOREIGN KEY ("extension_id") REFERENCES "extensions"("id"),
+	DROP CONSTRAINT "user_line__linefeatures_id_fkey",
+	ADD FOREIGN KEY ("line_id") REFERENCES "linefeatures"("id"),
+	DROP CONSTRAINT "user_line__userfeatures_id_fkey",
+	ADD FOREIGN KEY ("user_id") REFERENCES "userfeatures"("id");
+
 ALTER TABLE "usersip"
 	ALTER "transport" DROP DEFAULT,
 	ALTER "remotesecret" DROP DEFAULT,
@@ -90,5 +98,7 @@ ALTER TABLE "usersip"
 	ALTER "contactdeny" DROP DEFAULT,
 	ALTER "unsolicited_mailbox" DROP DEFAULT,
 	ALTER "disallowed_methods" DROP DEFAULT;
+
+DROP INDEX IF EXISTS "queueskill__idx__catid";
 
 COMMIT;

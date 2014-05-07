@@ -23,6 +23,9 @@ DROP TABLE IF EXISTS "server" CASCADE;
 ALTER TABLE "monitoring"
 	ALTER "alert_emails" DROP DEFAULT,
 	ALTER "dahdi_monitor_ports" DROP DEFAULT;
+ALTER TABLE "mail" ALTER "mydomain" SET DEFAULT '0';
+ALTER TABLE "netiface" ALTER "description" DROP NOT NULL;
+ALTER TABLE "resolvconf" ALTER "description" DROP NOT NULL;
 
 ALTER TABLE "stats_conf" ALTER "description" DROP NOT NULL,
 

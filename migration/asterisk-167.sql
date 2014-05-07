@@ -31,5 +31,13 @@ ALTER TABLE "ctistatus" ALTER "name" SET NOT NULL;
 ALTER TABLE "dialaction"
 	ALTER "actionarg1" DROP DEFAULT,
 	ALTER "actionarg2" DROP DEFAULT;
+ALTER TABLE "general" ALTER "exchange_exten" DROP DEFAULT;
+ALTER TABLE "outcall" ALTER "description" DROP NOT NULL;
+ALTER TABLE "pickup"
+	ALTER "description" DROP DEFAULT,
+	ALTER "description" DROP NOT NULL;
+ALTER TABLE "queue" ALTER "defaultrule" DROP DEFAULT;
+ALTER TABLE "rightcall" ALTER "description" DROP NOT NULL;
+ALTER TABLE "rightcallmember" ALTER "typeval" SET DEFAULT '0';
 
 COMMIT;

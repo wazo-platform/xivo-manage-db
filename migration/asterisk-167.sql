@@ -18,27 +18,43 @@
 BEGIN;
 
 ALTER TABLE "agentfeatures" ALTER "group" DROP DEFAULT;
+
 ALTER TABLE "agentgroup" ALTER "description" DROP NOT NULL;
+
 ALTER TABLE "callfiltermember"
 	ALTER "bstype" SET NOT NULL,
 	ALTER "typeval" SET DEFAULT '0';
+
 ALTER TABLE "cti_profile" ALTER "name" SET NOT NULL;
+
 ALTER TABLE "cticontexts" ALTER "description" DROP NOT NULL;
+
 ALTER TABLE "ctidisplays" ALTER "description" DROP NOT NULL;
+
 ALTER TABLE "ctiphonehintsgroup" ALTER "name" SET NOT NULL;
+
 ALTER TABLE "ctipresences" ALTER "name" SET NOT NULL;
+
 ALTER TABLE "ctistatus" ALTER "name" SET NOT NULL;
+
 ALTER TABLE "dialaction"
 	ALTER "actionarg1" DROP DEFAULT,
 	ALTER "actionarg2" DROP DEFAULT;
+
 ALTER TABLE "general" ALTER "exchange_exten" DROP DEFAULT;
+
 ALTER TABLE "outcall" ALTER "description" DROP NOT NULL;
+
 ALTER TABLE "pickup"
 	ALTER "description" DROP DEFAULT,
 	ALTER "description" DROP NOT NULL;
+
 ALTER TABLE "queue" ALTER "defaultrule" DROP DEFAULT;
+
 ALTER TABLE "rightcall" ALTER "description" DROP NOT NULL;
+
 ALTER TABLE "rightcallmember" ALTER "typeval" SET DEFAULT '0';
+
 ALTER TABLE "schedule"
 	ALTER "timezone" DROP DEFAULT,
 	ALTER "fallback_actionid" DROP DEFAULT,

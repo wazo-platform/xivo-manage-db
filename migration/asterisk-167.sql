@@ -60,4 +60,32 @@ ALTER TABLE "schedule"
 	ALTER "fallback_actionid" DROP DEFAULT,
 	ALTER "fallback_actionargs" DROP DEFAULT;
 
+ALTER TABLE "schedule_time"
+	ALTER "hours" DROP DEFAULT,
+	ALTER "weekdays" DROP DEFAULT,
+	ALTER "monthdays" DROP DEFAULT,
+	ALTER "months" DROP DEFAULT,
+	ALTER "actionid" DROP DEFAULT,
+	ALTER "actionargs" DROP DEFAULT;
+
+ALTER TABLE "stats_conf"
+	ALTER "default_delta" SET DEFAULT '0',
+	ALTER "period1" SET DEFAULT '0',
+	ALTER "period2" SET DEFAULT '0',
+	ALTER "period3" SET DEFAULT '0',
+	ALTER "period4" SET DEFAULT '0',
+	ALTER "period5" SET DEFAULT '0';
+
+ALTER TABLE "stats_conf_queue"
+	ALTER "smallint" SET DEFAULT '0';
+
+ALTER TABLE "usersip"
+	ALTER "transport" DROP DEFAULT,
+	ALTER "remotesecret" DROP DEFAULT,
+	ALTER "callbackextension" DROP DEFAULT,
+	ALTER "contactpermit" DROP DEFAULT,
+	ALTER "contactdeny" DROP DEFAULT,
+	ALTER "unsolicited_mailbox" DROP DEFAULT,
+	ALTER "disallowed_methods" DROP DEFAULT;
+
 COMMIT;

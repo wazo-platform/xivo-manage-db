@@ -25,7 +25,10 @@ ALTER TABLE "monitoring"
 	ALTER "alert_emails" DROP DEFAULT,
 	ALTER "dahdi_monitor_ports" DROP DEFAULT;
 
-ALTER TABLE "mail" ALTER "mydomain" SET DEFAULT '0';
+DROP INDEX IF EXISTS "mail__uidx__origin";
+ALTER TABLE "mail"
+    ADD CONSTRAINT "mail_origin_key" UNIQUE (origin),
+    ALTER "mydomain" SET DEFAULT '0';
 
 ALTER TABLE "netiface" ALTER "description" DROP NOT NULL;
 
@@ -38,5 +41,23 @@ ALTER TABLE "stats_conf" ALTER "description" DROP NOT NULL;
 DROP INDEX IF EXISTS "accesswebservice__uidx__name";
 ALTER TABLE ONLY "accesswebservice"
     ADD CONSTRAINT "accesswebservice_name_key" UNIQUE (name);
+
+
+DROP INDEX IF EXISTS "netiface__uidx__ifname";
+DROP INDEX IF EXISTS "netiface__idx__address";
+DROP INDEX IF EXISTS "netiface__idx__broadcast";
+DROP INDEX IF EXISTS "netiface__idx__disable";
+DROP INDEX IF EXISTS "netiface__idx__family";
+DROP INDEX IF EXISTS "netiface__idx__gateway";
+DROP INDEX IF EXISTS "netiface__idx__hwtypeid";
+DROP INDEX IF EXISTS "netiface__idx__mtu";
+DROP INDEX IF EXISTS "netiface__idx__netmask";
+DROP INDEX IF EXISTS "netiface__idx__netmask";
+DROP INDEX IF EXISTS "netiface__idx__networktype";
+DROP INDEX IF EXISTS "netiface__idx__type";
+DROP INDEX IF EXISTS "netiface__idx__vlanid";
+DROP INDEX IF EXISTS "netiface__idx__vlanrawdevice";
+ALTER TABLE "netiface"
+    ADD CONSTRAINT "netiface_ifname_key" UNIQUE (ifname);
 
 COMMIT;

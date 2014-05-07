@@ -68,4 +68,23 @@ DROP INDEX IF EXISTS "extensions__uidx__exten_context";
 ALTER TABLE "extensions"
     ADD CONSTRAINT "extensions_exten_context_key" UNIQUE (exten, context);
 
+
+DROP INDEX IF EXISTS "linefeatures__uidx__name";
+DROP INDEX IF EXISTS "linefeatures__uidx__protocol_protocolid";
+ALTER TABLE "linefeatures"
+    ADD CONSTRAINT "linefeatures_protocol_protocolid_key" UNIQUE (protocol, protocolid),
+    ADD CONSTRAINT "linefeatures_name_key" UNIQUE (name);
+
+
+DROP INDEX IF EXISTS "meetmefeatures__uidx__meetmeid";
+DROP INDEX IF EXISTS "meetmefeatures__uidx__name";
+ALTER TABLE "meetmefeatures"
+    ADD CONSTRAINT "meetmefeatures_meetmeid_key" UNIQUE (meetmeid),
+    ADD CONSTRAINT "meetmefeatures_name_key" UNIQUE (name);
+
+
+DROP INDEX IF EXISTS "paging__uidx__number";
+ALTER TABLE "paging"
+    ADD CONSTRAINT "paging_number_key" UNIQUE (number);
+
 COMMIT;

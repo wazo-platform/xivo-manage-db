@@ -43,7 +43,10 @@ ALTER TABLE "dialaction"
 
 ALTER TABLE "general" ALTER "exchange_exten" DROP DEFAULT;
 
-ALTER TABLE "outcall" ALTER "description" DROP NOT NULL;
+DROP INDEX IF EXISTS "outcall__uidx__name";
+ALTER TABLE "outcall"
+    ADD CONSTRAINT "outcall_name_key" UNIQUE (name),
+    ALTER "description" DROP NOT NULL;
 
 ALTER TABLE "pickup"
 	ALTER "description" DROP DEFAULT,

@@ -35,4 +35,8 @@ ALTER TABLE "session" ALTER "sessid" TYPE VARCHAR(32);
 
 ALTER TABLE "stats_conf" ALTER "description" DROP NOT NULL;
 
+DROP INDEX IF EXISTS "accesswebservice__uidx__name";
+ALTER TABLE ONLY "accesswebservice"
+    ADD CONSTRAINT "accesswebservice_name_key" UNIQUE (name);
+
 COMMIT;

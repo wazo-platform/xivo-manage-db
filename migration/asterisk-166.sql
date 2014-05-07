@@ -40,4 +40,32 @@ DROP TYPE IF EXISTS "serverfeatures_feature";
 
 ALTER TABLE "trunkfeatures" ALTER "description" DROP NOT NULL;
 
+
+DROP INDEX IF EXISTS "attachment__uidx__object_type__object_id";
+ALTER TABLE "attachment"
+    ADD CONSTRAINT "attachment_pkey" PRIMARY KEY (id),
+    ADD CONSTRAINT "attachment_object_type_object_id_key" UNIQUE (object_type, object_id);
+
+
+DROP INDEX IF EXISTS "callfiltermember__uidx__callfilterid_type_typeval";
+ALTER TABLE "callfiltermember"
+    ALTER "typeval" SET DEFAULT '0',
+    ALTER "bstype" SET NOT NULL,
+    ADD CONSTRAINT "callfiltermember_callfilterid_type_typeval_key" UNIQUE (callfilterid, type, typeval);
+
+
+ALTER TABLE "record_campaign"
+    DROP CONSTRAINT IF EXISTS "campaign_name_u",
+    ADD CONSTRAINT "record_campaign_campaign_name_key" UNIQUE (campaign_name);
+
+
+DROP INDEX IF EXISTS "dialpattern__idx__type_typeid";
+ALTER TABLE "dialpattern"
+    ADD CONSTRAINT "dialpattern_type_typeid_key" UNIQUE (type, typeid);
+
+
+DROP INDEX IF EXISTS "extensions__uidx__exten_context";
+ALTER TABLE "extensions"
+    ADD CONSTRAINT "extensions_exten_context_key" UNIQUE (exten, context);
+
 COMMIT;

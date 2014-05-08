@@ -132,6 +132,7 @@ ALTER TABLE "pickup"
 
 ALTER TABLE "queue_log"
     ADD COLUMN "id" SERIAL PRIMARY KEY;
+GRANT ALL ON SEQUENCE "queue_log_id_seq" TO asterisk;
 
 ALTER TABLE "queue" ALTER "defaultrule" DROP DEFAULT;
 

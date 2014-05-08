@@ -26,6 +26,7 @@ from xivo_db.exception import DBError
 def main():
     parsed_args = _parse_args()
 
+    print 'Updating database...'
     try:
         if old.is_active():
             old.update_db(parsed_args.verbose)
@@ -33,6 +34,7 @@ def main():
             old.deactivate()
 
         alembic.update_db()
+        print 'Updating database done.'
     except DBError:
         sys.exit(1)
 

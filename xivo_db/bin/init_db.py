@@ -18,12 +18,11 @@
 import argparse
 import logging
 
-from sqlalchemy.schema import MetaData
-
-from xivo_dao import alchemy
+from xivo_dao import alchemy # imports all the sqlalchemy model
 from xivo_dao.helpers import db_manager
 from xivo_dao.helpers.db_manager import Base
-
+from xivo_db import alembic
+from xivo_db import postgres
 
 logger = logging.getLogger(__name__)
 
@@ -36,21 +35,30 @@ def expensive_setup():
     return engine
 
 
-def _drop_tables(engine):
-    metadata = MetaData(bind=engine)
-    metadata.reflect()
-    logger.info('Dropping all tables...')
-    metadata.drop_all()
-
-
 def _create_tables(engine):
     logger.info('Creating all tables...')
     Base.metadata.create_all(bind=engine)
 
 
-def close():
+def _close():
     logger.info('Closing connection...')
     db_manager.close()
+
+
+def _populate_db():
+    logger.info('Populating database...')
+    postgres.populate_db()
+
+
+def _drop_db():
+    logger.info('Dropping database...')
+    postgres.drop_db()
+
+
+def _init_db():
+    logger.info('Initializing database...')
+    postgres.init_db()
+    alembic.stamp_head()
 
 
 def main():
@@ -59,31 +67,26 @@ def main():
     _init_logging(parsed_args.verbose)
 
     engine = expensive_setup()
+    try:
+        if parsed_args.drop:
+            _drop_db()
 
-    if parsed_args.reset:
-        _drop_tables(engine)
-        _create_tables(engine)
-
-    if parsed_args.drop:
-        _drop_tables(engine)
-
-    close()
+        if parsed_args.init:
+            _init_db()
+            _create_tables(engine)
+            _populate_db()
+    finally:
+        _close()
 
 
 def _parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-v', '--verbose',
-                        action='store_true',
-                        default=False,
+    parser.add_argument('-v', '--verbose', action='store_true',
                         help='increase verbosity')
-    parser.add_argument('--reset',
-                        action='store_true',
-                        default=False,
-                        help='reset database')
-    parser.add_argument('--drop',
-                        action='store_true',
-                        default=False,
-                        help='drop tables')
+    parser.add_argument('--drop', action='store_true',
+                        help='drop database')
+    parser.add_argument('--init', action='store_true',
+                        help='initialize database')
     return parser.parse_args()
 
 

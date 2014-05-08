@@ -15,32 +15,19 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
-import argparse
-import sys
-from xivo_db import alembic
-from xivo_db import old
-from xivo_db import postgres
-from xivo_db.exception import DBError
+import os.path
 
+USR_LIB = '/usr/lib/xivo-manage-db'
+VAR_LIB = '/var/lib/xivo-manage-db'
+USR_SHARE = '/usr/share/xivo-manage-db'
 
-def main():
-    parsed_args = _parse_args()
+AST_LAST = os.path.join(VAR_LIB, 'update-db', 'asterisk-last')
+XIVO_LAST = os.path.join(VAR_LIB, 'update-db', 'xivo-last')
 
-    print 'Updating database...'
-    try:
-        if old.is_active():
-            old.update_db(parsed_args.verbose)
-            postgres.merge_db()
-            old.deactivate()
+PG_DROP_DB = os.path.join(USR_LIB, 'pg-drop-db')
+PG_INIT_DB = os.path.join(USR_LIB, 'pg-init-db')
+PG_MERGE_DB = os.path.join(USR_LIB, 'pg-merge-db')
+PG_POPULATE_DB = os.path.join(USR_LIB, 'pg-populate-db')
 
-        alembic.update_db()
-        print 'Updating database done.'
-    except DBError:
-        sys.exit(1)
-
-
-def _parse_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-v', '--verbose', action='store_true',
-                        help='increase verbosity')
-    return parser.parse_args()
+XIVO_CHECK_DB_OLD = os.path.join(USR_LIB, 'xivo-check-db-old')
+XIVO_UPDATE_DB_OLD = os.path.join(USR_LIB, 'xivo-update-db-old')

@@ -15,8 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
+from xivo_db import alembic
 from xivo_db import old
 
 
 def main():
-    old.check_db()
+    if old.is_active():
+        old.check_db()
+    else:
+        alembic.check_db()

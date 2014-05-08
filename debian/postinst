@@ -12,6 +12,11 @@ case "$1" in
                 rm -fr "$old_dir"
             fi
         done
+
+        if [ -z "$2" ]; then
+            xivo-init-db --init
+        fi
+
         # When installing from ISO, Postgres is not running
         pg_status=$(pg_lsclusters | grep '^9.1' | awk '{print $4}')
         if [ "$pg_status" = 'online' ]; then

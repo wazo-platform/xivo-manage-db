@@ -15,20 +15,37 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
+import errno
+import os
 import subprocess
-
-_CHECK_DB_PATH = '/usr/lib/xivo-manage-db/xivo-check-db-old'
-_UPDATE_DB_PATH = '/usr/lib/xivo-manage-db/xivo-update-db-old'
+from xivo_db import path
+from xivo_db.exception import DBError
 
 
 def check_db():
-    # TODO return exit code / raise exception on error
-    subprocess.call([_CHECK_DB_PATH])
+    subprocess.call([path.XIVO_CHECK_DB_OLD])
 
 
 def update_db(verbose=False):
-    args = [_UPDATE_DB_PATH]
+    args = [path.XIVO_UPDATE_DB_OLD]
     if verbose:
         args.append('-v')
-    # TODO return exit code / raise exception on error
-    subprocess.call(args)
+    if subprocess.call(args):
+        raise DBError()
+
+
+def is_active():
+    return os.path.exists(path.AST_LAST) or os.path.exists(path.XIVO_LAST)
+
+
+def deactivate():
+    _force_unlink(path.AST_LAST)
+    _force_unlink(path.XIVO_LAST)
+
+
+def _force_unlink(pathname):
+    try:
+        os.unlink(pathname)
+    except OSError as e:
+        if e.errno != errno.ENOENT:
+            raise

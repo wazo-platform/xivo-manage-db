@@ -15,32 +15,30 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
-import argparse
-import sys
-from xivo_db import alembic
-from xivo_db import old
-from xivo_db import postgres
+import os
+import subprocess
+from xivo_db import path
 from xivo_db.exception import DBError
 
 
-def main():
-    parsed_args = _parse_args()
-
-    print 'Updating database...'
-    try:
-        if old.is_active():
-            old.update_db(parsed_args.verbose)
-            postgres.merge_db()
-            old.deactivate()
-
-        alembic.update_db()
-        print 'Updating database done.'
-    except DBError:
-        sys.exit(1)
+def init_db():
+    _call_as_postgres(path.PG_INIT_DB)
 
 
-def _parse_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-v', '--verbose', action='store_true',
-                        help='increase verbosity')
-    return parser.parse_args()
+def drop_db():
+    _call_as_postgres(path.PG_DROP_DB)
+
+
+def merge_db():
+    _call_as_postgres(path.PG_MERGE_DB)
+
+
+def populate_db():
+    _call_as_postgres(path.PG_POPULATE_DB)
+
+
+def _call_as_postgres(pathname):
+    args = ['su', '-c', pathname, 'postgres']
+    with open(os.devnull) as fobj:
+        if subprocess.call(args, stdout=fobj, cwd='/tmp'):
+            raise DBError()

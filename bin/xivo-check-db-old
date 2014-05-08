@@ -17,8 +17,7 @@ def main():
         if latest_executed == latest_available:
             status_msg = 'OK'
         else:
-            status_msg = 'NOK (last is %s, should be %s)' % (
-                    latest_executed, latest_available)
+            status_msg = 'NOK (last is %s)' % latest_executed
         print '\t%s\t\t%s' % (status_msg, db_name + ' db')
 
 

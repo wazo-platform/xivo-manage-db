@@ -91,7 +91,7 @@ ALTER TABLE "paging"
 
 
 ALTER TABLE "queue_log"
-    ADD CONSTRAINT "queue_log_pkey" PRIMARY KEY ("time", callid);
+    ADD COLUMN "id" SERIAL PRIMARY KEY;
 
 
 DROP INDEX IF EXISTS "queueskillcat__uidx__name";

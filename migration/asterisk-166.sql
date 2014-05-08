@@ -64,8 +64,6 @@ ALTER TABLE "record_campaign"
 
 
 DROP INDEX IF EXISTS "dialpattern__idx__type_typeid";
-ALTER TABLE "dialpattern"
-    ADD CONSTRAINT "dialpattern_type_typeid_key" UNIQUE (type, typeid);
 
 
 DROP INDEX IF EXISTS "extensions__uidx__exten_context";

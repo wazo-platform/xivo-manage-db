@@ -326,7 +326,8 @@ INSERT INTO "func_key_type" ("name") VALUES ('speeddial');
 
 INSERT INTO "func_key_destination_type" (id, name) VALUES (1, 'user'),
                                                           (2, 'group'),
-                                                          (3, 'queue');
+                                                          (3, 'queue'),
+                                                          (4, 'conference');
 
 
 INSERT INTO "musiconhold" VALUES (DEFAULT,0,0,0,'musiconhold.conf','default','mode','files');

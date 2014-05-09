@@ -13,7 +13,8 @@ case "$1" in
             fi
         done
 
-        if [ -z "$2" ]; then
+		ast_db_exist="$(su - postgres -c 'psql -l | grep asterisk' | wc -l)"
+        if [ "$ast_db_exist" = 0 ]; then
             xivo-init-db --init
         fi
 

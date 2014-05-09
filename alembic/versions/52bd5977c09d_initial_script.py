@@ -1,8 +1,9 @@
-"""14_08
+"""initial script
 
 Revision ID: 52bd5977c09d
 Revises: None
 Create Date: 2014-05-08 10:55:49.798475
+XiVO Version: 14.08
 
 """
 

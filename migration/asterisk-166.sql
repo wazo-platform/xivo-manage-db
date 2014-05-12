@@ -137,7 +137,7 @@ DO $$
 	EXCEPTION
 		WHEN duplicate_column THEN RAISE NOTICE 'column id already exists in queue_log.';
     END;
-$$
+$$;
 
 ALTER TABLE "queue" ALTER "defaultrule" DROP DEFAULT;
 

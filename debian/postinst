@@ -13,15 +13,15 @@ case "$1" in
             fi
         done
 
-		ast_db_exist="$(su - postgres -c 'psql -l | grep asterisk' | wc -l)"
-        if [ "$ast_db_exist" = 0 ]; then
-            xivo-init-db --init
-        fi
-
         # When installing from ISO, Postgres is not running
         pg_status=$(pg_lsclusters | grep '^9.1' | awk '{print $4}')
         if [ "$pg_status" = 'online' ]; then
-            /usr/bin/xivo-update-db
+            ast_db_exist="$(su - postgres -c 'psql -l | grep asterisk' | wc -l)"
+            if [ "$ast_db_exist" = 0 ]; then
+                xivo-init-db --init
+            fi
+
+            xivo-update-db
         fi
     ;;
 

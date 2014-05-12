@@ -130,9 +130,14 @@ ALTER TABLE "pickup"
     ALTER "description" DROP DEFAULT,
     ALTER "description" DROP NOT NULL;
 
-ALTER TABLE "queue_log"
-    ADD COLUMN "id" SERIAL PRIMARY KEY;
-GRANT ALL ON SEQUENCE "queue_log_id_seq" TO asterisk;
+DO $$ 
+    BEGIN
+		ALTER TABLE "queue_log" ADD COLUMN "id" SERIAL PRIMARY KEY;
+		GRANT ALL ON SEQUENCE "queue_log_id_seq" TO asterisk;
+	EXCEPTION
+		WHEN duplicate_column THEN RAISE NOTICE 'column id already exists in queue_log.';
+    END;
+$$
 
 ALTER TABLE "queue" ALTER "defaultrule" DROP DEFAULT;
 

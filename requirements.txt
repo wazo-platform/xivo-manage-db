@@ -1,4 +1,4 @@
 git+https://github.com/xivo-pbx/xivo-dao.git
-alembic
+alembic==0.6.3
 pyhamcrest
 sqlalchemy==0.9.4

@@ -106,13 +106,18 @@ old_func_keys_query = (sa.sql.select([func_key_mapping_table.c.func_key_id,
 
 
 def upgrade():
-    for row in op.get_bind().execute(voicemail_func_keys_query):
-        func_key_id = _create_func_key()
-        extension_id = _get_extension_id_from_type(row.typevalextenumbers)
-        _create_extension_destination(func_key_id, extension_id)
-        _create_mapping(func_key_id, row)
-
+    func_key_ids = _pregenerate_fk_destinations()
+    _migrate_func_keys(func_key_ids)
     _delete_old_func_keys()
+
+
+def _pregenerate_fk_destinations():
+    func_key_ids = {}
+    for typeval in ('enablevm', 'vmusermsg', 'vmuserpurge'):
+        func_key_id = func_key_ids[typeval] = _create_func_key()
+        extension_id = _get_extension_id_from_type(typeval)
+        _create_extension_destination(func_key_id, extension_id)
+    return func_key_ids
 
 
 def _create_func_key():
@@ -155,6 +160,11 @@ def _create_extension_destination(func_key_id, extension_id):
     op.get_bind().execute(destination_query)
 
 
+def _migrate_func_keys(func_key_ids):
+    for row in op.get_bind().execute(voicemail_func_keys_query):
+        _create_mapping(func_key_ids[row.typevalextenumbers], row)
+
+
 def _create_mapping(func_key_id, func_key_row):
     conn = op.get_bind()
 
@@ -189,9 +199,9 @@ def _delete_old_func_keys():
 def downgrade():
     for row in op.get_bind().execute(old_func_keys_query):
         _create_old_func_keys(row)
-        _delete_destination(row.func_key_id, row.extension_id)
         _delete_mapping(row.func_key_id, row.template_id)
-        _delete_func_key(row.func_key_id)
+    _delete_dest_extension()
+    _delete_func_key()
 
 
 def _create_old_func_keys(row):
@@ -199,6 +209,7 @@ def _create_old_func_keys(row):
 
     row = {'iduserfeatures': row.user_id,
            'fknum': row.position,
+           'typeextenumbers': 'extenfeatures',
            'typevalextenumbers': row.typeval,
            'typeextenumbersright': None,
            'typevalextenumbersright': None,
@@ -206,16 +217,6 @@ def _create_old_func_keys(row):
            'supervision': supervision}
 
     op.bulk_insert(phonefunckey_table, [row])
-
-
-def _delete_destination(func_key_id, extension_id):
-    query = (destination_extension_table
-             .delete()
-             .where(sa.sql.and_(
-                 destination_extension_table.c.func_key_id == func_key_id,
-                 destination_extension_table.c.extension_id == extension_id)))
-
-    op.get_bind().execute(query)
 
 
 def _delete_mapping(func_key_id, template_id):
@@ -228,9 +229,18 @@ def _delete_mapping(func_key_id, template_id):
     op.get_bind().execute(query)
 
 
-def _delete_func_key(func_key_id):
+def _delete_dest_extension():
+    query = (destination_extension_table
+             .delete()
+             .where(
+                 destination_extension_table.c.destination_type_id == DESTINATION_EXTENSION_ID))
+
+    op.get_bind().execute(query)
+
+
+def _delete_func_key():
     query = (func_key_table
              .delete()
-             .where(func_key_table.c.id == func_key_id))
+             .where(func_key_table.c.destination_type_id == DESTINATION_EXTENSION_ID))
 
     op.get_bind().execute(query)

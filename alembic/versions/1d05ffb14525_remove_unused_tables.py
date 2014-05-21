@@ -1,15 +1,15 @@
 """remove unused tables
 
-Revision ID: 2976d63a6966
-Revises: 146ddf6c4b36
-Create Date: 2014-05-15 09:37:50.422319
+Revision ID: 1d05ffb14525
+Revises: 447e4ab61975
+Create Date: 2014-05-21 08:43:19.169757
 XiVO Version: <version>
 
 """
 
 # revision identifiers, used by Alembic.
-revision = '2976d63a6966'
-down_revision = '146ddf6c4b36'
+revision = '1d05ffb14525'
+down_revision = '447e4ab61975'
 
 from alembic import op
 from sqlalchemy.sql.schema import Column

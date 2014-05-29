@@ -9,7 +9,7 @@ XiVO Version: <version>
 
 # revision identifiers, used by Alembic.
 revision = '55f3c86885c5'
-down_revision = '146ddf6c4b36'
+down_revision = '3196befc4753'
 
 from alembic import op
 import sqlalchemy as sa

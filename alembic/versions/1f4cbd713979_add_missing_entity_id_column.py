@@ -16,19 +16,15 @@ revision = '1f4cbd713979'
 down_revision = '6bfd932df2c'
 
 from alembic import op
-import sqlalchemy as sa
 
 
 def upgrade():
     op.add_column('callfilter',
-                  Column('entity_id', Integer, server_default=text('NULL'), ForeignKey('entity.id'))
-    )
+                  Column('entity_id', Integer, ForeignKey('entity.id'), server_default=text('NULL')))
     op.add_column('pickup',
-                  Column('entity_id', Integer, server_default=text('NULL'), ForeignKey('entity.id'))
-    )
+                  Column('entity_id', Integer, ForeignKey('entity.id'), server_default=text('NULL')))
     op.add_column('schedule',
-                  Column('entity_id', Integer, server_default=text('NULL'), ForeignKey('entity.id'))
-    )
+                  Column('entity_id', Integer, ForeignKey('entity.id'), server_default=text('NULL')))
 
 
 def downgrade():

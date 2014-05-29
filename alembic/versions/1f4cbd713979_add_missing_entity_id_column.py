@@ -1,7 +1,7 @@
 """add_entity_to_callfilter
 
 Revision ID: 1f4cbd713979
-Revises: 6bfd932df2c
+Revises: 3196befc4753
 Create Date: 2014-05-28 14:42:23.479319
 XiVO Version: <version>
 
@@ -13,7 +13,7 @@ from sqlalchemy import text
 
 # revision identifiers, used by Alembic.
 revision = '1f4cbd713979'
-down_revision = '6bfd932df2c'
+down_revision = '3196befc4753'
 
 from alembic import op
 

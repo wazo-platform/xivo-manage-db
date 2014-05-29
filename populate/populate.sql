@@ -315,7 +315,21 @@ INSERT INTO "func_key_type" ("name") VALUES ('speeddial');
 INSERT INTO "func_key_destination_type" (id, name) VALUES (1, 'user'),
                                                           (2, 'group'),
                                                           (3, 'queue'),
-                                                          (4, 'conference');
+                                                          (4, 'conference'),
+                                                          (5, 'service');
+
+
+INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);
+INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, extension_id)
+VALUES (currval('func_key_id_seq'), 5, (SELECT "id" from extensions WHERE "typeval" = 'enablevm'));
+
+INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);
+INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, extension_id)
+VALUES (currval('func_key_id_seq'), 5, (SELECT "id" from extensions WHERE "typeval" = 'vmusermsg'));
+
+INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);
+INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, extension_id)
+VALUES (currval('func_key_id_seq'), 5, (SELECT "id" from extensions WHERE "typeval" = 'vmuserpurge'));
 
 
 INSERT INTO "musiconhold" VALUES (DEFAULT,0,0,0,'musiconhold.conf','default','mode','files');

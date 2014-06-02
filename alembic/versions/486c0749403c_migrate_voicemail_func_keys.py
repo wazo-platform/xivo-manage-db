@@ -17,8 +17,8 @@ import sqlalchemy as sa
 
 TYPE_SPEEDDIAL = 'speeddial'
 
-DESTINATION_EXTENSION_ID = 5
-DESTINATION_EXTENSION_NAME = 'extension'
+DESTINATION_SERVICE_ID = 5
+DESTINATION_SERVICE_NAME = 'service'
 
 phonefunckey_table = sa.sql.table('phonefunckey',
                                   sa.sql.column('iduserfeatures'),
@@ -37,10 +37,10 @@ func_key_table = sa.sql.table('func_key',
                               sa.sql.column('type_id'),
                               sa.sql.column('destination_type_id'))
 
-destination_extension_table = sa.sql.table('func_key_dest_extension',
-                                           sa.sql.column('func_key_id'),
-                                           sa.sql.column('destination_type_id'),
-                                           sa.sql.column('extension_id'))
+destination_service_table = sa.sql.table('func_key_dest_service',
+                                         sa.sql.column('func_key_id'),
+                                         sa.sql.column('destination_type_id'),
+                                         sa.sql.column('extension_id'))
 
 func_key_type_table = sa.sql.table('func_key_type',
                                    sa.sql.column('id'),
@@ -89,15 +89,15 @@ old_func_keys_query = (sa.sql.select([func_key_mapping_table.c.func_key_id,
                                       func_key_mapping_table.c.position,
                                       func_key_mapping_table.c.blf,
                                       func_key_mapping_table.c.label,
-                                      destination_extension_table.c.extension_id,
+                                      destination_service_table.c.extension_id,
                                       extensions_table.c.typeval,
                                       user_table.c.id.label('user_id')],
                                      from_obj=[
                                          func_key_mapping_table.join(
-                                             destination_extension_table,
-                                             func_key_mapping_table.c.func_key_id == destination_extension_table.c.func_key_id)
+                                             destination_service_table,
+                                             func_key_mapping_table.c.func_key_id == destination_service_table.c.func_key_id)
                                          .join(extensions_table,
-                                               destination_extension_table.c.extension_id == extensions_table.c.id)
+                                               destination_service_table.c.extension_id == extensions_table.c.id)
                                          .join(template_table,
                                                func_key_mapping_table.c.template_id == template_table.c.id)
                                          .join(user_table,
@@ -116,7 +116,7 @@ def _pregenerate_fk_destinations():
     for typeval in ('enablevm', 'vmusermsg', 'vmuserpurge'):
         func_key_id = func_key_ids[typeval] = _create_func_key()
         extension_id = _get_extension_id_from_type(typeval)
-        _create_extension_destination(func_key_id, extension_id)
+        _create_service_destination(func_key_id, extension_id)
     return func_key_ids
 
 
@@ -126,7 +126,7 @@ def _create_func_key():
                     .insert()
                     .returning(func_key_table.c.id)
                     .values(type_id=speeddial_id,
-                            destination_type_id=DESTINATION_EXTENSION_ID))
+                            destination_type_id=DESTINATION_SERVICE_ID))
 
     return op.get_bind().execute(insert_query).first()[0]
 
@@ -149,12 +149,12 @@ def _get_extension_id_from_type(vmtype):
     ).scalar()
 
 
-def _create_extension_destination(func_key_id, extension_id):
-    destination_query = (destination_extension_table
+def _create_service_destination(func_key_id, extension_id):
+    destination_query = (destination_service_table
                          .insert()
-                         .returning(destination_extension_table.c.func_key_id)
+                         .returning(destination_service_table.c.func_key_id)
                          .values(func_key_id=func_key_id,
-                                 destination_type_id=DESTINATION_EXTENSION_ID,
+                                 destination_type_id=DESTINATION_SERVICE_ID,
                                  extension_id=extension_id))
 
     op.get_bind().execute(destination_query)
@@ -179,7 +179,7 @@ def _create_mapping(func_key_id, func_key_row):
                      .returning(func_key_mapping_table.c.func_key_id)
                      .values(func_key_id=func_key_id,
                              template_id=template_id,
-                             destination_type_id=DESTINATION_EXTENSION_ID,
+                             destination_type_id=DESTINATION_SERVICE_ID,
                              label=func_key_row.label,
                              position=func_key_row.position,
                              blf=func_key_row.blf))
@@ -200,7 +200,7 @@ def downgrade():
     for row in op.get_bind().execute(old_func_keys_query):
         _create_old_func_keys(row)
         _delete_mapping(row.func_key_id, row.template_id)
-    _delete_dest_extension()
+    _delete_dest_service()
     _delete_func_key()
 
 
@@ -229,11 +229,11 @@ def _delete_mapping(func_key_id, template_id):
     op.get_bind().execute(query)
 
 
-def _delete_dest_extension():
-    query = (destination_extension_table
+def _delete_dest_service():
+    query = (destination_service_table
              .delete()
              .where(
-                 destination_extension_table.c.destination_type_id == DESTINATION_EXTENSION_ID))
+                 destination_service_table.c.destination_type_id == DESTINATION_SERVICE_ID))
 
     op.get_bind().execute(query)
 
@@ -241,6 +241,6 @@ def _delete_dest_extension():
 def _delete_func_key():
     query = (func_key_table
              .delete()
-             .where(func_key_table.c.destination_type_id == DESTINATION_EXTENSION_ID))
+             .where(func_key_table.c.destination_type_id == DESTINATION_SERVICE_ID))
 
     op.get_bind().execute(query)

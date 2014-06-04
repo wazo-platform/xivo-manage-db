@@ -28,13 +28,15 @@ def upgrade():
         sa.Column('phonebook_id', sa.Integer),
         sa.PrimaryKeyConstraint('user_id', 'phonebook_id'),
         sa.ForeignKeyConstraint(
-            ['user_id'],
-            ['userfeatures.id'],
+            ['phonebook_id'],
+            ['phonebook.id'],
+            name='fk_phonebook_id',
             ondelete='CASCADE',
         ),
         sa.ForeignKeyConstraint(
-            ['phonebook_id'],
-            ['phonebook.id'],
+            ['user_id'],
+            ['userfeatures.id'],
+            name='fk_user_id',
             ondelete='CASCADE',
         ),
     )

@@ -20,6 +20,9 @@ TYPE_SPEEDDIAL = 'speeddial'
 DESTINATION_SERVICE_ID = 5
 DESTINATION_SERVICE_NAME = 'service'
 
+VOICEMAIL_TYPES = ('enablevm', 'vmusermsg', 'vmuserpurge')
+DELETED_VOICEMAIL_TYPES = ('enablevm', 'vmusermsg', 'vmuserpurge', 'enablevmbox')
+
 phonefunckey_table = sa.sql.table('phonefunckey',
                                   sa.sql.column('iduserfeatures'),
                                   sa.sql.column('fknum'),
@@ -81,7 +84,7 @@ voicemail_func_keys_query = (sa.sql.select([phonefunckey_table.c.iduserfeatures.
                                             phonefunckey_table.c.typevalextenumbers,
                                             blf_cast.label('blf')])
                              .where(phonefunckey_table.c.typevalextenumbers
-                                    .in_(('enablevm', 'vmusermsg', 'vmuserpurge'))))
+                                    .in_(VOICEMAIL_TYPES)))
 
 
 old_func_keys_query = (sa.sql.select([func_key_mapping_table.c.func_key_id,
@@ -113,7 +116,7 @@ def upgrade():
 
 def _pregenerate_fk_destinations():
     func_key_ids = {}
-    for typeval in ('enablevm', 'vmusermsg', 'vmuserpurge'):
+    for typeval in VOICEMAIL_TYPES:
         func_key_id = func_key_ids[typeval] = _create_func_key()
         extension_id = _get_extension_id_from_type(typeval)
         _create_service_destination(func_key_id, extension_id)
@@ -191,7 +194,7 @@ def _delete_old_func_keys():
     delete_query = (phonefunckey_table
                     .delete()
                     .where(phonefunckey_table.c.typevalextenumbers
-                           .in_(('enablevm', 'vmusermsg', 'vmuserpurge', 'enablevmbox'))))
+                           .in_(DELETED_VOICEMAIL_TYPES)))
 
     op.get_bind().execute(delete_query)
 

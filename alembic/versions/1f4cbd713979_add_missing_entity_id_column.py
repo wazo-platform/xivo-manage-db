@@ -20,7 +20,15 @@ from alembic import op
 
 def upgrade():
     op.add_column('callfilter',
-                  Column('entity_id', Integer, ForeignKey('entity.id'), server_default=text('NULL')))
+                  Column('entity_id', Integer, server_default=text('NULL')))
+    op.create_foreign_key(
+        'fk_entity_id',
+        'callfilter',
+        'entity',
+        ['entity_id'],
+        ['id'],
+    )
+
     op.add_column('pickup',
                   Column('entity_id', Integer, ForeignKey('entity.id'), server_default=text('NULL')))
     op.add_column('schedule',

@@ -131,7 +131,7 @@ def _create_func_key():
                     .values(type_id=speeddial_id,
                             destination_type_id=DESTINATION_SERVICE_ID))
 
-    return op.get_bind().execute(insert_query).first()[0]
+    return op.get_bind().execute(insert_query).scalar()
 
 
 def _get_speeddial_id():

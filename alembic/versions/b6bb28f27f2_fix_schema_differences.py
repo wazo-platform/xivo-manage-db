@@ -1,7 +1,7 @@
 """fix schema differences
 
 Revision ID: b6bb28f27f2
-Revises: 3c14d64c95a3
+Revises: 27f83f39e031
 Create Date: 2014-06-17 11:26:17.834220
 XiVO Version: 14.11
 
@@ -9,7 +9,7 @@ XiVO Version: 14.11
 
 # revision identifiers, used by Alembic.
 revision = 'b6bb28f27f2'
-down_revision = '3c14d64c95a3'
+down_revision = '27f83f39e031'
 
 from alembic import op
 

@@ -1,7 +1,7 @@
 """create_func_key_destination_service
 
 Revision ID: 55f3c86885c5
-Revises: 146ddf6c4b36
+Revises: b6bb28f27f2
 Create Date: 2014-05-14 14:39:41.329649
 XiVO Version: <version>
 
@@ -9,7 +9,7 @@ XiVO Version: <version>
 
 # revision identifiers, used by Alembic.
 revision = '55f3c86885c5'
-down_revision = 'dd011dfbb5'
+down_revision = 'b6bb28f27f2'
 
 from alembic import op
 import sqlalchemy as sa

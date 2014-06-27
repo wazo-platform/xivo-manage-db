@@ -27,7 +27,7 @@ setup(
     description='XIVO DB LIB',
     author='Avencall',
     author_email='xivo-dev@lists.proformatique.com',
-    url='http://git.xivo.fr/',
+    url='http://git.xivo.io/',
     license='GPLv3',
     packages=find_packages('.')
 )

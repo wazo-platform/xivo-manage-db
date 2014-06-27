@@ -331,6 +331,42 @@ INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);
 INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, extension_id)
 VALUES (currval('func_key_id_seq'), 5, (SELECT "id" from extensions WHERE "typeval" = 'vmuserpurge'));
 
+INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);
+INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, extension_id)
+VALUES (currval('func_key_id_seq'), 5, (SELECT "id" from extensions WHERE "typeval" = 'phonestatus'));
+
+INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);
+INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, extension_id)
+VALUES (currval('func_key_id_seq'), 5, (SELECT "id" from extensions WHERE "typeval" = 'recsnd'));
+
+INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);
+INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, extension_id)
+VALUES (currval('func_key_id_seq'), 5, (SELECT "id" from extensions WHERE "typeval" = 'calllistening'));
+
+INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);
+INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, extension_id)
+VALUES (currval('func_key_id_seq'), 5, (SELECT "id" from extensions WHERE "typeval" = 'directoryaccess'));
+
+INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);
+INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, extension_id)
+VALUES (currval('func_key_id_seq'), 5, (SELECT "id" from extensions WHERE "typeval" = 'fwdundoall'));
+
+INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);
+INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, extension_id)
+VALUES (currval('func_key_id_seq'), 5, (SELECT "id" from extensions WHERE "typeval" = 'pickup'));
+
+INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);
+INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, extension_id)
+VALUES (currval('func_key_id_seq'), 5, (SELECT "id" from extensions WHERE "typeval" = 'callrecord'));
+
+INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);
+INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, extension_id)
+VALUES (currval('func_key_id_seq'), 5, (SELECT "id" from extensions WHERE "typeval" = 'incallfilter'));
+
+INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);
+INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, extension_id)
+VALUES (currval('func_key_id_seq'), 5, (SELECT "id" from extensions WHERE "typeval" = 'enablednd'));
+
 
 INSERT INTO "musiconhold" VALUES (DEFAULT,0,0,0,'musiconhold.conf','default','mode','files');
 INSERT INTO "musiconhold" VALUES (DEFAULT,0,0,1,'musiconhold.conf','default','application','');

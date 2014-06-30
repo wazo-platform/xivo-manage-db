@@ -3,7 +3,7 @@
 Revision ID: 486c0749403c
 Revises: 55f3c86885c5
 Create Date: 2014-05-14 15:34:14.127634
-XiVO Version: <version>
+XiVO Version: 14.12
 
 """
 

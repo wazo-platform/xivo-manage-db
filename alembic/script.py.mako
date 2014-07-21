@@ -2,7 +2,6 @@
 
 Revision ID: ${up_revision}
 Revises: ${down_revision}
-Create Date: ${create_date}
 XiVO Version: <version>
 
 """

@@ -2,7 +2,6 @@
 
 Revision ID: 6bfd932df2c
 Revises: 148a96399123
-Create Date: 2014-05-21 09:29:05.102290
 XiVO Version: <version>
 
 """

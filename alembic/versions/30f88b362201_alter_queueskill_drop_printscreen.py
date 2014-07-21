@@ -2,7 +2,6 @@
 
 Revision ID: 30f88b362201
 Revises: 31eecc16c5c5
-Create Date: 2014-07-21 14:38:56.835026
 XiVO Version: 14.14
 
 """

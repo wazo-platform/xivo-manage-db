@@ -1,14 +1,14 @@
 """add call completion
 
 Revision ID: 5450dd40916e
-Revises: 30f88b362201
+Revises: 2c6c9833d839
 XiVO Version: 14.14
 
 """
 
 # revision identifiers, used by Alembic.
 revision = '5450dd40916e'
-down_revision = '30f88b362201'
+down_revision = '2c6c9833d839'
 
 from alembic import op
 import sqlalchemy as sa
@@ -48,11 +48,19 @@ def _create_cc_table():
 
 
 def _insert_cc_extensions():
-    op.bulk_insert(extensions_table,
-        [
-            {'commented': 1, 'context': 'xivo-features', 'exten': '*40', 'type': 'extenfeatures', 'typeval': 'cctoggle'},
-        ]
-    )
+    connection = op.get_bind()
+    qry = 'SELECT exten, context FROM extensions WHERE context=\'xivo-features\' and exten=\'*40\''
+    res = connection.execute(qry).fetchall()
+    if res:
+        exten = 'cctoggle'
+    else:
+        exten = '*40'
+
+    op.bulk_insert(extensions_table, [{'commented': 1,
+                                       'context': 'xivo-features',
+                                       'exten': exten,
+                                       'type': 'extenfeatures',
+                                       'typeval': 'cctoggle'}])
 
 
 def downgrade():

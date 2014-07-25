@@ -50,20 +50,9 @@ def _create_cc_table():
 def _insert_cc_extensions():
     op.bulk_insert(extensions_table,
         [
-            _new_exten_dict('*40', 'ccrequest'),
-            _new_exten_dict('*41', 'cccancel'),
+            {'commented': 1, 'context': 'xivo-features', 'exten': '*40', 'type': 'extenfeatures', 'typeval': 'cctoggle'},
         ]
     )
-
-
-def _new_exten_dict(exten, typeval):
-    return {
-        'commented': 1,
-        'context': 'xivo-features',
-        'exten': exten,
-        'type': 'extenfeatures',
-        'typeval': typeval,
-    }
 
 
 def downgrade():
@@ -80,5 +69,5 @@ def _delete_cc_extensions():
             .delete()
             .where(sa.sql.and_(
                 extensions_table.c.type == 'extenfeatures',
-                extensions_table.c.typeval.in_(['ccrequest', 'cccancel']))
-            ))
+                extensions_table.c.typeval == 'cctoggle',
+            )))

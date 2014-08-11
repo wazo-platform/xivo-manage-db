@@ -15,6 +15,57 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
+BEGIN;
+
+DO $$
+DECLARE
+
+    duplicate_cursor CURSOR FOR
+        SELECT fk.* FROM
+            phonefunckey fk
+        INNER JOIN (
+            SELECT
+        typevalextenumbersright,
+                min(fknum) as first_position
+            FROM
+                phonefunckey
+            WHERE
+                typeextenumbersright = 'user'
+            GROUP BY
+                typevalextenumbersright
+            having ( count(typevalextenumbersright) > 1 )
+        ) AS valid_func_keys
+        ON
+        fk.typevalextenumbersright = valid_func_keys.typevalextenumbersright
+        AND fknum > valid_func_keys.first_position
+        AND typeextenumbersright = 'user';
+
+BEGIN
+
+
+    FOR duplicate_row IN duplicate_cursor LOOP
+
+        RAISE NOTICE '[MIGRATE_FK] : Deleting func key for user "%" (pointing on user id %)', duplicate_row.iduserfeatures, duplicate_row.typevalextenumbersright;
+
+        DELETE FROM
+            phonefunckey
+        WHERE
+            iduserfeatures = duplicate_row.iduserfeatures
+        AND
+            typeextenumbersright = 'user'
+        AND
+            typevalextenumbersright = duplicate_row.typevalextenumbersright
+        AND
+            fknum = duplicate_row.fknum;
+
+    END LOOP;
+
+END
+$$;
+
+COMMIT;
+
 BEGIN;
 
 DO $$

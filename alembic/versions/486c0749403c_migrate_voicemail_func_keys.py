@@ -108,6 +108,7 @@ old_func_keys_query = (sa.sql.select([func_key_mapping_table.c.func_key_id,
 
 
 def upgrade():
+    _delete_duplicate_fks()
     func_key_ids = _pregenerate_fk_destinations()
     _migrate_func_keys(func_key_ids)
     _delete_old_func_keys()
@@ -196,6 +197,89 @@ def _delete_old_func_keys():
                            .in_(DELETED_VOICEMAIL_TYPES)))
 
     op.get_bind().execute(delete_query)
+
+
+def _delete_duplicate_fks():
+    """
+    FOR duplicate_row IN duplicate_cursor LOOP
+
+        RAISE NOTICE '[MIGRATE_FK] : Deleting func key for user "%" (pointing on user id %)', duplicate_row.iduserfeatures, duplicate_row.typevalextenumbersright;
+
+        DELETE FROM
+            phonefunckey
+        WHERE
+            iduserfeatures = duplicate_row.iduserfeatures
+        AND
+            typeextenumbersright = 'user'
+        AND
+            typevalextenumbersright = duplicate_row.typevalextenumbersright
+        AND
+            fknum = duplicate_row.fknum;
+
+    END LOOP;
+    """
+    for row in _get_duplicate_func_keys():
+        _delete_duplicate_fk(row.iduserfeatures, row.typevalextenumbers, row.fknum)
+
+
+def _get_duplicate_func_keys():
+    """
+        SELECT fk.*
+        FROM
+            phonefunckey fk
+            INNER JOIN (
+                SELECT
+                    typevalextenumbersright,
+                    min(fknum) as first_position
+                FROM
+                    phonefunckey
+                WHERE
+                    typeextenumbersright = 'user'
+                GROUP BY
+                    typevalextenumbersright
+                having ( count(typevalextenumbersright) > 1 )
+            ) AS valid_func_keys
+            ON
+                fk.typevalextenumbersright = valid_func_keys.typevalextenumbersright
+                AND fknum > valid_func_keys.first_position
+                AND typeextenumbersright = 'user';
+    """
+    valid_fk_subq = sa.sql.select([phonefunckey_table.c.iduserfeatures,
+                                   phonefunckey_table.c.typevalextenumbers,
+                                   sa.func.min(phonefunckey_table.c.fknum).label("first_position")]).\
+        where(phonefunckey_table.c.typevalextenumbers.in_(VOICEMAIL_TYPES)).\
+        group_by(phonefunckey_table.c.iduserfeatures, phonefunckey_table.c.typevalextenumbers).\
+        having(sa.func.count(phonefunckey_table.c.typevalextenumbers) > 1).\
+        alias()
+
+    duplicate_fk_query = (sa.sql.select([phonefunckey_table.c.iduserfeatures,
+                                         phonefunckey_table.c.typevalextenumbers,
+                                         phonefunckey_table.c.fknum],
+                                        from_obj=[
+                                            phonefunckey_table.join(
+                                                valid_fk_subq,
+                                                sa.sql.and_(
+                                                    phonefunckey_table.c.typevalextenumbers == valid_fk_subq.c.typevalextenumbers,
+                                                    phonefunckey_table.c.fknum > valid_fk_subq.c.first_position,
+                                                    phonefunckey_table.c.iduserfeatures == valid_fk_subq.c.iduserfeatures)
+                                            )
+                                        ]
+                                        ))
+
+    return op.get_bind().execute(duplicate_fk_query)
+
+
+def _delete_duplicate_fk(iduserfeatures, typevalextenumbers, fknum):
+    print('[MIGRATE_FK] : Deleting func key for user "%s" (fk position %s with action %s)' %
+          (iduserfeatures, fknum, typevalextenumbers))
+    query = (phonefunckey_table
+             .delete()
+             .where(sa.sql.and_(
+                 phonefunckey_table.c.iduserfeatures == iduserfeatures,
+                 phonefunckey_table.c.typevalextenumbers == typevalextenumbers,
+                 phonefunckey_table.c.fknum == fknum)))
+
+    op.get_bind().execute(query)
 
 
 def downgrade():

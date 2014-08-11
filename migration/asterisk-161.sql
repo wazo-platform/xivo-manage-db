@@ -19,6 +19,56 @@ BEGIN;
 
 DO $$
 DECLARE
+
+    duplicate_cursor CURSOR FOR
+        SELECT fk.* FROM
+            phonefunckey fk
+        INNER JOIN (
+            SELECT
+        typevalextenumbersright,
+                min(fknum) as first_position
+            FROM
+                phonefunckey
+            WHERE
+                typeextenumbersright = 'queue'
+            GROUP BY
+                typevalextenumbersright
+            having ( count(typevalextenumbersright) > 1 )
+        ) AS valid_func_keys
+        ON
+        fk.typevalextenumbersright = valid_func_keys.typevalextenumbersright
+        AND fknum > valid_func_keys.first_position
+        AND typeextenumbersright = 'queue';
+
+BEGIN
+
+
+    FOR duplicate_row IN duplicate_cursor LOOP
+
+        RAISE NOTICE '[MIGRATE_FK] : Deleting func key for user "%" (pointing on queue id %)', duplicate_row.iduserfeatures, duplicate_row.typevalextenumbersright;
+
+        DELETE FROM
+            phonefunckey
+        WHERE
+            iduserfeatures = duplicate_row.iduserfeatures
+        AND
+            typeextenumbersright = 'queue'
+        AND
+            typevalextenumbersright = duplicate_row.typevalextenumbersright
+        AND
+            fknum = duplicate_row.fknum;
+
+    END LOOP;
+
+END
+$$;
+
+COMMIT;
+
+BEGIN;
+
+DO $$
+DECLARE
     created_func_key_id INTEGER;
     speeddial_type_id INTEGER;
     queue_destination_type_id INTEGER;

@@ -200,50 +200,11 @@ def _delete_old_func_keys():
 
 
 def _delete_duplicate_fks():
-    """
-    FOR duplicate_row IN duplicate_cursor LOOP
-
-        RAISE NOTICE '[MIGRATE_FK] : Deleting func key for user "%" (pointing on user id %)', duplicate_row.iduserfeatures, duplicate_row.typevalextenumbersright;
-
-        DELETE FROM
-            phonefunckey
-        WHERE
-            iduserfeatures = duplicate_row.iduserfeatures
-        AND
-            typeextenumbersright = 'user'
-        AND
-            typevalextenumbersright = duplicate_row.typevalextenumbersright
-        AND
-            fknum = duplicate_row.fknum;
-
-    END LOOP;
-    """
     for row in _get_duplicate_func_keys():
         _delete_duplicate_fk(row.iduserfeatures, row.typevalextenumbers, row.fknum)
 
 
 def _get_duplicate_func_keys():
-    """
-        SELECT fk.*
-        FROM
-            phonefunckey fk
-            INNER JOIN (
-                SELECT
-                    typevalextenumbersright,
-                    min(fknum) as first_position
-                FROM
-                    phonefunckey
-                WHERE
-                    typeextenumbersright = 'user'
-                GROUP BY
-                    typevalextenumbersright
-                having ( count(typevalextenumbersright) > 1 )
-            ) AS valid_func_keys
-            ON
-                fk.typevalextenumbersright = valid_func_keys.typevalextenumbersright
-                AND fknum > valid_func_keys.first_position
-                AND typeextenumbersright = 'user';
-    """
     valid_fk_subq = sa.sql.select([phonefunckey_table.c.iduserfeatures,
                                    phonefunckey_table.c.typevalextenumbers,
                                    sa.func.min(phonefunckey_table.c.fknum).label("first_position")]).\

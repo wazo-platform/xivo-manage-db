@@ -114,12 +114,11 @@ def _create_func_key_for_user(user_id):
     func_key_id = _create_func_key()
     insert_query = (destination_user_table
                     .insert()
-                    .returning(destination_user_table.c.user_id)
                     .values(func_key_id=func_key_id,
                             user_id=user_id,
                             destination_type_id=DESTINATION_USER_ID))
 
-    return op.get_bind().execute(insert_query).scalar()
+    op.get_bind().execute(insert_query)
 
 
 def _clean_orphan_func_key():

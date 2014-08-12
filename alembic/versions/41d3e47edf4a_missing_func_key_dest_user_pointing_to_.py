@@ -1,14 +1,14 @@
 """Missing func_key_dest_user_pointing_to_users
 
 Revision ID: 41d3e47edf4a
-Revises: 2c6c9833d839
+Revises: 58e808b69aec
 XiVO Version: <version>
 
 """
 
 # revision identifiers, used by Alembic.
 revision = '41d3e47edf4a'
-down_revision = '2c6c9833d839'
+down_revision = '58e808b69aec'
 
 from alembic import op
 import sqlalchemy as sa
@@ -42,8 +42,9 @@ destination_user_table = sa.sql.table('func_key_dest_user',
                                       sa.sql.column('destination_type_id'),
                                       sa.sql.column('user_id'))
 
-userfeatures_table_query = (sa.sql.select([userfeatures_table.c.id,
-                                     userfeatures_table.c.func_key_private_template_id]))
+userfeatures_table_query = (sa.sql.select(
+    [userfeatures_table.c.id,
+     userfeatures_table.c.func_key_private_template_id]))
 
 destination_user_table_query = (sa.sql.select([destination_user_table.c.func_key_id,
                                                destination_user_table.c.destination_type_id,

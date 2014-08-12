@@ -112,9 +112,9 @@ def _create_func_key():
 
 def _create_func_key_for_user(user_id):
     func_key_id = _create_func_key()
-    insert_query = (func_key_table
+    insert_query = (destination_user_table
                     .insert()
-                    .returning(func_key_table.c.id)
+                    .returning(destination_user_table.c.user_id)
                     .values(func_key_id=func_key_id,
                             user_id=user_id,
                             destination_type_id=DESTINATION_USER_ID))

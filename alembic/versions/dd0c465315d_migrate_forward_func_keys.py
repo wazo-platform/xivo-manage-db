@@ -17,10 +17,10 @@ import sqlalchemy as sa
 
 TYPE_SPEEDDIAL = 'speeddial'
 
-DESTINATION_SERVICE_ID = 5
-DESTINATION_SERVICE_NAME = 'service'
+DESTINATION_FORWARD_ID = 6
+DESTINATION_FORWARD_NAME = 'forward'
 
-SERVICE_TYPES = ('fwdrna',
+FORWARD_TYPES = ('fwdrna',
                  'fwdbusy',
                  'fwdunc')
 
@@ -41,11 +41,11 @@ func_key_table = sql.table('func_key',
                            sql.column('type_id'),
                            sql.column('destination_type_id'))
 
-destination_service_table = sql.table('func_key_dest_service',
+destination_forward_table = sql.table('func_key_dest_forward',
                                       sql.column('func_key_id'),
                                       sql.column('destination_type_id'),
                                       sql.column('extension_id'),
-                                      sql.column('argument'))
+                                      sql.column('number'))
 
 func_key_type_table = sql.table('func_key_type',
                                 sql.column('id'),
@@ -83,7 +83,7 @@ func_key_columns = (
     phonefunckey_table.c.fknum.label('position'),
     phonefunckey_table.c.label,
     phonefunckey_table.c.typevalextenumbers.label('extension_type'),
-    phonefunckey_table.c.exten.label('argument'),
+    phonefunckey_table.c.exten.label('number'),
     sql.cast(phonefunckey_table.c.supervision, sa.Boolean).label('blf'),
 )
 
@@ -93,31 +93,30 @@ old_func_key_columns = (
     func_key_mapping_table.c.position,
     func_key_mapping_table.c.blf,
     func_key_mapping_table.c.label,
-    destination_service_table.c.extension_id,
-    destination_service_table.c.argument,
+    destination_forward_table.c.extension_id,
+    destination_forward_table.c.number,
     extensions_table.c.typeval,
     user_table.c.id.label('user_id')
 )
 
 func_keys_query = (sql.select(func_key_columns)
                    .where(
-                       phonefunckey_table.c.typevalextenumbers.in_(SERVICE_TYPES)
+                       phonefunckey_table.c.typevalextenumbers.in_(FORWARD_TYPES)
                    ))
 
 
 old_func_keys_query = (sql.select(old_func_key_columns,
                                   from_obj=[
                                       func_key_mapping_table.join(
-                                          destination_service_table,
-                                          func_key_mapping_table.c.func_key_id == destination_service_table.c.func_key_id)
+                                          destination_forward_table,
+                                          func_key_mapping_table.c.func_key_id == destination_forward_table.c.func_key_id)
                                       .join(extensions_table,
-                                            destination_service_table.c.extension_id == extensions_table.c.id)
+                                            destination_forward_table.c.extension_id == extensions_table.c.id)
                                       .join(template_table,
                                             func_key_mapping_table.c.template_id == template_table.c.id)
                                       .join(user_table,
                                             template_table.c.id == user_table.c.func_key_private_template_id)
-                                  ])
-                       .where(extensions_table.c.typeval.in_(SERVICE_TYPES)))
+                                  ]))
 
 
 def upgrade():
@@ -138,7 +137,7 @@ def get_duplicate_func_keys():
 
     valid_fk_subq = (sql.select(columns)
                      .where(
-                         phonefunckey_table.c.typevalextenumbers.in_(SERVICE_TYPES))
+                         phonefunckey_table.c.typevalextenumbers.in_(FORWARD_TYPES))
                      .group_by(
                          phonefunckey_table.c.iduserfeatures,
                          phonefunckey_table.c.typevalextenumbers)
@@ -184,7 +183,7 @@ def migrate_func_keys():
     for row in op.get_bind().execute(func_keys_query):
         func_key_id = create_func_key()
         extension_id = get_extension_id_from_type(row.extension_type)
-        create_service_destination(func_key_id, extension_id, row.argument)
+        create_forward_destination(func_key_id, extension_id, row.number)
         create_mapping(func_key_id, row)
 
 
@@ -194,7 +193,7 @@ def create_func_key():
                     .insert()
                     .returning(func_key_table.c.id)
                     .values(type_id=speeddial_id,
-                            destination_type_id=DESTINATION_SERVICE_ID))
+                            destination_type_id=DESTINATION_FORWARD_ID))
 
     return op.get_bind().execute(insert_query).scalar()
 
@@ -217,14 +216,14 @@ def get_extension_id_from_type(extentype):
     ).scalar()
 
 
-def create_service_destination(func_key_id, extension_id, argument):
-    destination_query = (destination_service_table
+def create_forward_destination(func_key_id, extension_id, number):
+    destination_query = (destination_forward_table
                          .insert()
-                         .returning(destination_service_table.c.func_key_id)
+                         .returning(destination_forward_table.c.func_key_id)
                          .values(func_key_id=func_key_id,
-                                 destination_type_id=DESTINATION_SERVICE_ID,
+                                 destination_type_id=DESTINATION_FORWARD_ID,
                                  extension_id=extension_id,
-                                 argument=argument))
+                                 number=number))
 
     op.get_bind().execute(destination_query)
 
@@ -243,7 +242,7 @@ def create_mapping(func_key_id, func_key_row):
                      .returning(func_key_mapping_table.c.func_key_id)
                      .values(func_key_id=func_key_id,
                              template_id=template_id,
-                             destination_type_id=DESTINATION_SERVICE_ID,
+                             destination_type_id=DESTINATION_FORWARD_ID,
                              label=func_key_row.label,
                              position=func_key_row.position,
                              blf=func_key_row.blf))
@@ -255,7 +254,7 @@ def delete_old_func_keys():
     delete_query = (phonefunckey_table
                     .delete()
                     .where(phonefunckey_table.c.typevalextenumbers
-                           .in_(SERVICE_TYPES)))
+                           .in_(FORWARD_TYPES)))
 
     op.get_bind().execute(delete_query)
 
@@ -264,7 +263,7 @@ def downgrade():
     for row in op.get_bind().execute(old_func_keys_query):
         create_old_func_keys(row)
         delete_mapping(row.func_key_id, row.template_id)
-        delete_dest_service(row.func_key_id)
+        delete_dest_forward(row.func_key_id)
         delete_func_key(row.func_key_id)
 
 
@@ -278,7 +277,7 @@ def create_old_func_keys(row):
            'typeextenumbersright': None,
            'typevalextenumbersright': None,
            'label': row.label,
-           'exten': row.argument,
+           'exten': row.number,
            'supervision': supervision}
 
     op.bulk_insert(phonefunckey_table, [row])
@@ -294,10 +293,9 @@ def delete_mapping(func_key_id, template_id):
     op.get_bind().execute(query)
 
 
-def delete_dest_service(func_key_id):
-    query = (destination_service_table
-             .delete()
-             .where(destination_service_table.c.func_key_id == func_key_id))
+def delete_dest_forward(func_key_id):
+    query = (destination_forward_table
+             .delete())
 
     op.get_bind().execute(query)
 
@@ -305,6 +303,6 @@ def delete_dest_service(func_key_id):
 def delete_func_key(func_key_id):
     query = (func_key_table
              .delete()
-             .where(func_key_table.c.id == func_key_id))
+             .where(func_key_table.c.destination_type_id == DESTINATION_FORWARD_ID))
 
     op.get_bind().execute(query)

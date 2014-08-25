@@ -316,7 +316,8 @@ INSERT INTO "func_key_destination_type" (id, name) VALUES (1, 'user'),
                                                           (2, 'group'),
                                                           (3, 'queue'),
                                                           (4, 'conference'),
-                                                          (5, 'service');
+                                                          (5, 'service'),
+                                                          (6, 'forward');
 
 
 INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);

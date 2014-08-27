@@ -35,7 +35,7 @@ def upgrade():
 
     qry = """
     ALTER TABLE usersip
-    ADD CONSTRAINT usersip_directmedia
+    ADD CONSTRAINT usersip_directmedia_check
     CHECK ( directmedia IN
         ('no', 'yes', 'nonat', 'update', 'update,nonat', 'outgoing')
     );
@@ -58,7 +58,7 @@ def downgrade():
 
     qry = """
     ALTER TABLE usersip
-    DROP CONSTRAINT usersip_directmedia;
+    DROP CONSTRAINT IF EXISTS usersip_directmedia_check;
     """
     op.execute(qry)
 

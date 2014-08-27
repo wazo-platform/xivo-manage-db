@@ -31,7 +31,8 @@ def upgrade():
     op.create_check_constraint(
         "usersip_directmedia_check",
         "usersip",
-        "directmedia IN ('no', 'yes', 'nonat', 'update', 'update,nonat', 'outgoing')"
+        usersip_table.c.directmedia.in_(
+            ['no', 'yes', 'nonat', 'update', 'update,nonat', 'outgoing'])
     )
 
     old_type.drop(op.get_bind(), checkfirst=False)

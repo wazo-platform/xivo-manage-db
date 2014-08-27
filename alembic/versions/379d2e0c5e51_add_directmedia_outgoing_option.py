@@ -1,13 +1,13 @@
 """add directmedia outgoing option
 
 Revision ID: 379d2e0c5e51
-Revises: 50cfb10bd01d
-XiVO Version: <version>
+Revises: 1888ca44e08f
+XiVO Version: 14.16
 
 """
 
 revision = '379d2e0c5e51'
-down_revision = '50cfb10bd01d'
+down_revision = '1888ca44e08f'
 
 
 from alembic import op

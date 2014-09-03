@@ -2,7 +2,7 @@
 
 Revision ID: 5450dd40916e
 Revises: 2c6c9833d839
-XiVO Version: 14.14
+XiVO Version: 14.17
 
 """
 
@@ -13,10 +13,6 @@ down_revision = '2c6c9833d839'
 from alembic import op
 import sqlalchemy as sa
 
-
-call_completion_table = sa.sql.table(
-    'call_completion',
-)
 
 extensions_table = sa.sql.table(
     'extensions',
@@ -29,25 +25,10 @@ extensions_table = sa.sql.table(
 
 
 def upgrade():
-    _create_cc_table()
-    _insert_cc_extensions()
+    _insert_cc_extension()
 
 
-def _create_cc_table():
-    op.create_table(
-        'call_completion',
-        sa.Column('id', sa.Integer),
-        sa.Column('enabled', sa.Boolean, nullable=False, server_default='FALSE'),
-        sa.Column('cc_offer_timer', sa.Integer, nullable=False, server_default='30'),
-        sa.Column('ccbs_available_timer', sa.Integer, nullable=False, server_default='900'),
-        sa.Column('ccnr_available_timer', sa.Integer, nullable=False, server_default='900'),
-        sa.Column('cc_recall_timer', sa.Integer, nullable=False, server_default='30'),
-        sa.PrimaryKeyConstraint('id'),
-    )
-    op.execute(call_completion_table.insert().values())
-
-
-def _insert_cc_extensions():
+def _insert_cc_extension():
     connection = op.get_bind()
     qry = 'SELECT exten, context FROM extensions WHERE context=\'xivo-features\' and exten=\'*40\''
     res = connection.execute(qry).fetchall()
@@ -64,18 +45,13 @@ def _insert_cc_extensions():
 
 
 def downgrade():
-    _drop_cc_table()
-    _delete_cc_extensions()
+    _delete_cc_extension()
 
 
-def _drop_cc_table():
-    op.drop_table('call_completion')
-
-
-def _delete_cc_extensions():
+def _delete_cc_extension():
     op.execute(extensions_table
-            .delete()
-            .where(sa.sql.and_(
-                extensions_table.c.type == 'extenfeatures',
-                extensions_table.c.typeval == 'cctoggle',
-            )))
+               .delete()
+               .where(sa.sql.and_(
+                   extensions_table.c.type == 'extenfeatures',
+                   extensions_table.c.typeval == 'cctoggle',
+               )))

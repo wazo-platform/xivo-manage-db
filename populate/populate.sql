@@ -277,8 +277,7 @@ INSERT INTO "extensions" VALUES (DEFAULT,1,'xivo-features','*92','extenfeatures'
 INSERT INTO "extensions" VALUES (DEFAULT,1,'xivo-features','_*92.','extenfeatures','vmuserpurgeslt');
 INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*96.','extenfeatures','vmuserslt');
 INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*11.','extenfeatures','paging');
-INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','*40','extenfeatures','ccrequest');
-INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','*41','extenfeatures','cccancel');
+INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','*40','extenfeatures','cctoggle');
 
 
 INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','parkext','700');

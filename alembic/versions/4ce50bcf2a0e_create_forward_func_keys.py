@@ -1,14 +1,14 @@
 """create forward func keys
 
 Revision ID: 4ce50bcf2a0e
-Revises: 41d3e47edf4a
+Revises: 379d2e0c5e51
 XiVO Version: <version>
 
 """
 
 # revision identifiers, used by Alembic.
 revision = '4ce50bcf2a0e'
-down_revision = '50cfb10bd01d'
+down_revision = '379d2e0c5e51'
 
 from alembic import op
 import sqlalchemy as sa

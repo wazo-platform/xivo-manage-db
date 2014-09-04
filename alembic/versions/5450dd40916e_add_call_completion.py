@@ -1,14 +1,14 @@
 """add call completion
 
 Revision ID: 5450dd40916e
-Revises: 2c6c9833d839
+Revises: dd0c465315d
 XiVO Version: 14.17
 
 """
 
 # revision identifiers, used by Alembic.
 revision = '5450dd40916e'
-down_revision = '2c6c9833d839'
+down_revision = 'dd0c465315d'
 
 from alembic import op
 import sqlalchemy as sa

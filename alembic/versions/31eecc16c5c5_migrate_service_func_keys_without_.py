@@ -110,8 +110,8 @@ old_func_keys_query = (sa.sql.select([func_key_mapping_table.c.func_key_id,
                                          .join(template_table,
                                                func_key_mapping_table.c.template_id == template_table.c.id)
                                          .join(user_table,
-                                               template_table.c.id == user_table.c.func_key_private_template_id)]
-                                     ))
+                                               template_table.c.id == user_table.c.func_key_private_template_id)])
+                       .where(extensions_table.c.typeval.in_(SERVICE_TYPES)))
 
 
 def _delete_duplicate_fks():
@@ -254,8 +254,8 @@ def downgrade():
     for row in op.get_bind().execute(old_func_keys_query):
         _create_old_func_keys(row)
         _delete_mapping(row.func_key_id, row.template_id)
-    _delete_dest_service()
-    _delete_func_key()
+        _delete_dest_service(row.func_key_id)
+        _delete_func_key(row.func_key_id)
 
 
 def _create_old_func_keys(row):
@@ -283,18 +283,18 @@ def _delete_mapping(func_key_id, template_id):
     op.get_bind().execute(query)
 
 
-def _delete_dest_service():
+def _delete_dest_service(func_key_id):
     query = (destination_service_table
              .delete()
              .where(
-                 destination_service_table.c.destination_type_id == DESTINATION_SERVICE_ID))
+                 destination_service_table.c.func_key_id == func_key_id))
 
     op.get_bind().execute(query)
 
 
-def _delete_func_key():
+def _delete_func_key(func_key_id):
     query = (func_key_table
              .delete()
-             .where(func_key_table.c.destination_type_id == DESTINATION_SERVICE_ID))
+             .where(func_key_table.c.id == func_key_id))
 
     op.get_bind().execute(query)

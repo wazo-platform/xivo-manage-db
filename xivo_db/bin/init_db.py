@@ -18,7 +18,7 @@
 import argparse
 import logging
 
-from xivo_dao import alchemy # imports all the sqlalchemy model
+from xivo_dao import alchemy  # imports all the sqlalchemy model
 from xivo_dao.helpers import db_manager
 from xivo_dao.helpers.db_manager import Base
 from xivo_db import alembic
@@ -27,9 +27,9 @@ from xivo_db import postgres
 logger = logging.getLogger(__name__)
 
 
-def expensive_setup():
+@db_manager.daosession
+def expensive_setup(session):
     logger.info('Connecting to database...')
-    session = db_manager.DaoSession()
     engine = session.bind
     logger.info('Connected to database')
     return engine

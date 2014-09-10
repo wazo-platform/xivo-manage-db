@@ -3,9 +3,6 @@ BEGIN;
 INSERT INTO "agentgroup" VALUES (DEFAULT,1,'default','',0,0,'');
 
 
-INSERT INTO "call_completion" DEFAULT VALUES;
-
-
 INSERT INTO "contexttype" VALUES(DEFAULT, 'internal', 0, 0, '');
 INSERT INTO "contexttype" VALUES(DEFAULT, 'incall', 0, 0, '');
 INSERT INTO "contexttype" VALUES(DEFAULT, 'outcall', 0, 0, '');

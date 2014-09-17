@@ -1,4 +1,4 @@
-"""migrate func key parking
+"""migrate func key park position
 
 Revision ID: 4c13318f6975
 Revises: a3e7fd7b670
@@ -40,10 +40,10 @@ func_key_table = sql.table('func_key',
                            sql.column('type_id'),
                            sql.column('destination_type_id'))
 
-destination_parking_table = sql.table('func_key_dest_parking',
-                                      sql.column('func_key_id'),
-                                      sql.column('destination_type_id'),
-                                      sql.column('park_position'))
+dest_park_position_table = sql.table('func_key_dest_park_position',
+                                     sql.column('func_key_id'),
+                                     sql.column('destination_type_id'),
+                                     sql.column('park_position'))
 
 func_key_type_table = sql.table('func_key_type',
                                 sql.column('id'),
@@ -82,7 +82,7 @@ old_func_key_columns = (
     func_key_mapping_table.c.position,
     func_key_mapping_table.c.blf,
     func_key_mapping_table.c.label,
-    destination_parking_table.c.park_position,
+    dest_park_position_table.c.park_position,
     user_table.c.id.label('user_id')
 )
 
@@ -93,8 +93,8 @@ func_keys_query = (sql.select(func_key_columns)
 old_func_keys_query = (sql.select(old_func_key_columns,
                                   from_obj=[
                                       func_key_mapping_table.join(
-                                          destination_parking_table,
-                                          func_key_mapping_table.c.func_key_id == destination_parking_table.c.func_key_id)
+                                          dest_park_position_table,
+                                          func_key_mapping_table.c.func_key_id == dest_park_position_table.c.func_key_id)
                                       .join(template_table,
                                             func_key_mapping_table.c.template_id == template_table.c.id)
                                       .join(user_table,
@@ -190,9 +190,9 @@ def get_speeddial_id():
 
 
 def create_parking_destination(func_key_id, park_position):
-    destination_query = (destination_parking_table
+    destination_query = (dest_park_position_table
                          .insert()
-                         .returning(destination_parking_table.c.func_key_id)
+                         .returning(dest_park_position_table.c.func_key_id)
                          .values(func_key_id=func_key_id,
                                  park_position=park_position))
 
@@ -233,7 +233,7 @@ def downgrade():
     for row in op.get_bind().execute(old_func_keys_query):
         create_old_func_keys(row)
         delete_mapping(row.func_key_id, row.template_id)
-        delete_dest_parking(row.func_key_id)
+        delete_dest_park_position(row.func_key_id)
         delete_func_key(row.func_key_id)
 
 
@@ -263,8 +263,8 @@ def delete_mapping(func_key_id, template_id):
     op.get_bind().execute(query)
 
 
-def delete_dest_parking(func_key_id):
-    query = (destination_parking_table
+def delete_dest_park_position(func_key_id):
+    query = (dest_park_position_table
              .delete())
 
     op.get_bind().execute(query)

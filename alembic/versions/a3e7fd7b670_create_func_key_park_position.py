@@ -1,4 +1,4 @@
-"""create func key parking
+"""create func key park position
 
 Revision ID: a3e7fd7b670
 Revises: 5450dd40916e
@@ -27,7 +27,7 @@ def upgrade():
     op.bulk_insert(destination_type_table, [parking_type_row])
 
     op.create_table(
-        'func_key_dest_parking',
+        'func_key_dest_park_position',
         sa.Column('func_key_id', sa.Integer),
         sa.Column('destination_type_id',
                   sa.Integer,
@@ -44,7 +44,7 @@ def upgrade():
 
 
 def downgrade():
-    op.drop_table('func_key_dest_parking')
+    op.drop_table('func_key_dest_park_position')
 
     delete_query = (destination_type_table
                     .delete()

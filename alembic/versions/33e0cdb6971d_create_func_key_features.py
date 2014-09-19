@@ -81,7 +81,7 @@ def create_dest_features_table():
                   sa.CheckConstraint('destination_type_id = %d' % FEATURES_DESTINATION_ID),
                   server_default=str(FEATURES_DESTINATION_ID)),
         sa.Column('features_id', sa.Integer),
-        sa.PrimaryKeyConstraint('func_key_id', 'destination_type_id'),
+        sa.PrimaryKeyConstraint('func_key_id', 'destination_type_id', 'features_id'),
         sa.ForeignKeyConstraint(['func_key_id', 'destination_type_id'],
                                 ['func_key.id', 'func_key.destination_type_id']),
         sa.ForeignKeyConstraint(['features_id'], ['features.id'])

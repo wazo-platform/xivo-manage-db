@@ -15,7 +15,7 @@ import sqlalchemy as sa
 
 
 PARKING_TYPE_ID = 7
-PARKING_TYPE_NAME = 'parking'
+PARKING_TYPE_NAME = 'park_position'
 
 destination_type_table = sa.sql.table('func_key_destination_type',
                                       sa.sql.column('id'),

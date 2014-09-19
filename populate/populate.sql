@@ -320,7 +320,7 @@ INSERT INTO "func_key_destination_type" (id, name) VALUES (1, 'user'),
                                                           (4, 'conference'),
                                                           (5, 'service'),
                                                           (6, 'forward'),
-                                                          (7, 'parking'),
+                                                          (7, 'park_position'),
                                                           (8, 'features');
 
 

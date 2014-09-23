@@ -20,6 +20,7 @@ TYPE_SPEEDDIAL = 'speeddial'
 DESTINATION_PARKING_ID = 7
 DESTINATION_PARKING_NAME = 'park_position'
 
+PARKING_CATEGORY = 'general'
 PARKING_TYPE = 'parkpos'
 
 
@@ -67,6 +68,10 @@ destination_type_table = sql.table('func_key_destination_type',
                                    sql.column('id'),
                                    sql.column('name'))
 
+features_table = sql.table('features',
+                           sql.column('category'),
+                           sql.column('var_name'),
+                           sql.column('var_val'))
 
 func_key_columns = (
     phonefunckey_table.c.iduserfeatures.label('user_id'),
@@ -104,13 +109,17 @@ old_func_keys_query = (sql.select(old_func_key_columns,
 
 def upgrade():
     delete_duplicate_fks()
+    delete_empty_park_positions()
+    delete_invalid_park_positions()
     migrate_func_keys()
     delete_old_func_keys()
 
 
 def delete_duplicate_fks():
+    template = '[MIGRATE_FK] : Deleting func key for user "%s" (fk position %s with park position %s)'
     for row in get_duplicate_func_keys():
-        delete_duplicate_fk(row.iduserfeatures, row.exten, row.fknum)
+        message = template % (row.iduserfeatures, row.exten, row.fknum)
+        delete_fk(row, message)
 
 
 def get_duplicate_func_keys():
@@ -148,18 +157,77 @@ def get_duplicate_func_keys():
     return op.get_bind().execute(duplicate_fk_query)
 
 
-def delete_duplicate_fk(iduserfeatures, exten, fknum):
-    print('[MIGRATE_FK] : Deleting func key for user "%s" (fk position %s with park position %s)' %
-          (iduserfeatures, fknum, exten))
+def delete_fk(row, message):
+    print(message)
 
     query = (phonefunckey_table
              .delete()
-             .where(sql.and_(
-                 phonefunckey_table.c.iduserfeatures == iduserfeatures,
-                 phonefunckey_table.c.exten == exten,
-                 phonefunckey_table.c.fknum == fknum)))
+             .where(
+                 sql.and_(
+                     phonefunckey_table.c.iduserfeatures == row.iduserfeatures,
+                     phonefunckey_table.c.fknum == row.fknum))
+             )
 
     op.get_bind().execute(query)
+
+
+def delete_empty_park_positions():
+    template = '[MIGRATE_FK] : Deleting func key for user "%s" (fk position %s with empty park position)'
+
+    columns = (phonefunckey_table.c.iduserfeatures,
+               phonefunckey_table.c.fknum)
+
+    query = (sql.select(columns)
+             .where(
+                 sql.and_(
+                     phonefunckey_table.c.typevalextenumbers == PARKING_TYPE,
+                     phonefunckey_table.c.exten == None))
+             )
+
+    for row in op.get_bind().execute(query):
+        message = template % (row.iduserfeatures, row.fknum)
+        delete_fk(row, message)
+
+
+def delete_invalid_park_positions():
+    template = '[MIGRATE_FK] : Deleting func key for user "%s" (fk position %s with invalid park position)'
+
+    rows = get_invalid_park_positions()
+
+    for row in rows:
+        message = template % (row.iduserfeatures, row.fknum)
+        delete_fk(row, message)
+
+
+def get_invalid_park_positions():
+    range_query = (sql.select(
+        [features_table.c.var_val])
+        .where(
+            sql.and_(
+                features_table.c.category == PARKING_CATEGORY,
+                features_table.c.var_name == PARKING_TYPE))
+    )
+
+    park_range = op.get_bind().execute(range_query).scalar()
+
+    min_park, max_park = park_range.split('-')
+
+    columns = (phonefunckey_table.c.iduserfeatures,
+               phonefunckey_table.c.fknum)
+
+    query = (sql.select(columns)
+             .where(
+                 sql.and_(
+                     phonefunckey_table.c.typevalextenumbers == PARKING_TYPE,
+                     sql.not_(
+                         sql.cast(
+                             phonefunckey_table.c.exten, sa.Integer)
+                         .between(
+                             int(min_park),
+                             int(max_park)))))
+             )
+
+    return op.get_bind().execute(query)
 
 
 def migrate_func_keys():

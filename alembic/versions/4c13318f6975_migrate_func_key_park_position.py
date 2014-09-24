@@ -117,7 +117,7 @@ def upgrade():
 def delete_duplicate_fks():
     template = '[MIGRATE_FK] : Deleting func key for user "%s" (fk position %s with park position %s)'
     for row in get_duplicate_func_keys():
-        message = template % (row.iduserfeatures, row.exten, row.fknum)
+        message = template % (row.iduserfeatures, row.fknum, row.exten)
         delete_fk(row, message)
 
 

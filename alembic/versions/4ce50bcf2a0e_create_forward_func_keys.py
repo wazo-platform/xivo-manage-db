@@ -2,7 +2,6 @@
 
 Revision ID: 4ce50bcf2a0e
 Revises: 379d2e0c5e51
-XiVO Version: <version>
 
 """
 

@@ -2,7 +2,6 @@
 
 Revision ID: 1888ca44e08f
 Revises: 50cfb10bd01d
-XiVO Version: <version>
 
 """
 

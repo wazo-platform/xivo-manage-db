@@ -2,7 +2,6 @@
 
 Revision ID: b6bb28f27f2
 Revises: 27f83f39e031
-XiVO Version: 14.11
 
 """
 

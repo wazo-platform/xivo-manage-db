@@ -2,7 +2,6 @@
 
 Revision ID: 148a96399123
 Revises: 1d05ffb14525
-XiVO Version: <version>
 
 """
 

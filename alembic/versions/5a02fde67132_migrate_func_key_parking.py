@@ -18,7 +18,6 @@ from sqlalchemy import sql
 TYPE_FORWARD = 'forward'
 
 DESTINATION_FEATURES_ID = 8
-DESTINATION_FEATURES_NAME = 'features'
 
 PARKING_TYPE = 'parkext'
 

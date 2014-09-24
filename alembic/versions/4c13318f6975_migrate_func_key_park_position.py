@@ -18,7 +18,6 @@ from sqlalchemy import sql
 TYPE_SPEEDDIAL = 'speeddial'
 
 DESTINATION_PARKING_ID = 7
-DESTINATION_PARKING_NAME = 'park_position'
 
 PARKING_CATEGORY = 'general'
 PARKING_TYPE = 'parkpos'

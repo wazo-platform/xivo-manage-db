@@ -310,8 +310,9 @@ INSERT INTO "features" VALUES (DEFAULT,1,0,0,'features.conf','featuremap','autom
 INSERT INTO "features" VALUES (DEFAULT,1,0,0,'features.conf','featuremap','atxfer','*2');
 
 
-INSERT INTO "func_key_type" ("name") VALUES ('speeddial'),
-                                            ('transfer');
+INSERT INTO "func_key_type" ("id", "name") VALUES (1, 'speeddial'),
+                                                  (2, 'transfer'),
+                                                  (3, 'dtmf');
 
 
 INSERT INTO "func_key_destination_type" (id, name) VALUES (1, 'user'),

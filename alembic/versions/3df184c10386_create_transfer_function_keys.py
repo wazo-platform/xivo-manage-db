@@ -1,13 +1,13 @@
 """create transfer function keys
 
 Revision ID: 3df184c10386
-Revises: 234745874c55
+Revises: 18e40e519e1b
 
 """
 
 # revision identifiers, used by Alembic.
 revision = '3df184c10386'
-down_revision = '234745874c55'
+down_revision = '18e40e519e1b'
 
 from alembic import op
 import sqlalchemy as sa

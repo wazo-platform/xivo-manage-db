@@ -310,8 +310,11 @@ INSERT INTO "features" VALUES (DEFAULT,1,0,0,'features.conf','featuremap','autom
 INSERT INTO "features" VALUES (DEFAULT,1,0,0,'features.conf','featuremap','atxfer','*2');
 
 
-INSERT INTO "func_key_type" ("name") VALUES ('speeddial'),
-                                            ('transfer');
+INSERT INTO "func_key_type" ("id", "name") VALUES (1, 'speeddial'),
+                                                  (2, 'transfer'),
+                                                  (3, 'dtmf');
+
+SELECT setval('func_key_type_id_seq', (SELECT MAX(id) FROM func_key_type));
 
 
 INSERT INTO "func_key_destination_type" (id, name) VALUES (1, 'user'),
@@ -384,7 +387,25 @@ VALUES (
                                 AND var_name = 'parkext')
 );
 
+INSERT INTO "func_key" (type_id, destination_type_id) VALUES (3, 8);
+INSERT INTO "func_key_dest_features" (func_key_id, destination_type_id, features_id)
+VALUES (
+    currval('func_key_id_seq'),
+    8,
+    (SELECT id FROM features WHERE filename = 'features.conf'
+                                AND category = 'featuremap'
+                                AND var_name = 'blindxfer')
+);
 
+INSERT INTO "func_key" (type_id, destination_type_id) VALUES (3, 8);
+INSERT INTO "func_key_dest_features" (func_key_id, destination_type_id, features_id)
+VALUES (
+    currval('func_key_id_seq'),
+    8,
+    (SELECT id FROM features WHERE filename = 'features.conf'
+                                AND category = 'featuremap'
+                                AND var_name = 'atxfer')
+);
 
 INSERT INTO "musiconhold" VALUES (DEFAULT,0,0,0,'musiconhold.conf','default','mode','files');
 INSERT INTO "musiconhold" VALUES (DEFAULT,0,0,1,'musiconhold.conf','default','application','');

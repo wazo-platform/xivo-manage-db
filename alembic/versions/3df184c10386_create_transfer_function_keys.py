@@ -14,6 +14,8 @@ import sqlalchemy as sa
 
 
 DTMF_TYPE_NAME = 'dtmf'
+DTMF_TYPE_ID = 3
+
 FEATURES_TYPE_NAME = 'features'
 
 BLIND_TRANSFER_TYPE = 'blindxfer'
@@ -54,9 +56,13 @@ def insert_dtmf_type():
     query = (func_key_type_table
              .insert()
              .returning(func_key_type_table.c.id)
-             .values(name=DTMF_TYPE_NAME))
+             .values(id=DTMF_TYPE_ID,
+                     name=DTMF_TYPE_NAME))
 
-    return op.get_bind().execute(query).scalar()
+    dtmf_id = op.get_bind().execute(query).scalar()
+    op.get_bind().execute("SELECT setval('func_key_type_id_seq', (SELECT MAX(id) FROM func_key_type))")
+
+    return dtmf_id
 
 
 def find_features_type():

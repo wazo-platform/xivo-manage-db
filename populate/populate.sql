@@ -314,6 +314,8 @@ INSERT INTO "func_key_type" ("id", "name") VALUES (1, 'speeddial'),
                                                   (2, 'transfer'),
                                                   (3, 'dtmf');
 
+SELECT setval('func_key_type_id_seq', (SELECT MAX(id) FROM func_key_type));
+
 
 INSERT INTO "func_key_destination_type" (id, name) VALUES (1, 'user'),
                                                           (2, 'group'),

@@ -7,7 +7,7 @@ Revises: 18e40e519e1b
 
 # revision identifiers, used by Alembic.
 revision = '3df184c10386'
-down_revision = '18e40e519e1b'
+down_revision = '27d9ea4b21d0'
 
 from alembic import op
 import sqlalchemy as sa

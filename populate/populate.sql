@@ -322,7 +322,8 @@ INSERT INTO "func_key_destination_type" (id, name) VALUES (1, 'user'),
                                                           (6, 'forward'),
                                                           (7, 'park_position'),
                                                           (8, 'features'),
-                                                          (9, 'paging');
+                                                          (9, 'paging'),
+                                                          (10, 'custom');
 
 
 INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);

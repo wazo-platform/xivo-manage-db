@@ -211,8 +211,10 @@ def get_invalid_pagings():
 
     query = (sql.select(columns)
              .where(
-                 phonefunckey_table.c.typevalextenumbersright.notin_(
-                     paging_query))
+                 sql.and_(
+                     phonefunckey_table.c.typevalextenumbers == PAGING_TYPE,
+                     phonefunckey_table.c.typevalextenumbersright.notin_(
+                         paging_query)))
              )
 
     return op.get_bind().execute(query)

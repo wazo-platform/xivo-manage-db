@@ -13,9 +13,16 @@ from alembic import op
 import sqlalchemy as sa
 
 
+groupfeatures_table = sa.sql.table('groupfeatures',
+                                   sa.Column('timeout', sa.Integer))
+
+
 def upgrade():
     op.alter_column('groupfeatures', 'timeout', server_default=None, nullable=True)
 
 
 def downgrade():
+    op.execute(groupfeatures_table.update().
+               where(groupfeatures_table.c.timeout == None).
+               values(timeout='0'))
     op.alter_column('groupfeatures', 'timeout', server_default='0', nullable=False)

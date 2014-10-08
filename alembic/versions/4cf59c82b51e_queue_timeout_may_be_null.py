@@ -1,13 +1,13 @@
 """queue timeout may be null
 
 Revision ID: 4cf59c82b51e
-Revises: 234745874c55
+Revises: f485ac649eb
 
 """
 
 # revision identifiers, used by Alembic.
 revision = '4cf59c82b51e'
-down_revision = '234745874c55'
+down_revision = 'f485ac649eb'
 
 from alembic import op
 import sqlalchemy as sa

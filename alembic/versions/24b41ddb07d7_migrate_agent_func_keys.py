@@ -90,8 +90,10 @@ def create_agent_func_keys():
 
 
 def delete_duplicate_agents():
+    template = '[MIGRATE_FK] : Deleting duplicate agent func key for user "%s" (fk position %s)'
     for row in get_duplicate_agents():
-        delete_duplicate_fk(row.iduserfeatures, row.fknum)
+        message = template % (row.iduserfeatures, row.fknum)
+        delete_fk(row.iduserfeatures, row.fknum, message)
 
 
 def get_duplicate_agents():
@@ -124,9 +126,8 @@ def get_duplicate_agents():
     return op.get_bind().execute(duplicate_fk_query)
 
 
-def delete_duplicate_fk(iduserfeatures, fknum):
-    print('[MIGRATE_FK] : Deleting duplicate agent func key for user "%s" (fk position %s)' %
-          (iduserfeatures, fknum))
+def delete_fk(iduserfeatures, fknum, message):
+    print(message)
 
     query = (phonefunckey_table
              .delete()
@@ -138,10 +139,19 @@ def delete_duplicate_fk(iduserfeatures, fknum):
 
 
 def delete_missing_agents():
+    template = '[MIGRATE_FK] : Deleting missing agent func key for user "%s" (fk position %s)'
+    for row in get_missing_agents():
+        message = template % (row.iduserfeatures, row.fknum)
+        delete_fk(row.iduserfeatures, row.fknum, message)
+
+
+def get_missing_agents():
     agent_query = sql.select([agent_table.c.id])
 
-    query = (phonefunckey_table
-             .delete()
+    columns = (phonefunckey_table.c.iduserfeatures,
+               phonefunckey_table.c.fknum)
+
+    query = (sql.select(columns)
              .where(
                  sql.and_(
                      phonefunckey_table.c.typevalextenumbers.in_(AGENT_TYPES),
@@ -149,7 +159,7 @@ def delete_missing_agents():
                         .notin_(agent_query)))
              )
 
-    op.get_bind().execute(query)
+    return op.get_bind().execute(query)
 
 
 def migrate_func_keys():

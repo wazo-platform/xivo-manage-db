@@ -150,7 +150,7 @@ def delete_duplicate_bsfilters():
 
 def get_duplicate_bsfilters():
     duplicate_columns = (phonefunckey_table.c.iduserfeatures,
-                         phonefunckey_table.c.typevalextenumbers,
+                         phonefunckey_table.c.typevalextenumbersright,
                          sa.func.min(phonefunckey_table.c.fknum).label("first_position"))
 
     duplicate_query = (sql.select(duplicate_columns)

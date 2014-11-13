@@ -1,13 +1,13 @@
 """create func key bsfilter
 
 Revision ID: 11b792bcc775
-Revises: 24b41ddb07d7
+Revises: 3d22f40558d1
 
 """
 
 # revision identifiers, used by Alembic.
 revision = '11b792bcc775'
-down_revision = '24b41ddb07d7'
+down_revision = '3d22f40558d1'
 
 from alembic import op
 import sqlalchemy as sa

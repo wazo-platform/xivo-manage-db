@@ -63,6 +63,13 @@ destination_type_table = sql.table('func_key_destination_type',
                                    sql.column('id'),
                                    sql.column('name'))
 
+callfilter_table = sql.table('callfilter',
+                             sql.column('id'),
+                             sql.column('callfilterid'),
+                             sql.column('type'),
+                             sql.column('typeval'),
+                             sql.column('bstype'))
+
 callfiltermember_table = sql.table('callfiltermember',
                                    sql.column('id'),
                                    sql.column('callfilterid'),
@@ -72,11 +79,41 @@ callfiltermember_table = sql.table('callfiltermember',
 
 
 def upgrade():
+    delete_bsfilters_without_bosses()
     delete_missing_bsfilters()
     delete_duplicate_bsfilters()
     create_bsfilter_func_keys()
     migrate_func_keys()
     delete_old_func_keys()
+
+
+def delete_bsfilters_without_bosses():
+    bsfilter_ids = get_bsfilter_ids()
+    boss_bsfilter_ids = get_bsfilters_with_bosses()
+    filters_without_bosses = bsfilter_ids - boss_bsfilter_ids
+
+    for bsfilter_id in filters_without_bosses:
+        dissociate_bsfilter(bsfilter_id)
+
+
+def get_bsfilter_ids():
+    query = sql.select([callfilter_table.c.id])
+    return set(row.id for row in op.get_bind().execute(query))
+
+
+def get_bsfilters_with_bosses():
+    query = (sql.select([callfiltermember_table.c.callfilterid])
+             .where(callfiltermember_table.c.bstype == BOSS_TYPE))
+    return set(row.callfilterid for row in op.get_bind().execute(query))
+
+
+def dissociate_bsfilter(bsfilter_id):
+    print('[MIGRATE_FK] : Deleting all members of bsfilter with id %s' % bsfilter_id)
+    query = (callfiltermember_table
+             .delete()
+             .where(callfiltermember_table.c.callfilterid == bsfilter_id))
+
+    op.get_bind().execute(query)
 
 
 def delete_missing_bsfilters():

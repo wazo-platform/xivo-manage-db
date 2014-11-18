@@ -88,33 +88,34 @@ def upgrade():
 
 
 def delete_bsfilters_without_bosses():
-    bsfilter_ids = get_bsfilter_ids()
-    boss_bsfilter_ids = get_bsfilters_with_bosses()
-    filters_without_bosses = bsfilter_ids - boss_bsfilter_ids
-
-    for bsfilter_id in filters_without_bosses:
-        dissociate_bsfilter(bsfilter_id)
+    for bsfilter_id in get_bsfilters_without_bosses():
+        delete_bsfilter(bsfilter_id)
 
 
-def get_bsfilter_ids():
-    query = sql.select([callfilter_table.c.id])
-    return set(row.id for row in op.get_bind().execute(query))
+def get_bsfilters_without_bosses():
+    bsfilter_ids = sql.select([callfilter_table.c.id])
+
+    bsfilter_with_bosses_ids = (sql.select([callfiltermember_table.c.callfilterid])
+                                .where(callfiltermember_table.c.bstype == BOSS_TYPE))
+
+    bsfilters_without_bosses = bsfilter_ids.except_(bsfilter_with_bosses_ids)
+
+    return [row.id for row in op.get_bind().execute(bsfilters_without_bosses)]
 
 
-def get_bsfilters_with_bosses():
-    query = (sql.select([callfiltermember_table.c.callfilterid])
-             .where(callfiltermember_table.c.bstype == BOSS_TYPE))
-    return set(row.callfilterid for row in op.get_bind().execute(query))
-
-
-def dissociate_bsfilter(bsfilter_id):
-    print('[MIGRATE_FK] : Deleting all members of bsfilter with id %s' % bsfilter_id)
+def delete_bsfilter(bsfilter_id):
+    print('[MIGRATE_FK] : Deleting invalid bsfilter with id %s' % bsfilter_id)
     query = (callfiltermember_table
              .delete()
              .where(callfiltermember_table.c.callfilterid == bsfilter_id))
 
     op.get_bind().execute(query)
 
+    query = (callfilter_table
+             .delete()
+             .where(callfilter_table.c.id == bsfilter_id))
+
+    op.get_bind().execute(query)
 
 def delete_missing_bsfilter_funckeys():
     template = '[MIGRATE_FK] : Deleting missing bsfilter func key for user "%s" (fk position %s)'

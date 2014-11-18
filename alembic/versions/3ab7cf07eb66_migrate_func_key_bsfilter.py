@@ -417,6 +417,8 @@ def downgrade():
         create_old_func_key(row)
         delete_mapping(row.func_key_id, row.template_id)
 
+    delete_bsfilter_func_keys()
+
 
 def get_old_boss_func_keys():
     columns = (
@@ -500,5 +502,17 @@ def delete_mapping(func_key_id, template_id):
              .where(sql.and_(
                  func_key_mapping_table.c.func_key_id == func_key_id,
                  func_key_mapping_table.c.template_id == template_id)))
+
+    op.get_bind().execute(query)
+
+
+def delete_bsfilter_func_keys():
+    query = dest_bsfilter_table.delete()
+
+    op.get_bind().execute(query)
+
+    query = (func_key_table
+             .delete()
+             .where(func_key_table.c.destination_type_id == DESTINATION_TYPE_ID))
 
     op.get_bind().execute(query)

@@ -37,7 +37,7 @@ def upgrade():
                             sa.ForeignKey('extensions.id')),
                   )
 
-    op.create_unique_constraint('func_key_dest_agent_id_extension_id_key',
+    op.create_unique_constraint('func_key_dest_agent_agent_id_extension_id_key',
                                 'func_key_dest_agent',
                                 ('agent_id', 'extension_id'))
 

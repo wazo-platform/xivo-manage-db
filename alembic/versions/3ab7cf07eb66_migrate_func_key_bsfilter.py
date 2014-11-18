@@ -80,8 +80,8 @@ callfiltermember_table = sql.table('callfiltermember',
 
 def upgrade():
     delete_bsfilters_without_bosses()
-    delete_missing_bsfilters()
-    delete_duplicate_bsfilters()
+    delete_missing_bsfilter_funckeys()
+    delete_duplicate_bsfilter_funckeys()
     create_bsfilter_func_keys()
     migrate_func_keys()
     delete_old_func_keys()
@@ -116,9 +116,9 @@ def dissociate_bsfilter(bsfilter_id):
     op.get_bind().execute(query)
 
 
-def delete_missing_bsfilters():
+def delete_missing_bsfilter_funckeys():
     template = '[MIGRATE_FK] : Deleting missing bsfilter func key for user "%s" (fk position %s)'
-    for row in get_missing_bsfilters():
+    for row in get_missing_bsfilter_funckeys():
         message = template % (row.iduserfeatures, row.fknum)
         delete_fk(row.iduserfeatures, row.fknum, message)
 
@@ -135,7 +135,7 @@ def delete_fk(iduserfeatures, fknum, message):
     op.get_bind().execute(query)
 
 
-def get_missing_bsfilters():
+def get_missing_bsfilter_funckeys():
     secretary = callfiltermember_table.alias()
     boss = callfiltermember_table.alias()
     pfk = phonefunckey_table.alias()
@@ -178,14 +178,14 @@ def get_missing_bsfilters():
     return op.get_bind().execute(query)
 
 
-def delete_duplicate_bsfilters():
+def delete_duplicate_bsfilter_funckeys():
     template = '[MIGRATE_FK] : Deleting duplicate bsfilter func key for user "%s" (fk position %s)'
-    for row in get_duplicate_bsfilters():
+    for row in get_duplicate_bsfilter_funckeys():
         message = template % (row.iduserfeatures, row.fknum)
         delete_fk(row.iduserfeatures, row.fknum, message)
 
 
-def get_duplicate_bsfilters():
+def get_duplicate_bsfilter_funckeys():
     duplicate_columns = (phonefunckey_table.c.iduserfeatures,
                          phonefunckey_table.c.typevalextenumbersright,
                          sa.func.min(phonefunckey_table.c.fknum).label("first_position"))

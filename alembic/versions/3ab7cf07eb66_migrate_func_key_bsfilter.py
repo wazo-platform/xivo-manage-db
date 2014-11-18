@@ -55,7 +55,8 @@ func_key_mapping_table = sql.table('func_key_mapping',
 
 user_table = sql.table('userfeatures',
                        sql.column('id'),
-                       sql.column('func_key_private_template_id'))
+                       sql.column('func_key_private_template_id'),
+                       sql.column('bsfilter'))
 
 template_table = sql.table('func_key_template', sql.column('id'))
 
@@ -80,6 +81,8 @@ callfiltermember_table = sql.table('callfiltermember',
 
 def upgrade():
     delete_bsfilters_without_bosses()
+    delete_bsfilters_with_mutant_bosses()
+    delete_bsfilters_with_mutant_secretaries()
     delete_missing_bsfilter_funckeys()
     delete_duplicate_bsfilter_funckeys()
     create_bsfilter_func_keys()
@@ -116,6 +119,45 @@ def delete_bsfilter(bsfilter_id):
              .where(callfilter_table.c.id == bsfilter_id))
 
     op.get_bind().execute(query)
+
+
+def delete_bsfilters_with_mutant_bosses():
+    for bsfilter_id in get_bsfilters_with_mutant_bosses():
+        delete_bsfilter(bsfilter_id)
+
+
+def get_bsfilters_with_mutant_bosses():
+    join = callfiltermember_table.join(
+        user_table,
+        sql.and_(
+            callfiltermember_table.c.bstype == BOSS_TYPE,
+            sql.cast(callfiltermember_table.c.typeval, sa.Integer) == user_table.c.id))
+
+    query = (sql.select([callfiltermember_table.c.callfilterid],
+                        from_obj=join)
+             .where(user_table.c.bsfilter != BOSS_TYPE))
+
+    return [row.callfilterid for row in op.get_bind().execute(query)]
+
+
+def delete_bsfilters_with_mutant_secretaries():
+    for bsfilter_id in get_bsfilters_with_mutant_secretaries():
+        delete_bsfilter(bsfilter_id)
+
+
+def get_bsfilters_with_mutant_secretaries():
+    join = callfiltermember_table.join(
+        user_table,
+        sql.and_(
+            callfiltermember_table.c.bstype == SECRETARY_TYPE,
+            sql.cast(callfiltermember_table.c.typeval, sa.Integer) == user_table.c.id))
+
+    query = (sql.select([callfiltermember_table.c.callfilterid],
+                        from_obj=join)
+             .where(user_table.c.bsfilter != SECRETARY_TYPE))
+
+    return [row.callfilterid for row in op.get_bind().execute(query)]
+
 
 def delete_missing_bsfilter_funckeys():
     template = '[MIGRATE_FK] : Deleting missing bsfilter func key for user "%s" (fk position %s)'

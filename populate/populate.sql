@@ -46,6 +46,7 @@ INSERT INTO "cti_xlet" VALUES (DEFAULT, 'features');
 INSERT INTO "cti_xlet" VALUES (DEFAULT, 'history');
 INSERT INTO "cti_xlet" VALUES (DEFAULT, 'identity');
 INSERT INTO "cti_xlet" VALUES (DEFAULT, 'mylocaldir');
+INSERT INTO "cti_xlet" VALUES (DEFAULT, 'people');
 INSERT INTO "cti_xlet" VALUES (DEFAULT, 'queueentrydetails');
 INSERT INTO "cti_xlet" VALUES (DEFAULT, 'queuemembers');
 INSERT INTO "cti_xlet" VALUES (DEFAULT, 'queues');

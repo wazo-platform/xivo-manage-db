@@ -33,26 +33,26 @@ INSERT INTO "cti_preference" VALUES (DEFAULT, 'xlet.queues.statsfetchperiod');
 INSERT INTO "cti_preference" VALUES (DEFAULT, 'presence.autochangestate');
 
 
-INSERT INTO "cti_xlet" VALUES (DEFAULT, 'identity');
+INSERT INTO "cti_xlet" VALUES (DEFAULT, 'agentdetails');
+INSERT INTO "cti_xlet" VALUES (DEFAULT, 'agents');
+INSERT INTO "cti_xlet" VALUES (DEFAULT, 'agentstatusdashboard');
+INSERT INTO "cti_xlet" VALUES (DEFAULT, 'conference');
+INSERT INTO "cti_xlet" VALUES (DEFAULT, 'customerinfo');
+INSERT INTO "cti_xlet" VALUES (DEFAULT, 'datetime');
 INSERT INTO "cti_xlet" VALUES (DEFAULT, 'dial');
-INSERT INTO "cti_xlet" VALUES (DEFAULT, 'history');
-INSERT INTO "cti_xlet" VALUES (DEFAULT, 'search');
 INSERT INTO "cti_xlet" VALUES (DEFAULT, 'directory');
 INSERT INTO "cti_xlet" VALUES (DEFAULT, 'fax');
 INSERT INTO "cti_xlet" VALUES (DEFAULT, 'features');
-INSERT INTO "cti_xlet" VALUES (DEFAULT, 'conference');
-INSERT INTO "cti_xlet" VALUES (DEFAULT, 'datetime');
-INSERT INTO "cti_xlet" VALUES (DEFAULT, 'tabber');
+INSERT INTO "cti_xlet" VALUES (DEFAULT, 'history');
+INSERT INTO "cti_xlet" VALUES (DEFAULT, 'identity');
 INSERT INTO "cti_xlet" VALUES (DEFAULT, 'mylocaldir');
-INSERT INTO "cti_xlet" VALUES (DEFAULT, 'customerinfo');
-INSERT INTO "cti_xlet" VALUES (DEFAULT, 'agents');
-INSERT INTO "cti_xlet" VALUES (DEFAULT, 'agentdetails');
-INSERT INTO "cti_xlet" VALUES (DEFAULT, 'queues');
-INSERT INTO "cti_xlet" VALUES (DEFAULT, 'queuemembers');
 INSERT INTO "cti_xlet" VALUES (DEFAULT, 'queueentrydetails');
-INSERT INTO "cti_xlet" VALUES (DEFAULT, 'switchboard');
+INSERT INTO "cti_xlet" VALUES (DEFAULT, 'queuemembers');
+INSERT INTO "cti_xlet" VALUES (DEFAULT, 'queues');
 INSERT INTO "cti_xlet" VALUES (DEFAULT, 'remotedirectory');
-INSERT INTO "cti_xlet" VALUES (DEFAULT, 'agentstatusdashboard');
+INSERT INTO "cti_xlet" VALUES (DEFAULT, 'search');
+INSERT INTO "cti_xlet" VALUES (DEFAULT, 'switchboard');
+INSERT INTO "cti_xlet" VALUES (DEFAULT, 'tabber');
 
 
 INSERT INTO "cti_xlet_layout" VALUES (DEFAULT, 'dock');

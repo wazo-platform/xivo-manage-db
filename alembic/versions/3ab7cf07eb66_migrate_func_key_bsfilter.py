@@ -314,14 +314,13 @@ def get_boss_func_keys():
                phonefunckey_table.c.label,
                sql.cast(phonefunckey_table.c.supervision, sa.Boolean).label('blf'))
 
-    join = phonefunckey_table.join(
-        callfiltermember_table,
-        sql.and_(
-            callfiltermember_table.c.bstype == BOSS_TYPE,
-            sql.cast(callfiltermember_table.c.typeval, sa.Integer) == phonefunckey_table.c.iduserfeatures)
+    join = user_table.join(
+        phonefunckey_table,
+        phonefunckey_table.c.iduserfeatures == user_table.c.id
     )
 
-    query = sql.select(columns, from_obj=[join])
+    query = sql.select(columns, from_obj=[join]).where(sql.and_(user_table.c.bsfilter == BOSS_TYPE,
+                                                                phonefunckey_table.c.typevalextenumbers == BSFILTER_TYPE))
 
     return op.get_bind().execute(query)
 
@@ -334,14 +333,13 @@ def get_secretary_func_keys():
                phonefunckey_table.c.label,
                sql.cast(phonefunckey_table.c.supervision, sa.Boolean).label('blf'))
 
-    join = phonefunckey_table.join(
-        callfiltermember_table,
-        sql.and_(
-            callfiltermember_table.c.bstype == SECRETARY_TYPE,
-            sql.cast(callfiltermember_table.c.typeval, sa.Integer) == phonefunckey_table.c.iduserfeatures)
+    join = user_table.join(
+        phonefunckey_table,
+        phonefunckey_table.c.iduserfeatures == user_table.c.id
     )
 
-    query = sql.select(columns, from_obj=[join])
+    query = sql.select(columns, from_obj=[join]).where(sql.and_(user_table.c.bsfilter == SECRETARY_TYPE,
+                                                                phonefunckey_table.c.typevalextenumbers == BSFILTER_TYPE))
 
     return op.get_bind().execute(query)
 

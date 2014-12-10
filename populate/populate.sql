@@ -863,7 +863,8 @@ INSERT INTO "monitoring" VALUES (DEFAULT,0,NULL,NULL,NULL);
 INSERT INTO "provisioning" VALUES(DEFAULT, '', '127.0.0.1', 'admin', 'admin', 0, 8666, 8667, 0, 0);
 
 
-INSERT INTO "infos" SELECT CAST(md5(current_database()|| user ||current_timestamp ||random()) as uuid);
+CREATE EXTENSION "uuid-ossp";
+INSERT INTO "infos" VALUES (uuid_generate_v4());
 
 
 COMMIT;

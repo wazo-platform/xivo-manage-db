@@ -865,6 +865,7 @@ INSERT INTO "provisioning" VALUES(DEFAULT, '', '127.0.0.1', 'admin', 'admin', 0,
 
 CREATE EXTENSION "uuid-ossp";
 INSERT INTO "infos" VALUES (uuid_generate_v4());
+DROP EXTENSION "uuid-ossp";
 
 
 COMMIT;

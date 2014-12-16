@@ -7,7 +7,7 @@ Revises: 3770e116222d
 
 # revision identifiers, used by Alembic.
 revision = '3ab28f25de30'
-down_revision = '3770e116222d'
+down_revision = '39f7b89af84e'
 
 from alembic import op
 

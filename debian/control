@@ -10,7 +10,7 @@ Homepage: http://projects.xivo.io
 
 Package: xivo-manage-db
 Architecture: all
-Pre-Depends: postgresql, postgresql-9.1, postgresql-contrib, postgresql-contrib-9.1, alembic, xivo-libdao (>=14.08~)
+Pre-Depends: alembic, postgresql, postgresql-9.1, postgresql-contrib, postgresql-contrib-9.1, python-sqlalchemy (>= 0.9.4-1), xivo-libdao (>=14.08~)
 Depends: ${python:Depends}, ${misc:Depends}, xivo-upgrade
 Description: XiVO database tools manager
  This package provide XiVO managing database tools

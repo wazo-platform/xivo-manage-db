@@ -93,9 +93,6 @@ INSERT INTO "cti_profile_xlet" VALUES ((SELECT "id" FROM "cti_xlet" WHERE "plugi
 INSERT INTO "cti_profile_xlet" VALUES ((SELECT "id" FROM "cti_xlet" WHERE "plugin_name" = 'agentdetails'),
                                        (SELECT "id" FROM "cti_profile" WHERE "name" = 'Supervisor'),
                                        (SELECT "id" FROM "cti_xlet_layout" WHERE "name" = 'dock'));
-INSERT INTO "cti_profile_xlet" VALUES ((SELECT "id" FROM "cti_xlet" WHERE "plugin_name" = 'conference'),
-                                       (SELECT "id" FROM "cti_profile" WHERE "name" = 'Supervisor'),
-                                       (SELECT "id" FROM "cti_xlet_layout" WHERE "name" = 'dock'));
 
 /* agent */
 INSERT INTO "cti_profile_xlet" VALUES ((SELECT "id" FROM "cti_xlet" WHERE "plugin_name" = 'identity'),

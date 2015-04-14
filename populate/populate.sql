@@ -39,7 +39,6 @@ INSERT INTO "cti_xlet" VALUES (DEFAULT, 'agentstatusdashboard');
 INSERT INTO "cti_xlet" VALUES (DEFAULT, 'conference');
 INSERT INTO "cti_xlet" VALUES (DEFAULT, 'customerinfo');
 INSERT INTO "cti_xlet" VALUES (DEFAULT, 'datetime');
-INSERT INTO "cti_xlet" VALUES (DEFAULT, 'dial');
 INSERT INTO "cti_xlet" VALUES (DEFAULT, 'directory');
 INSERT INTO "cti_xlet" VALUES (DEFAULT, 'fax');
 INSERT INTO "cti_xlet" VALUES (DEFAULT, 'features');
@@ -118,10 +117,6 @@ INSERT INTO "cti_profile_xlet" VALUES ((SELECT "id" FROM "cti_xlet" WHERE "plugi
                                        (SELECT "id" FROM "cti_profile" WHERE "name" = 'Client'),
                                        (SELECT "id" FROM "cti_xlet_layout" WHERE "name" = 'grid'),
                                        TRUE, TRUE, TRUE, TRUE, 1);
-INSERT INTO "cti_profile_xlet" VALUES ((SELECT "id" FROM "cti_xlet" WHERE "plugin_name" = 'dial'),
-                                       (SELECT "id" FROM "cti_profile" WHERE "name" = 'Client'),
-                                       (SELECT "id" FROM "cti_xlet_layout" WHERE "name" = 'grid'),
-                                       TRUE, TRUE, TRUE, TRUE, 2);
 INSERT INTO "cti_profile_xlet" VALUES ((SELECT "id" FROM "cti_xlet" WHERE "plugin_name" = 'search'),
                                        (SELECT "id" FROM "cti_profile" WHERE "name" = 'Client'),
                                        (SELECT "id" FROM "cti_xlet_layout" WHERE "name" = 'tab'),
@@ -164,10 +159,6 @@ INSERT INTO "cti_profile_xlet" VALUES ((SELECT "id" FROM "cti_xlet" WHERE "plugi
                                        (SELECT "id" FROM "cti_profile" WHERE "name" = 'Switchboard'),
                                        (SELECT "id" FROM "cti_xlet_layout" WHERE "name" = 'dock'),
                                        TRUE, TRUE, TRUE, TRUE, 1);
-INSERT INTO "cti_profile_xlet" VALUES ((SELECT "id" FROM "cti_xlet" WHERE "plugin_name" = 'dial'),
-                                       (SELECT "id" FROM "cti_profile" WHERE "name" = 'Switchboard'),
-                                       (SELECT "id" FROM "cti_xlet_layout" WHERE "name" = 'dock'),
-                                       TRUE, TRUE, TRUE, TRUE, 2);
 INSERT INTO "cti_profile_xlet" VALUES ((SELECT "id" FROM "cti_xlet" WHERE "plugin_name" = 'directory'),
                                        (SELECT "id" FROM "cti_profile" WHERE "name" = 'Switchboard'),
                                        (SELECT "id" FROM "cti_xlet_layout" WHERE "name" = 'dock'),

@@ -30,17 +30,6 @@ def remove_xlet():
     op.execute(remove_xlet_query)
 
 
-def remove_from_profile():
-    xlet_id_query = (sa.sql.select([xlet_table.c.id])
-                     .where(xlet_table.c.plugin_name == DIAL_XLET))
-    xlet_id = op.get_bind().execute(xlet_id_query).scalar()
-
-    remove_from_profile_query = (profile_xlet_table
-                                 .delete()
-                                 .where(profile_xlet_table.c.xlet_id == xlet_id))
-    op.execute(remove_from_profile_query)
-
-
 def create_xlet():
     create_xlet_query = (xlet_table
                          .insert()
@@ -49,7 +38,6 @@ def create_xlet():
 
 
 def upgrade():
-    remove_from_profile()
     remove_xlet()
 
 

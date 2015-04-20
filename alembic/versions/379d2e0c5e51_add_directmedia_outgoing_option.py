@@ -5,23 +5,24 @@ Revises: 1888ca44e08f
 
 """
 
+from alembic import op
+import sqlalchemy as sa
+from sqlalchemy import sql
+
 revision = '379d2e0c5e51'
 down_revision = '1888ca44e08f'
 
-
-from alembic import op
-import sqlalchemy as sa
 
 old_options = ('no', 'yes', 'nonat', 'update', 'update,nonat')
 
 old_type = sa.Enum(*old_options, name='usersip_directmedia')
 
 usersip_table = sa.sql.table('usersip',
-                             sa.Column('directmedia', old_type, nullable=False))
+                             sql.column('directmedia'))
 
 staticsip_table = sa.sql.table('staticsip',
-                               sa.Column('var_name', sa.String(128), nullable=False),
-                               sa.Column('var_val', sa.String(255)))
+                               sql.column('var_name'),
+                               sql.column('var_val'))
 
 
 def upgrade():

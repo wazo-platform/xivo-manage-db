@@ -30,6 +30,7 @@ def upgrade():
 
     # Add the not null constraint
     op.alter_column('userfeatures', 'uuid', nullable=False)
+    op.create_index('userfeatures__idx__uuid', 'userfeatures', ['uuid'])
 
 
 def downgrade():

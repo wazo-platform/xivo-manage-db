@@ -272,7 +272,7 @@ INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','context'
 INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','parkinghints','no');
 INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','parkingtime','45');
 INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','comebacktoorigin','yes');
-INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','courtesytone',NULL);
+INSERT INTO "features" VALUES (DEFAULT,0,0,1,'features.conf','general','courtesytone',NULL);
 INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','parkedplay','caller');
 INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','parkedcalltransfers','no');
 INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','parkedcallreparking','no');
@@ -283,8 +283,8 @@ INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','adsipark
 INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','findslot','next');
 INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','parkedmusicclass','default');
 INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','transferdigittimeout','5');
-INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','xfersound',NULL);
-INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','xferfailsound',NULL);
+INSERT INTO "features" VALUES (DEFAULT,0,0,1,'features.conf','general','xfersound',NULL);
+INSERT INTO "features" VALUES (DEFAULT,0,0,1,'features.conf','general','xferfailsound',NULL);
 INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','pickupexten','*8');
 INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','featuredigittimeout','1500');
 INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','atxfernoanswertimeout','15');

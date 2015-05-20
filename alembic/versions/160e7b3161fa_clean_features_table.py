@@ -49,10 +49,10 @@ def upgrade():
 
 
 def _uncomment_features(feature_names):
-        op.execute(features_table
-                   .update()
-                   .where(features_table.c.var_name.in_(feature_names))
-                   .values({'commented': 0}))
+    op.execute(features_table
+               .update()
+               .where(features_table.c.var_name.in_(feature_names))
+               .values({'commented': 0}))
 
 
 def _remove_features(feature_names):

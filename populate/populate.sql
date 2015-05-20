@@ -286,8 +286,6 @@ INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','transfer
 INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','xfersound',NULL);
 INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','xferfailsound',NULL);
 INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','pickupexten','*8');
-INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','pickupsound','');
-INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','pickupfailsound','');
 INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','featuredigittimeout','1500');
 INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','atxfernoanswertimeout','15');
 INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','atxferdropcall','no');

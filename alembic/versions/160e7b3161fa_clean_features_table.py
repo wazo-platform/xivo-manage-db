@@ -14,11 +14,45 @@ from sqlalchemy import sql
 
 
 features_table = sql.table('features',
-                           sql.column('var_name'))
+                           sql.column('var_name'),
+                           sql.column('commented'))
 
 
 def upgrade():
-    _remove_features(('pickupsound', 'pickupfailsound'))
+    _remove_features((
+        'pickupsound',
+        'pickupfailsound',
+    ))
+    _uncomment_features((
+        'parkinghints',
+        'parkingtime',
+        'comebacktoorigin',
+        'parkedplay',
+        'parkedcalltransfers',
+        'parkedcallreparking',
+        'parkedcallhangup',
+        'parkedcallrecording',
+        'parkeddynamic',
+        'adsipark',
+        'findslot',
+        'parkedmusicclass',
+        'transferdigittimeout',
+        'pickupexten',
+        'pickupsound',
+        'pickupfailsound',
+        'featuredigittimeout',
+        'atxfernoanswertimeout',
+        'atxferdropcall',
+        'atxferloopdelay',
+        'atxfercallbackretries',
+    ))
+
+
+def _uncomment_features(feature_names):
+        op.execute(features_table
+                   .update()
+                   .where(features_table.c.var_name.in_(feature_names))
+                   .values({'commented': 0}))
 
 
 def _remove_features(feature_names):

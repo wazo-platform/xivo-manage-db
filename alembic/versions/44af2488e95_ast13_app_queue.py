@@ -1,4 +1,4 @@
-"""asterisk 13
+"""ast13: remove app_queue eventmemberstatus and eventwhencalled
 
 Revision ID: 44af2488e95
 Revises: 160e7b3161fa

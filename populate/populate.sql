@@ -492,7 +492,6 @@ INSERT INTO "staticsip" VALUES (DEFAULT,0,0,1,'sip.conf','general','fromdomain',
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','sipdebug','no');
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','dumphistory','no');
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','recordhistory','no');
-INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','callevents','yes');
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,1,'sip.conf','general','tos_sip',NULL);
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,1,'sip.conf','general','tos_audio',NULL);
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,1,'sip.conf','general','tos_video',NULL);

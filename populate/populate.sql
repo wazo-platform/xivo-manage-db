@@ -279,7 +279,6 @@ INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','parkedca
 INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','parkedcallhangup','no');
 INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','parkedcallrecording','no');
 INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','parkeddynamic','no');
-INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','adsipark','no');
 INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','findslot','next');
 INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','parkedmusicclass','default');
 INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','transferdigittimeout','5');

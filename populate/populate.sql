@@ -507,7 +507,7 @@ INSERT INTO "staticsip" VALUES (DEFAULT,0,0,1,'sip.conf','general','outboundprox
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','g726nonstandard','no');
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,1,'sip.conf','general','disallow',NULL);
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,1,'sip.conf','general','allow',NULL);
-INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','t1min',100);
+INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','t1min',500);
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','relaxdtmf','no');
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','rfc2833compensate','no');
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','compactheaders','no');

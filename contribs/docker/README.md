@@ -30,11 +30,11 @@ Before running manage-db container, please create th db container with postgres
 
 To run the container, do the following:
 
-    docker run -d -v manage-db/conf.d:/etc/xivo-dao/conf.d/ -v manage-db/alembic.ini:/usr/share/xivo-manage-db/alembic.ini --volumes-from=db xivo-manage-db
+    docker run -d -v manage-db/conf.d:/etc/xivo-dao/conf.d/ -v manage-db/alembic.ini:/usr/share/xivo-manage-db/alembic.ini --link=db:db --volumes-from=db xivo-manage-db
 
 On interactive mode :
 
-    docker run -v manage-db/conf.d:/etc/xivo-dao/conf.d/ -v manage-db/alembic.ini:/usr/share/xivo-manage-db/alembic.ini --volumes-from=db -it xivo-manage-db bash
+    docker run -v manage-db/conf.d:/etc/xivo-dao/conf.d/ -v manage-db/alembic.ini:/usr/share/xivo-manage-db/alembic.ini --link=db:db --volumes-from=db -it xivo-manage-db bash
 
 After launch xivo-init-db.
 

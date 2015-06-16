@@ -22,6 +22,12 @@ Or directly in the sources in contribs/docker
   
 ## Usage
 
+Before running manage-db container, please create th db container with postgres
+
+    cd contribs/docker
+    docker build -f Dockerfile-db -t xivo-db .
+    docker run -d --name db -t xivo-db
+
 To run the container, do the following:
 
     docker run -d -v manage-db/conf.d:/etc/xivo-dao/conf.d/ -v manage-db/alembic.ini:/usr/share/xivo-manage-db/alembic.ini --volumes-from=db xivo-manage-db

@@ -3,7 +3,7 @@ xivo-postgres Docker image
 
 xivo-postgres is a [Postgres](http://postgresql.org) image with a minimal database already configured for usage on a
 XiVO server. Ideal for running automated tests. Please note that the database is in the same state as a freshly
-installed server, meaning that there is ***no data from the installation wizard***. 
+installed server, meaning that there is ***no data from the installation wizard***.
 
 Prerequisites
 =============
@@ -36,7 +36,7 @@ Extending the image
 
 If you would like to do additional setup in a derived image, you can use the same entrypoint mecanism
 as used in the base [postgres image](https://registry.hub.docker.com/_/postgres/) by placing
-a ```*.sh``` script in ```/docker-entrypoint-initdb.d```. 
+a ```*.sh``` script in ```/docker-entrypoint-initdb.d```.
 
 For example, if you would like to create a web access account on initialization, you could write a script that executes
 a SQL query in postgres single-user mode:

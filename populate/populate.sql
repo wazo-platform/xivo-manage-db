@@ -396,6 +396,16 @@ VALUES (
                                 AND var_name = 'atxfer')
 );
 
+INSERT INTO "func_key" (type_id, destination_type_id) VALUES (3, 8);
+INSERT INTO "func_key_dest_features" (func_key_id, destination_type_id, features_id)
+VALUES (
+    currval('func_key_id_seq'),
+    8,
+    (SELECT id FROM features WHERE filename = 'features.conf'
+                                AND category = 'featuremap'
+                                AND var_name = 'automon')
+);
+
 INSERT INTO "musiconhold" VALUES (DEFAULT,0,0,0,'musiconhold.conf','default','mode','files');
 INSERT INTO "musiconhold" VALUES (DEFAULT,0,0,1,'musiconhold.conf','default','application','');
 INSERT INTO "musiconhold" VALUES (DEFAULT,0,0,0,'musiconhold.conf','default','random','no');

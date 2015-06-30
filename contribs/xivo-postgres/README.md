@@ -23,7 +23,7 @@ Using the image
 
 Start a new container with the right port opened:
 
-    docker run --name xivo-postgres -d -p 5432:5432 xivo-postgres
+    docker run --name xivo-postgres -d -p 5432:5432 xivo/xivo-postgres
 
 The image also exposes the port ```5432```, so container linking should work.
 

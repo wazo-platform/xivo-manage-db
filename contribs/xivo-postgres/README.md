@@ -16,7 +16,7 @@ Building the image
 Build the docker image from the root of xivo-manage-db:
 
     cd xivo-manage-db
-    docker build -t xivo/xivo-postgres contribs/xivo-postgres
+    docker build -t xivo/xivo-postgres -f contribs/xivo-postgres/Dockerfile .
 
 Using the image
 ===============

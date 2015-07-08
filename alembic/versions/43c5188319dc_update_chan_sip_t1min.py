@@ -1,13 +1,13 @@
 """update chan_sip t1min
 
 Revision ID: 43c5188319dc
-Revises: 160e7b3161fa
+Revises: 1a25b8b93e70
 
 """
 
 # revision identifiers, used by Alembic.
 revision = '43c5188319dc'
-down_revision = '160e7b3161fa'
+down_revision = '1a25b8b93e70'
 
 from alembic import op
 from sqlalchemy import sql

@@ -395,6 +395,16 @@ VALUES (
                                 AND var_name = 'atxfer')
 );
 
+INSERT INTO "func_key" (type_id, destination_type_id) VALUES (3, 8);
+INSERT INTO "func_key_dest_features" (func_key_id, destination_type_id, features_id)
+VALUES (
+    currval('func_key_id_seq'),
+    8,
+    (SELECT id FROM features WHERE filename = 'features.conf'
+                                AND category = 'featuremap'
+                                AND var_name = 'automon')
+);
+
 INSERT INTO "musiconhold" VALUES (DEFAULT,0,0,0,'musiconhold.conf','default','mode','files');
 INSERT INTO "musiconhold" VALUES (DEFAULT,0,0,1,'musiconhold.conf','default','application','');
 INSERT INTO "musiconhold" VALUES (DEFAULT,0,0,0,'musiconhold.conf','default','random','no');
@@ -505,7 +515,7 @@ INSERT INTO "staticsip" VALUES (DEFAULT,0,0,1,'sip.conf','general','outboundprox
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','g726nonstandard','no');
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,1,'sip.conf','general','disallow',NULL);
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,1,'sip.conf','general','allow',NULL);
-INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','t1min',100);
+INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','t1min',500);
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','relaxdtmf','no');
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','rfc2833compensate','no');
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','compactheaders','no');

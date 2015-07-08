@@ -27,7 +27,8 @@ setup(
     description='XIVO DB LIB',
     author='Avencall',
     author_email='xivo-dev@lists.proformatique.com',
-    url='http://git.xivo.io/',
+    url='http://www.xivo.io/',
     license='GPLv3',
-    packages=find_packages('.')
+    packages=find_packages('.'),
+    scripts=['bin/pg-drop-db', 'bin/pg-init-db', 'bin/pg-merge-db', 'bin/pg-populate-db', 'bin/xivo-check-db', 'bin/xivo-init-db', 'bin/xivo-update-db'],
 )

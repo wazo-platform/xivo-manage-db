@@ -1,13 +1,13 @@
 """ast13: remove app_queue eventmemberstatus and eventwhencalled
 
 Revision ID: 44af2488e95
-Revises: 160e7b3161fa
+Revises: 1a25b8b93e70
 
 """
 
 # revision identifiers, used by Alembic.
 revision = '44af2488e95'
-down_revision = '160e7b3161fa'
+down_revision = '1a25b8b93e70'
 
 from alembic import op
 from sqlalchemy import sql

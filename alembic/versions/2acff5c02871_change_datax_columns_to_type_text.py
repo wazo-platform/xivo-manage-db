@@ -14,11 +14,11 @@ from sqlalchemy.types import Text
 
 
 def upgrade():
-    op.alter_column('queue_log', 'data1', type_=Text)
-    op.alter_column('queue_log', 'data2', type_=Text)
-    op.alter_column('queue_log', 'data3', type_=Text)
-    op.alter_column('queue_log', 'data4', type_=Text)
-    op.alter_column('queue_log', 'data5', type_=Text)
+    op.alter_column('queue_log', 'data1', type_=Text, server_default='')
+    op.alter_column('queue_log', 'data2', type_=Text, server_default='')
+    op.alter_column('queue_log', 'data3', type_=Text, server_default='')
+    op.alter_column('queue_log', 'data4', type_=Text, server_default='')
+    op.alter_column('queue_log', 'data5', type_=Text, server_default='')
 
 
 def downgrade():

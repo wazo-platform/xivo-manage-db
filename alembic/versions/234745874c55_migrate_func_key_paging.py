@@ -222,9 +222,22 @@ def get_invalid_pagings():
 
 def migrate_func_keys():
     for row in op.get_bind().execute(func_keys_query):
-        func_key_id = create_func_key()
-        create_paging_destination(func_key_id, row.paging_id)
+        func_key_id = find_or_create_paging(row.paging_id)
         create_mapping(func_key_id, row)
+
+
+def find_or_create_paging(paging_id):
+    query = (sql.select([dest_paging_table.c.func_key_id])
+             .where(dest_paging_table.c.paging_id == paging_id)
+             )
+
+    func_key_id = op.get_bind().execute(query).scalar()
+
+    if not func_key_id:
+        func_key_id = create_func_key()
+        create_paging_destination(func_key_id, paging_id)
+
+    return func_key_id
 
 
 def create_func_key():

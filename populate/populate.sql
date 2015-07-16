@@ -838,7 +838,7 @@ CREATE TRIGGER "change_queue_log_agent"
 
 
 
-INSERT INTO "directories" ("uri", "dirtype", "name", "description") VALUES ('xivo' , 'xivo', 'xivo' , 'XiVO internal users');
+INSERT INTO "directories" ("uri", "dirtype", "name", "description") VALUES ('http://localhost:9487' , 'xivo', 'xivo' , 'XiVO internal users');
 INSERT INTO "directories" ("uri", "dirtype", "name", "description") VALUES ('phonebook', 'phonebook', 'phonebook', 'XiVO phonebook');
 
 

@@ -1,13 +1,13 @@
 """directories use dirtype column
 
 Revision ID: 4a80d0e24028
-Revises: f6dab479e74
+Revises: 151d1315479b
 
 """
 
 # revision identifiers, used by Alembic.
 revision = '4a80d0e24028'
-down_revision = 'f6dab479e74'
+down_revision = '151d1315479b'
 
 from alembic import op
 from sqlalchemy import sql

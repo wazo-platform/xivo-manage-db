@@ -835,8 +835,8 @@ CREATE TRIGGER "change_queue_log_agent"
 
 
 
-INSERT INTO "directories" VALUES (DEFAULT,'internal' , NULL, 'internal' , 'XiVO internal users');
-INSERT INTO "directories" VALUES (DEFAULT,'phonebook', NULL, 'phonebook', 'XiVO phonebook');
+INSERT INTO "directories" VALUES (DEFAULT,'internal' , 'internal', 'internal' , 'XiVO internal users');
+INSERT INTO "directories" VALUES (DEFAULT,'phonebook', 'phonebook', 'phonebook', 'XiVO phonebook');
 
 
 INSERT INTO "resolvconf" VALUES(DEFAULT, '', '', NULL, NULL, NULL, NULL, '');

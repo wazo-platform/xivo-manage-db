@@ -1,7 +1,7 @@
 """fix paging duplicates
 
 Revision ID: 151d1315479b
-Revises: 2acff5c02871
+Revises: f6dab479e74
 
 """
 
@@ -10,7 +10,7 @@ from alembic import op
 
 # revision identifiers, used by Alembic.
 revision = '151d1315479b'
-down_revision = '2acff5c02871'
+down_revision = 'f6dab479e74'
 
 
 def upgrade():

@@ -182,8 +182,8 @@ INSERT INTO "cticontexts" VALUES(DEFAULT, '__switchboard_directory', 'xivodir', 
 
 INSERT INTO "ctidirectories" VALUES(DEFAULT,'xivodir', 'phonebook', '',
 '["phonebook.firstname","phonebook.lastname","phonebook.displayname","phonebook.society","phonebooknumber.office.number"]','["phonebooknumber.office.number","phonebooknumber.mobile.number"]','Répertoire
-XiVO Externe',1); INSERT INTO "ctidirectories"
-VALUES(DEFAULT,'internal','xivo','','["userfeatures.firstname","userfeatures.lastname"]','','Répertoire
+XiVO Externe',1);
+INSERT INTO "ctidirectories" VALUES(DEFAULT,'internal','http://localhost:9487','','["userfeatures.firstname","userfeatures.lastname"]','','Répertoire
 XiVO Interne',1);
 
 

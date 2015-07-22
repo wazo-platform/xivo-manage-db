@@ -180,8 +180,10 @@ INSERT INTO "cticontexts" VALUES(DEFAULT,'default','xivodir,internal','Display',
 INSERT INTO "cticontexts" VALUES(DEFAULT, '__switchboard_directory', 'xivodir', 'switchboard', '', 1);
 
 
-INSERT INTO "ctidirectories" VALUES(DEFAULT,'xivodir', 'phonebook', '', '["phonebook.firstname","phonebook.lastname","phonebook.displayname","phonebook.society","phonebooknumber.office.number"]','["phonebooknumber.office.number","phonebooknumber.mobile.number"]','Répertoire XiVO Externe',1);
-INSERT INTO "ctidirectories" VALUES(DEFAULT,'internal','internal','','["userfeatures.firstname","userfeatures.lastname"]','','Répertoire XiVO Interne',1);
+INSERT INTO "ctidirectories" VALUES(DEFAULT,'xivodir', 'http://localhost/service/ipbx/json.php/private/pbx_services/phonebook', '', '["phonebook.firstname","phonebook.lastname","phonebook.displayname","phonebook.society","phonebooknumber.office.number"]','["phonebooknumber.office.number","phonebooknumber.mobile.number"]','Répertoire
+XiVO Externe',1);
+INSERT INTO "ctidirectories" VALUES(DEFAULT,'internal','http://localhost:9487','','["userfeatures.firstname","userfeatures.lastname"]','','Répertoire
+XiVO Interne',1);
 
 
 INSERT INTO "ctidirectoryfields" VALUES(1, 'phone', 'phonebooknumber.office.number');
@@ -835,8 +837,8 @@ CREATE TRIGGER "change_queue_log_agent"
 
 
 
-INSERT INTO "directories" VALUES (DEFAULT,'internal' , 'internal', 'internal' , 'XiVO internal users');
-INSERT INTO "directories" VALUES (DEFAULT,'phonebook', 'phonebook', 'phonebook', 'XiVO phonebook');
+INSERT INTO "directories" ("uri", "dirtype", "name", "description") VALUES ('http://localhost:9487' , 'xivo', 'xivo' , 'XiVO internal users');
+INSERT INTO "directories" ("uri", "dirtype", "name", "description") VALUES ('http://localhost/service/ipbx/json.php/private/pbx_services/phonebook', 'phonebook', 'phonebook', 'XiVO phonebook');
 
 
 INSERT INTO "resolvconf" VALUES(DEFAULT, '', '', NULL, NULL, NULL, NULL, '');

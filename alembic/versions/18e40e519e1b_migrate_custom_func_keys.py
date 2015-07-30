@@ -106,9 +106,20 @@ old_func_keys_query = (sql.select(old_func_key_columns,
 
 
 def upgrade():
+    delete_invalid_user_func_keys()
     delete_empty_customs()
     migrate_func_keys()
     delete_old_func_keys()
+
+
+def delete_invalid_user_func_keys():
+    query = (phonefunckey_table
+             .delete()
+             .where(
+                 ~phonefunckey_table.c.iduserfeatures.in_(sql.select([user_table.c.id])))
+             )
+
+    op.get_bind().execute(query)
 
 
 def delete_empty_customs():

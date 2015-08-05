@@ -1,7 +1,4 @@
-git+https://github.com/xivo-pbx/xivo-lib-python.git
 git+https://github.com/xivo-pbx/xivo-dao.git
 alembic==0.6.3
-pyhamcrest
-sqlalchemy==0.9.4
-pyaml
-psycopg2
+psycopg2==2.4.5  # from xivo-dao
+sqlalchemy==0.9.4  # from xivo-dao

@@ -6,26 +6,28 @@ ENV POSTGRES_USER asterisk
 ENV POSTGRES_PASSWORD proformatique
 ENV POSTGRES_DB asterisk
 
-RUN apt-get -qq update
-RUN apt-get -qq -y install \
-    apt-utils \
-    python-pip \
-    python-dev \
-    libyaml-dev \
-    postgresql-client \
-    libpq-dev \
-    git
+COPY contribs/xivo-postgres/initdb.sh /docker-entrypoint-initdb.d/00_initdb.sh
 
-ADD . /usr/src/xivo-manage-db
+RUN apt-get -qq update && \
+    apt-get -qq -y install \
+        apt-utils \
+        python-pip \
+        python-dev \
+        libyaml-dev \
+        postgresql-client \
+        libpq-dev \
+        git
+
+COPY . /usr/src/xivo-manage-db
 WORKDIR /usr/src/xivo-manage-db
-RUN pip install -r requirements.txt
-RUN python setup.py install
+RUN PATH=/usr/local/bin:$PATH \
+    pip install -U pip && \
+    pip install -r requirements.txt && \
+    python setup.py install && \
+    mkdir /usr/share/xivo-manage-db/ && \
+    mkdir /usr/lib/xivo-manage-db/ && \
+    cp -a alembic alembic.ini migration populate /usr/share/xivo-manage-db && \
+    ln -s /usr/local/bin/pg-populate-db /usr/lib/xivo-manage-db/pg-populate-db && \
+    ln -s /usr/local/bin/xivo-init-db /usr/lib/xivo-manage-db/pg-init-db
 
-RUN mkdir /usr/share/xivo-manage-db/
-RUN mkdir /usr/lib/xivo-manage-db/
-RUN cp -a alembic alembic.ini migration populate /usr/share/xivo-manage-db
-RUN ln -s /usr/local/bin/pg-populate-db /usr/lib/xivo-manage-db/pg-populate-db
-RUN ln -s /usr/local/bin/xivo-init-db /usr/lib/xivo-manage-db/pg-init-db
-
-ADD contribs/xivo-postgres/initdb.sh /docker-entrypoint-initdb.d/00_initdb.sh
 WORKDIR /root

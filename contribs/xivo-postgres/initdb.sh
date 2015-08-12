@@ -1,9 +1,14 @@
 #!/bin/bash
-echo "STARTING POSTGRES"
-gosu postgres pg_ctl -o "-h 127.0.0.1" start
-
 echo "INIT DB"
+
+sed -i 's/@localhost/@/g' /usr/share/xivo-manage-db/alembic.ini
+
+mkdir -p /etc/xivo-dao/conf.d
+cat > /etc/xivo-dao/config.yml <<EOC
+db_uri: postgresql://asterisk:proformatique@/asterisk
+EOC
+
 xivo-init-db --init
 
-echo "STOPPING POSTGRES"
-gosu postgres pg_ctl stop
+sed -i 's/@/@localhost/g' /usr/share/xivo-manage-db/alembic.ini
+rm -r /etc/xivo-dao

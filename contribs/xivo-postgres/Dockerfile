@@ -6,8 +6,6 @@ ENV POSTGRES_USER asterisk
 ENV POSTGRES_PASSWORD proformatique
 ENV POSTGRES_DB asterisk
 
-COPY contribs/xivo-postgres/initdb.sh /docker-entrypoint-initdb.d/00_initdb.sh
-
 RUN apt-get -qq update && \
     apt-get -qq -y install \
         apt-utils \
@@ -19,6 +17,7 @@ RUN apt-get -qq update && \
         git
 
 COPY . /usr/src/xivo-manage-db
+COPY contribs/xivo-postgres/initdb.sh /docker-entrypoint-initdb.d/00_initdb.sh
 WORKDIR /usr/src/xivo-manage-db
 RUN PATH=/usr/local/bin:$PATH \
     pip install -U pip && \

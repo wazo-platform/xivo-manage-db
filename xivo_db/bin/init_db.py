@@ -17,8 +17,8 @@
 
 import argparse
 import logging
+import xivo_dao.alchemy.all  # imports all the sqlalchemy model
 
-from xivo_dao import alchemy  # imports all the sqlalchemy model
 from xivo_dao.helpers import db_manager
 from xivo_dao.helpers.db_manager import Base
 from xivo_db import alembic

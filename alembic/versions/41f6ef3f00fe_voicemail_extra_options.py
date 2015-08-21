@@ -110,7 +110,8 @@ def gen_columns():
 
 def upgrade():
     op.add_column('voicemail', sa.Column('options',
-                                         ARRAY(sa.String, dimensions=2)))
+                                         ARRAY(sa.String, dimensions=2),
+                                         nullable=False, server_default='{}'))
 
     voicemail = sql.table('voicemail',
                           sql.column('uniqueid'),

@@ -1,13 +1,13 @@
 """rename webservices directory
 
 Revision ID: 444b39e9aa32
-Revises: 5ace7dc40b5c
+Revises: 387d650380bd
 
 """
 
 # revision identifiers, used by Alembic.
 revision = '444b39e9aa32'
-down_revision = '5ace7dc40b5c'
+down_revision = '387d650380bd'
 
 from alembic import op
 from sqlalchemy import sql

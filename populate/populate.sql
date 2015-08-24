@@ -202,15 +202,15 @@ INSERT INTO "ctidisplays" VALUES(DEFAULT, 'switchboard', '{ "10": [ "", "status"
 INSERT INTO "ctimain" VALUES(DEFAULT, 'xivocti', '127.0.0.1', 5038, 'xivo_cti_user', 'phaickbebs9', '0.0.0.0', 5003, 1, '0.0.0.0', 5013, 0, '127.0.0.1', 5004, 1, '127.0.0.1', 5005, 1, '', '', 10, 5, 0, 1);
 
 
-INSERT INTO "ctiphonehints" VALUES(DEFAULT,1,'-2','Inexistant','#030303');
-INSERT INTO "ctiphonehints" VALUES(DEFAULT,1,'-1','Désactivé','#000000');
-INSERT INTO "ctiphonehints" VALUES(DEFAULT,1,'0','Disponible','#0DFF25');
-INSERT INTO "ctiphonehints" VALUES(DEFAULT,1,'1','En ligne OU appelle','#FF032D');
-INSERT INTO "ctiphonehints" VALUES(DEFAULT,1,'2','Occupé','#FF0008');
-INSERT INTO "ctiphonehints" VALUES(DEFAULT,1,'4','Indisponible','#FFFFFF');
-INSERT INTO "ctiphonehints" VALUES(DEFAULT,1,'8','Sonne','#1B0AFF');
-INSERT INTO "ctiphonehints" VALUES(DEFAULT,1,'9','(En Ligne OU Appelle) ET Sonne','#FF0526');
-INSERT INTO "ctiphonehints" VALUES(DEFAULT,1,'16','En Attente','#F7FF05');
+INSERT INTO "ctiphonehints" VALUES(DEFAULT,1,'-2','Inexistant','#9E9E9E');
+INSERT INTO "ctiphonehints" VALUES(DEFAULT,1,'-1','Désactivé','#9E9E9E');
+INSERT INTO "ctiphonehints" VALUES(DEFAULT,1,'0','Disponible','#9BC920');
+INSERT INTO "ctiphonehints" VALUES(DEFAULT,1,'1','En ligne OU appelle','#D13224');
+INSERT INTO "ctiphonehints" VALUES(DEFAULT,1,'2','Occupé','#D13224');
+INSERT INTO "ctiphonehints" VALUES(DEFAULT,1,'4','Indisponible','#9E9E9E');
+INSERT INTO "ctiphonehints" VALUES(DEFAULT,1,'8','Sonne','#6CA6FF');
+INSERT INTO "ctiphonehints" VALUES(DEFAULT,1,'9','(En Ligne OU Appelle) ET Sonne','#D13224');
+INSERT INTO "ctiphonehints" VALUES(DEFAULT,1,'16','En Attente','#FFDD00');
 
 
 INSERT INTO "ctireversedirectories" VALUES(DEFAULT,'["xivodir"]');
@@ -222,12 +222,12 @@ INSERT INTO "ctisheetactions" VALUES(DEFAULT,'XiVO','Modèle de fiche de base.',
 INSERT INTO "ctisheetevents" VALUES(DEFAULT,'','','XiVO','','');
 
 
-INSERT INTO "ctistatus" VALUES(DEFAULT,1,'available','Disponible','enablednd(false)','#08FD20','1,2,3,4,5',0);
-INSERT INTO "ctistatus" VALUES(DEFAULT,1,'away','Sorti','enablednd(false)','#FDE50A','1,2,3,4,5',1);
-INSERT INTO "ctistatus" VALUES(DEFAULT,1,'outtolunch','Parti Manger','enablednd(false)','#001AFF','1,2,3,4,5',1);
-INSERT INTO "ctistatus" VALUES(DEFAULT,1,'donotdisturb','Ne pas déranger','enablednd(true)','#FF032D','1,2,3,4,5',1);
-INSERT INTO "ctistatus" VALUES(DEFAULT,1,'berightback','Bientôt de retour','enablednd(false)','#FFB545','1,2,3,4,5',1);
-INSERT INTO "ctistatus" VALUES(DEFAULT,1,'disconnected','Déconnecté','agentlogoff()','#202020','',0);
+INSERT INTO "ctistatus" VALUES(DEFAULT,1,'available','Disponible','enablednd(false)','#9BC920','1,2,3,4,5',0);
+INSERT INTO "ctistatus" VALUES(DEFAULT,1,'away','Sorti','enablednd(false)','#FFDD00','1,2,3,4,5',1);
+INSERT INTO "ctistatus" VALUES(DEFAULT,1,'outtolunch','Parti Manger','enablednd(false)','#6CA6FF','1,2,3,4,5',1);
+INSERT INTO "ctistatus" VALUES(DEFAULT,1,'donotdisturb','Ne pas déranger','enablednd(true)','#D13224','1,2,3,4,5',1);
+INSERT INTO "ctistatus" VALUES(DEFAULT,1,'berightback','Bientôt de retour','enablednd(false)','#F2833A','1,2,3,4,5',1);
+INSERT INTO "ctistatus" VALUES(DEFAULT,1,'disconnected','Déconnecté','agentlogoff()','#9E9E9E','',0);
 
 
 INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*31.','extenfeatures','agentstaticlogin');

@@ -28,11 +28,11 @@ def upgrade():
     for dir_id, description in rows:
         rows = conn.execute(sql.select([fields_table.c.dir_id])
                             .where(and_(fields_table.c.dir_id == dir_id,
-                                        fields_table.c.fieldname == 'source')))
+                                        fields_table.c.fieldname == 'directory')))
         if rows.rowcount:
             continue
         op.execute(fields_table.insert().values(dir_id=dir_id,
-                                                fieldname='source',
+                                                fieldname='directory',
                                                 value=description))
 
 

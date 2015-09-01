@@ -68,10 +68,19 @@ def _update_sources(conn, column_info):
                         cti_directory_fields.c.fieldname == column_info['source_col']))).rowcount != 0
         if already_there:
             continue
+        fields = conn.execute(sql.select([cti_directory_fields.c.fieldname,
+                                          cti_directory_fields.c.value])
+                              .where(cti_directory_fields.c.dir_id == row.id))
+
+        source_fields = column_info['source_fields']
+        for field in fields:
+            old_field = '{%s}' % field.fieldname
+            new_field = field.value
+            source_fields = source_fields.replace(old_field, new_field)
 
         op.execute(cti_directory_fields.insert().values(dir_id=row.id,
                                                         fieldname=column_info['source_col'],
-                                                        value=column_info['source_format']))
+                                                        value=source_fields))
 
 
 def _update_display(conn, column_info):
@@ -101,7 +110,7 @@ def _get_column_to_migrate(conn):
             to_migrate.append({'display': row.name,
                                'position': pos,
                                'source_col': source_column,
-                               'source_format': source_format,
+                               'source_fields': source_format,
                                'sources': source_names,
                                'display_data': config})
     return to_migrate

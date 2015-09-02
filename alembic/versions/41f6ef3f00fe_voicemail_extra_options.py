@@ -1,7 +1,7 @@
 """voicemail_extra_options
 
 Revision ID: 41f6ef3f00fe
-Revises: 5ace7dc40b5c
+Revises: 444b39e9aa32
 
 """
 
@@ -12,7 +12,7 @@ from sqlalchemy.dialects.postgresql import ARRAY
 
 # revision identifiers, used by Alembic.
 revision = '41f6ef3f00fe'
-down_revision = '5ace7dc40b5c'
+down_revision = '444b39e9aa32'
 
 
 OPTIONS = ('dialout',

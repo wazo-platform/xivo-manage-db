@@ -48,7 +48,6 @@ INSERT INTO "cti_xlet" VALUES (DEFAULT, 'people');
 INSERT INTO "cti_xlet" VALUES (DEFAULT, 'queueentrydetails');
 INSERT INTO "cti_xlet" VALUES (DEFAULT, 'queuemembers');
 INSERT INTO "cti_xlet" VALUES (DEFAULT, 'queues');
-INSERT INTO "cti_xlet" VALUES (DEFAULT, 'remotedirectory');
 INSERT INTO "cti_xlet" VALUES (DEFAULT, 'search');
 INSERT INTO "cti_xlet" VALUES (DEFAULT, 'switchboard');
 INSERT INTO "cti_xlet" VALUES (DEFAULT, 'tabber');
@@ -136,18 +135,14 @@ INSERT INTO "cti_profile_xlet" VALUES ((SELECT "id" FROM "cti_xlet" WHERE "plugi
                                        (SELECT "id" FROM "cti_profile" WHERE "name" = 'Client'),
                                        (SELECT "id" FROM "cti_xlet_layout" WHERE "name" = 'tab'),
                                        TRUE, TRUE, TRUE, TRUE, 4);
-INSERT INTO "cti_profile_xlet" VALUES ((SELECT "id" FROM "cti_xlet" WHERE "plugin_name" = 'remotedirectory'),
-                                       (SELECT "id" FROM "cti_profile" WHERE "name" = 'Client'),
-                                       (SELECT "id" FROM "cti_xlet_layout" WHERE "name" = 'tab'),
-                                       TRUE, TRUE, TRUE, TRUE, 5);
 INSERT INTO "cti_profile_xlet" VALUES ((SELECT "id" FROM "cti_xlet" WHERE "plugin_name" = 'features'),
                                        (SELECT "id" FROM "cti_profile" WHERE "name" = 'Client'),
                                        (SELECT "id" FROM "cti_xlet_layout" WHERE "name" = 'tab'),
-                                       TRUE, TRUE, TRUE, TRUE, 6);
+                                       TRUE, TRUE, TRUE, TRUE, 5);
 INSERT INTO "cti_profile_xlet" VALUES ((SELECT "id" FROM "cti_xlet" WHERE "plugin_name" = 'conference'),
                                        (SELECT "id" FROM "cti_profile" WHERE "name" = 'Client'),
                                        (SELECT "id" FROM "cti_xlet_layout" WHERE "name" = 'tab'),
-                                       TRUE, TRUE, TRUE, TRUE, 7);
+                                       TRUE, TRUE, TRUE, TRUE, 6);
 
 /* switchboard */
 INSERT INTO "cti_profile_xlet" VALUES ((SELECT "id" FROM "cti_xlet" WHERE "plugin_name" = 'identity'),

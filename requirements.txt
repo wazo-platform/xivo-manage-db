@@ -4,3 +4,4 @@ alembic==0.6.3
 psycopg2==2.4.5  # from xivo-dao
 pyyaml==3.10  # from xivo-lib-python
 sqlalchemy==0.9.4  # from xivo-dao
+unidecode==0.04.9

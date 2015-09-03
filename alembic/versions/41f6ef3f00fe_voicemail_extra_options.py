@@ -150,12 +150,6 @@ def convert_option(name, value):
         else:
             value = "yes" if value == 1 else "no"
 
-    value = (value
-             .replace("\n", "\\n")
-             .replace("\r", "\\r")
-             .replace("\t", "\\t")
-             .replace("|", ""))
-
     return [name, value]
 
 

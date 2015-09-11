@@ -25,10 +25,10 @@ def _get_display_config(display):
 
 def upgrade():
     rows = op.get_bind().execute(sql.select([cti_displays]))
-    number_count = 0
     for row in rows:
         id_, config = row.id, _get_display_config(row)
         new_config = {}
+        number_count = 0
         for key, value in config.iteritems():
             new_value = list(value)
 

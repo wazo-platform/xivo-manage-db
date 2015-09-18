@@ -23,9 +23,12 @@ directory_fields = sql.table('ctidirectoryfields',
 
 
 def upgrade():
-    _add_directory_field('xivodir', 'displayname', '{phonebook.firstname} {phonebook.lastname}')
-    _add_directory_field('xivodir', 'phone', '{phonebooknumber.office.number}')
-    _add_directory_field('internal', 'displayname', '{firstname} {lastname}')
+    _add_directory_field('xivodir', 'display_name', '{phonebook.displayname}')
+    _add_directory_field('xivodir', 'phone_office', '{phonebooknumber.office.number}')
+    _add_directory_field('xivodir', 'phone_mobile', '{phonebooknumber.mobile.number}')
+    _add_directory_field('xivodir', 'phone_home', '{phonebooknumber.home.number}')
+    _add_directory_field('xivodir', 'phone_other', '{phonebooknumber.other.number}')
+    _add_directory_field('internal', 'display_name', '{firstname} {lastname}')
     _add_directory_field('internal', 'phone', '{exten}')
 
 

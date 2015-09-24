@@ -178,18 +178,23 @@ INSERT INTO "ctidirectories" VALUES(DEFAULT,'xivodir', 'http://localhost/service
 INSERT INTO "ctidirectories" VALUES(DEFAULT,'internal','http://localhost:9487','','["firstname","lastname"]','','Répertoire XiVO Interne',1);
 
 
-INSERT INTO "ctidirectoryfields" VALUES(1, 'phone', '{phonebooknumber.office.number}');
 INSERT INTO "ctidirectoryfields" VALUES(1, 'firstname', '{phonebook.firstname}');
 INSERT INTO "ctidirectoryfields" VALUES(1, 'lastname', '{phonebook.lastname}');
 INSERT INTO "ctidirectoryfields" VALUES(1, 'fullname', '{phonebook.fullname}');
 INSERT INTO "ctidirectoryfields" VALUES(1, 'name', '{phonebook.fullname}');
+INSERT INTO "ctidirectoryfields" VALUES(1, 'display_name', '{phonebook.displayname}');
+INSERT INTO "ctidirectoryfields" VALUES(1, 'phone', '{phonebooknumber.office.number}');
+INSERT INTO "ctidirectoryfields" VALUES(1, 'phone_mobile', '{phonebooknumber.mobile.number}');
+INSERT INTO "ctidirectoryfields" VALUES(1, 'phone_home', '{phonebooknumber.home.number}');
+INSERT INTO "ctidirectoryfields" VALUES(1, 'phone_other', '{phonebooknumber.other.number}');
 INSERT INTO "ctidirectoryfields" VALUES(1, 'company', '{phonebook.society}');
 INSERT INTO "ctidirectoryfields" VALUES(1, 'mail', '{phonebook.email}');
 INSERT INTO "ctidirectoryfields" VALUES(1, 'reverse', '{phonebook.fullname}');
 INSERT INTO "ctidirectoryfields" VALUES(2, 'firstname', '{firstname}');
 INSERT INTO "ctidirectoryfields" VALUES(2, 'lastname', '{lastname}');
-INSERT INTO "ctidirectoryfields" VALUES(2, 'phone', '{exten}');
 INSERT INTO "ctidirectoryfields" VALUES(2, 'name', '{firstname} {lastname}');
+INSERT INTO "ctidirectoryfields" VALUES(2, 'display_name', '{firstname} {lastname}');
+INSERT INTO "ctidirectoryfields" VALUES(2, 'phone', '{exten}');
 
 
 INSERT INTO "ctidisplays" VALUES(DEFAULT,'Display','{"10": [ "Nom","name","","name" ],"20": [ "Numéro","number","","phone" ],"30": [ "Entreprise","","Inconnue","company" ],"40": [ "E-mail","","","mail" ], "50": ["Favoris", "favorite", "", "favorite"], "60": ["", "personnal", "", ""], "70": [ "Source","","","directory" ]}',1,'Affichage par défaut');

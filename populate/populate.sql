@@ -187,7 +187,6 @@ INSERT INTO "ctidirectoryfields" VALUES(1, 'company', '{phonebook.society}');
 INSERT INTO "ctidirectoryfields" VALUES(1, 'mail', '{phonebook.email}');
 INSERT INTO "ctidirectoryfields" VALUES(1, 'reverse', '{phonebook.fullname}');
 INSERT INTO "ctidirectoryfields" VALUES(1, 'display_name', '{phonebook.displayname}');
-INSERT INTO "ctidirectoryfields" VALUES(1, 'phone_office', '{phonebooknumber.office.number}');
 INSERT INTO "ctidirectoryfields" VALUES(1, 'phone_mobile', '{phonebooknumber.mobile.number}');
 INSERT INTO "ctidirectoryfields" VALUES(1, 'phone_home', '{phonebooknumber.home.number}');
 INSERT INTO "ctidirectoryfields" VALUES(1, 'phone_other', '{phonebooknumber.other.number}');

@@ -1,13 +1,13 @@
 """add displayname and phone fields in source definition
 
 Revision ID: 86511ef5d49
-Revises: 1c3eb7380750
+Revises: 2c004153ed7f
 
 """
 
 # revision identifiers, used by Alembic.
 revision = '86511ef5d49'
-down_revision = '1c3eb7380750'
+down_revision = '2c004153ed7f'
 
 from alembic import op
 from sqlalchemy import sql, and_

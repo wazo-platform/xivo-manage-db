@@ -293,7 +293,7 @@ INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','atxferlo
 INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','atxfercallbackretries','2');
 INSERT INTO "features" VALUES (DEFAULT,1,0,0,'features.conf','featuremap','blindxfer','*1');
 INSERT INTO "features" VALUES (DEFAULT,1,0,0,'features.conf','featuremap','disconnect','*0');
-INSERT INTO "features" VALUES (DEFAULT,1,0,0,'features.conf','featuremap','automon','*3');
+INSERT INTO "features" VALUES (DEFAULT,1,0,0,'features.conf','featuremap','automixmon','*3');
 INSERT INTO "features" VALUES (DEFAULT,1,0,0,'features.conf','featuremap','atxfer','*2');
 
 
@@ -403,7 +403,7 @@ VALUES (
     8,
     (SELECT id FROM features WHERE filename = 'features.conf'
                                 AND category = 'featuremap'
-                                AND var_name = 'automon')
+                                AND var_name = 'automixmon')
 );
 
 INSERT INTO "musiconhold" VALUES (DEFAULT,0,0,0,'musiconhold.conf','default','mode','files');

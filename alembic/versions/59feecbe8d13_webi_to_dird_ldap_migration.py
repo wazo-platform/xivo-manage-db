@@ -57,6 +57,8 @@ def upgrade():
 
     directory_name_to_add_to_profiles = set()
     for ldap_filter in ldap_filters:
+        if ldap_filter.additional_type == 'fax':
+            continue
         directory = find_directory_by_ldap_filter_name(directories, ldap_filter.name)
         if not directory:
             directory = ldap_filter.build_directory(directories)

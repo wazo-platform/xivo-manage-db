@@ -1,13 +1,13 @@
 """webi to dird ldap migration
 
 Revision ID: 59feecbe8d13
-Revises: 86511ef5d49
+Revises: 500ca962c3a8
 
 """
 
 # revision identifiers, used by Alembic.
 revision = '59feecbe8d13'
-down_revision = '86511ef5d49'
+down_revision = '500ca962c3a8'
 
 import json
 import string

@@ -15,7 +15,7 @@ from sqlalchemy import sql, Column, String, Integer, Enum, CheckConstraint, Uniq
 
 def upgrade():
     op.drop_table('serverfeatures')
-    op.execute('DROP TYPE serverfeatures_type');
+    op.execute('DROP TYPE serverfeatures_type')
 
 
 def downgrade():

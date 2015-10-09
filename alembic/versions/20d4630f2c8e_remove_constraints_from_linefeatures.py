@@ -1,7 +1,7 @@
 """remove constraints from linefeatures
 
 Revision ID: 20d4630f2c8e
-Revises: 500ca962c3a8
+Revises: 46dbcd084872
 
 """
 
@@ -9,7 +9,7 @@ from alembic import op
 
 # revision identifiers, used by Alembic.
 revision = '20d4630f2c8e'
-down_revision = '500ca962c3a8'
+down_revision = '46dbcd084872'
 
 
 def upgrade():

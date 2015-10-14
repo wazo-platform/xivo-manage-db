@@ -17,9 +17,6 @@ def upgrade():
     op.alter_column('linefeatures', 'protocolid', nullable=True)
     op.alter_column('linefeatures', 'name', nullable=True)
     op.alter_column('linefeatures', 'num', server_default='1')
-    op.create_unique_constraint('linefeatures_provisioningid_key',
-                                "linefeatures",
-                                ['provisioningid'])
 
 
 def downgrade():
@@ -27,4 +24,3 @@ def downgrade():
     op.alter_column('linefeatures', 'protocolid', nullable=False)
     op.alter_column('linefeatures', 'name', nullable=False)
     op.alter_column('linefeatures', 'num', server_default='0')
-    op.drop_constraint('linefeatures_provisioningid_key', 'linefeatures')

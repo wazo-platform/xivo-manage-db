@@ -197,7 +197,7 @@ INSERT INTO "ctidirectoryfields" VALUES(2, 'display_name', '{firstname} {lastnam
 INSERT INTO "ctidirectoryfields" VALUES(2, 'phone', '{exten}');
 
 
-INSERT INTO "ctidisplays" VALUES(DEFAULT,'Display','{"10": [ "Nom","name","","name" ],"20": [ "Numéro","number","","phone" ],"30": [ "Entreprise","","Inconnue","company" ],"40": [ "E-mail","","","mail" ], "50": ["Favoris", "favorite", "", "favorite"], "60": ["", "personal", "", ""], "70": [ "Source","","","directory" ]}',1,'Affichage par défaut');
+INSERT INTO "ctidisplays" VALUES(DEFAULT,'Display','{"10": [ "Nom","name","","name" ],"20": [ "Numéro","number","","phone" ], "30": [ "E-mail","","","mail" ], "40": ["Favoris", "favorite", "", "favorite"], "50": ["Personnel", "personal", "", ""]}',1,'Affichage par défaut');
 INSERT INTO "ctidisplays" VALUES(DEFAULT, 'switchboard', '{ "10": [ "", "status", "", ""],"20": [ "Name", "name", "", "name"],"30": [ "Number", "number_office", "", "phone"]}', 1, '');
 
 

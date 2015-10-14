@@ -18,6 +18,7 @@ Depends: ${python:Depends},
          postgresql-contrib,
          postgresql-contrib-9.1,
          python-sqlalchemy (>= 0.9.4-1),
+         python-unidecode,
          xivo-libdao (>= 14.08~)
 Description: XiVO database tools manager
  This package provide XiVO managing database tools

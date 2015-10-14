@@ -52,14 +52,14 @@ def _remove_private_contacts():
         sa.sql.column('phonebook_id'),
     )
 
-    personnal_contact_query = (
+    personal_contact_query = (
         sa.sql.select(
             [user_contact_table.c.phonebook_id]
         )
     )
 
     delete_query = (
-        phonebook_table.delete().where(phonebook_table.c.id.in_(personnal_contact_query))
+        phonebook_table.delete().where(phonebook_table.c.id.in_(personal_contact_query))
     )
 
     op.get_bind().execute(delete_query)

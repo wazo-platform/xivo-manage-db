@@ -27,22 +27,9 @@ from xivo_db import postgres
 logger = logging.getLogger(__name__)
 
 
-@db_manager.daosession
-def expensive_setup(session):
-    logger.info('Connecting to database...')
-    engine = session.bind
-    logger.info('Connected to database')
-    return engine
-
-
-def _create_tables(engine):
+def _create_tables():
     logger.info('Creating all tables...')
-    Base.metadata.create_all(bind=engine)
-
-
-def _close():
-    logger.info('Closing connection...')
-    db_manager.close()
+    Base.metadata.create_all()
 
 
 def _populate_db():
@@ -59,6 +46,7 @@ def _init_db():
     logger.info('Initializing database...')
     postgres.init_db()
     alembic.stamp_head()
+    db_manager.init_db_from_config()
 
 
 def main():
@@ -66,17 +54,13 @@ def main():
 
     _init_logging(parsed_args.verbose)
 
-    engine = expensive_setup()
-    try:
-        if parsed_args.drop:
-            _drop_db()
+    if parsed_args.drop:
+        _drop_db()
 
-        if parsed_args.init:
-            _init_db()
-            _create_tables(engine)
-            _populate_db()
-    finally:
-        _close()
+    if parsed_args.init:
+        _init_db()
+        _create_tables()
+        _populate_db()
 
 
 def _parse_args():

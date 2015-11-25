@@ -199,7 +199,7 @@ INSERT INTO "ctidirectoryfields" VALUES(2, 'phone_mobile', '{mobile_phone_number
 INSERT INTO "ctidirectoryfields" VALUES(2, 'voicemail', '{voicemail_number}');
 
 
-INSERT INTO "ctidisplays" VALUES(DEFAULT,'Display','{"10": [ "Nom","name","","name" ],"20": [ "Numéro","number","","phone" ], "30": [ "Mobile","callable","","phone_mobile" ], "40": ["Voicemail", "voicemail", "", "voicemail"], "50": ["Favoris", "favorite", "", "favorite"], "60": ["E-mail", "email", "", "email"], "70": ["Personnel", "personal", "", ""]}',1,'Affichage par défaut');
+INSERT INTO "ctidisplays" VALUES(DEFAULT,'Display','{"10": [ "Nom","name","","name" ],"20": [ "Numéro","number","","phone" ], "30": [ "Mobile","callable","","phone_mobile" ], "40": ["Boîte vocale", "voicemail", "", "voicemail"], "50": ["Favoris", "favorite", "", "favorite"], "60": ["E-mail", "email", "", "email"], "70": ["Personnel", "personal", "", ""]}',1,'Affichage par défaut');
 INSERT INTO "ctidisplays" VALUES(DEFAULT, 'switchboard', '{ "10": [ "", "status", "", ""],"20": [ "Name", "name", "", "name"],"30": [ "Number", "number_office", "", "phone"]}', 1, '');
 
 

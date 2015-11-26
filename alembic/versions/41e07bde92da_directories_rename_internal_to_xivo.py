@@ -27,7 +27,7 @@ def upgrade():
                .update()
                .where(
                    directories_table.c.uri == 'internal'
-               ).values(uri='xivo', name='XiVO', dirtype='xivo'))
+               ).values(uri='xivo', name='xivo', dirtype='xivo'))
     op.execute(cti_directories_table
                .update()
                .where(

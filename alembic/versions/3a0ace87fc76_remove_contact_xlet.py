@@ -58,6 +58,10 @@ def remove_xlet(xlet_id):
     op.execute(xlet_table.delete().where(xlet_table.c.id == xlet_id))
 
 
+def create_xlet_contact():
+    op.execute(xlet_table.insert().values(plugin_name=CONTACT_XLET))
+
+
 def upgrade():
     contact_id = get_xlet_id(CONTACT_XLET)
     people_id = get_xlet_id(PEOPLE_XLET)
@@ -71,4 +75,4 @@ def upgrade():
 
 
 def downgrade():
-    pass
+    create_xlet_contact()

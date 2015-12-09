@@ -1,4 +1,4 @@
-xivo-manage-db (15.20~20151208.200143.479c50a-1) xivo-dev; urgency=low
+xivo-manage-db (15.20~20151208.200143.479c50a) xivo-dev; urgency=low
 
   * force rebuild for jessie
 

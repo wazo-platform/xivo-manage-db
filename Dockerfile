@@ -1,6 +1,4 @@
-## Image to build from sources
-
-FROM debian:latest
+FROM debian:jessie
 MAINTAINER XiVO Team "dev@avencall.com"
 
 # Add dependencies

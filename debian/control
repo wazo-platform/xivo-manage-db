@@ -13,11 +13,11 @@ Architecture: all
 Depends: ${python:Depends},
          ${misc:Depends},
          alembic,
-         postgresql,
-         postgresql-contrib,
+         postgresql-9.4,
+         postgresql-contrib-9.4,
+         postgresql-plpython-9.4,
          python-sqlalchemy (>= 0.9.4-1),
          python-unidecode,
-         postgresql-plpython-9.4,
          xivo-libdao (>= 14.08~)
 Description: XiVO database tools manager
  This package provide XiVO managing database tools

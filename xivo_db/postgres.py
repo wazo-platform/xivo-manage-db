@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-# Copyright (C) 2014 Avencall
+# Copyright (C) 2014-2016 Avencall
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,8 +15,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
-import os
 import subprocess
+import getpass
+
 from xivo_db import path
 from xivo_db.exception import DBError
 
@@ -38,7 +39,11 @@ def populate_db():
 
 
 def _call_as_postgres(pathname):
-    args = ['su', '-c', pathname, 'postgres']
-    with open(os.devnull) as fobj:
-        if subprocess.call(args, stdout=fobj, cwd='/tmp'):
-            raise DBError()
+    user = 'postgres'
+    if getpass.getuser() == user:
+        args = [pathname]
+    else:
+        args = ['su', '-c', pathname, user]
+
+    if subprocess.call(args, cwd='/tmp'):
+        raise DBError()

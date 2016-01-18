@@ -42,5 +42,5 @@ For example, if you would like to create a web access account on initialization,
 a SQL query in postgres single-user mode:
 
     gosu postgres postgres --single asterisk <<EOF
-    INSERT INTO "accesswebservice" (name, login, passwd, obj, description) VALUES ('webservice', 'username', 'password', '', '')
+    INSERT INTO "accesswebservice" (name, login, passwd, description) VALUES ('webservice', 'username', 'password', '')
     EOF

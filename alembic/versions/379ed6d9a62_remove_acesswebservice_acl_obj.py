@@ -1,13 +1,13 @@
 """remove_acesswebservice_acl_obj
 
 Revision ID: 379ed6d9a62
-Revises: 5524f5f02959
+Revises: d6be50f692dc
 
 """
 
 # revision identifiers, used by Alembic.
 revision = '379ed6d9a62'
-down_revision = '5524f5f02959'
+down_revision = 'd6be50f692dc'
 
 from alembic import op
 

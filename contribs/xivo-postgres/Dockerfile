@@ -1,4 +1,4 @@
-FROM postgres:9.1
+FROM postgres:9.4
 MAINTAINER XiVO Team "dev@avencall.com"
 
 ENV DEBIAN_FRONTEND noninteractive

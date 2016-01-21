@@ -13,6 +13,7 @@ down_revision = '3a0ace87fc76'
 
 
 def upgrade():
+    op.execute("UPDATE userfeatures SET voicemailid = NULL WHERE voicemailid = 0")
     op.create_foreign_key('userfeatures_voicemailid_fkey',
                           'userfeatures', 'voicemail',
                           ['voicemailid'], ['uniqueid'])

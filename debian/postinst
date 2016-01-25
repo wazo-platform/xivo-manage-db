@@ -20,6 +20,11 @@ case "$1" in
                 xivo-init-db --init
             fi
 
+            previous_version="$2"
+            if dpkg --compare-versions "$previous_version" "<<" "16.01~20160125"; then
+                su - -c "psql -c 'create extension if not exists pgcrypto;' asterisk > /dev/null 2>&1" postgres
+            fi
+
             xivo-update-db
         fi
     ;;

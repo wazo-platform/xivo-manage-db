@@ -1,4 +1,4 @@
-FROM xivo/xivo-postgres:2.0
+FROM xivo/postgres
 MAINTAINER XiVO Team "dev@avencall.com"
 USER root
 

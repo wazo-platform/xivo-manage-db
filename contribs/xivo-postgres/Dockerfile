@@ -1,16 +1,13 @@
-FROM xivo/xivo-postgres
+FROM xivo/xivo-postgres:2.0
 MAINTAINER XiVO Team "dev@avencall.com"
 USER root
-
-# makes db operations run slightly faster on older hard drives
-RUN \
-    sed -i 's/#fsync.*/fsync = off/g' $PGCONF 
 
 #Insert data required for running integration tests
 COPY ./initdb.sql /usr/src/initdb.sql
 RUN \
-    sudo -u postgres $PGBIN/pg_ctl -D $PGDATA -o "-c config_file=$PGCONF" start && \
-    sudo -u postgres psql asterisk < /usr/src/initdb.sql && \
-    sudo -u postgres $PGBIN/pg_ctl -D $PGDATA -o "-c config_file=$PGCONF" stop
+    sed -i 's/#fsync.*/fsync = off/g' $PG_CONF \
+    && $PG_CTL -o "--config-file=$PG_CONF" start \
+    && sudo -u postgres psql asterisk < /usr/src/initdb.sql \
+    && $PG_CTL -o "--config-file=$PG_CONF" stop
 
 USER postgres

@@ -10,6 +10,7 @@ RUN \
     && $PG_CTL -o "--config-file=$PG_CONF" start \
     && sudo -u postgres psql asterisk < /usr/src/initdb.sql \
     && xivo-update-db \
+    && sudo -u postgres psql asterisk -c "CREATE DATABASE xivotemplate TEMPLATE asterisk;" \
     && $PG_CTL -o "--config-file=$PG_CONF" stop
 
 USER postgres

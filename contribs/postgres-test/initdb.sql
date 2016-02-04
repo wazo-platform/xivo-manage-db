@@ -23,5 +23,3 @@ INSERT INTO "netiface" (ifname, networktype, type, family, options) VALUES ('eth
 UPDATE provisioning set net4_ip_rest='provd';
 
 ALTER ROLE asterisk WITH SUPERUSER;
-
-CREATE DATABASE xivotemplate TEMPLATE asterisk;

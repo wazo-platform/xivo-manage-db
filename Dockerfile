@@ -4,7 +4,7 @@ MAINTAINER XiVO Team "dev@avencall.com"
 ENV DEBIAN_FRONTEND=noninteractive \
     LC_ALL=C.UTF-8 \
     BUILD_PACKAGES="python-pip python-dev libyaml-dev git libpq-dev" \
-    PG_PACKAGES="postgresql-9.4 postgresql-contrib-9.4 postgresql-client" \
+    PG_PACKAGES="python-setuptools postgresql-9.4 postgresql-contrib-9.4 postgresql-client" \
     PG_CTL="sudo -u postgres /usr/lib/postgresql/9.4/bin/pg_ctl -D /var/lib/postgresql/9.4/main" \
     PG_CONF="/etc/postgresql/9.4/main/postgresql.conf"
 

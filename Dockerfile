@@ -15,7 +15,12 @@ RUN apt-get update \
         locales \
     && dpkg-reconfigure locales \
     && locale-gen C.UTF-8  \
-    && /usr/sbin/update-locale LANG=C.UTF-8
+    && /usr/sbin/update-locale LANG=C.UTF-8 \
+    && apt-get -y install $PG_PACKAGES \
+    && echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/9.4/main/pg_hba.conf \
+    && echo "listen_addresses='*'" >> /etc/postgresql/9.4/main/postgresql.conf \
+    && mkdir -p /var/run/postgresql/9.4-main.pg_stat_tmp \
+    && chown -R postgres:postgres /var/run/postgresql
 
 
 COPY . /usr/src/xivo-manage-db
@@ -23,11 +28,7 @@ WORKDIR /usr/src/xivo-manage-db
 
 #Regrouping all commands into a single one avoids creating extra layers and reduces image size
 RUN \
-    apt-get -y install $BUILD_PACKAGES $PG_PACKAGES \
-    && echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/9.4/main/pg_hba.conf \
-    && echo "listen_addresses='*'" >> /etc/postgresql/9.4/main/postgresql.conf \
-    && mkdir -p /var/run/postgresql/9.4-main.pg_stat_tmp \
-    && chown -R postgres:postgres /var/run/postgresql \
+    apt-get -y install $BUILD_PACKAGES \
     && pip install -r requirements.txt \
     && python setup.py install \
     && mkdir /usr/share/xivo-manage-db /usr/lib/xivo-manage-db \
@@ -39,7 +40,7 @@ RUN \
     && sudo -u postgres pg-init-db \
     && xivo-init-db --init \
     && $PG_CTL -o "--config-file=$PG_CONF" stop \
-    && apt-get remove --purge -y $BUILD_PACKAGES \
+    && apt-get purge -y $BUILD_PACKAGES \
     && apt-get autoremove -y \
     && apt-get clean \
     && rm -rf /usr/src/xivo-manage-db /var/lib/apt/lists/*

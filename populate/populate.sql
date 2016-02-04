@@ -200,6 +200,7 @@ INSERT INTO "ctidirectoryfields" VALUES(2, 'name', '{firstname} {lastname}');
 INSERT INTO "ctidirectoryfields" VALUES(2, 'display_name', '{firstname} {lastname}');
 INSERT INTO "ctidirectoryfields" VALUES(2, 'phone', '{exten}');
 INSERT INTO "ctidirectoryfields" VALUES(2, 'phone_mobile', '{mobile_phone_number}');
+INSERT INTO "ctidirectoryfields" VALUES(2, 'email', '{email}');
 INSERT INTO "ctidirectoryfields" VALUES(2, 'voicemail', '{voicemail_number}');
 
 

@@ -1,0 +1,69 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# Copyright 2016 by Avencall
+# SPDX-License-Identifier: GPL-3.0+
+
+import os.path
+import subprocess
+
+from xivo_dao.helpers import db_manager
+from xivo_dao.resources.infos import dao as infos_dao
+
+XIVO_UUID_FILENAME = '/etc/profile.d/xivo_uuid.sh'
+XIVO_UUID_FILE = '''\
+export XIVO_UUID={uuid}
+'''
+SYSTEM_CONF_FILENAME = '/etc/systemd/system.conf'
+
+
+def _already_configured():
+    if not os.path.isfile(XIVO_UUID_FILENAME):
+        return False
+
+    with open(SYSTEM_CONF_FILENAME, 'r') as f:
+        return 'XIVO_UUID' in f.read()
+
+
+def _get_uuid():
+    db_manager.init_db_from_config()
+    return infos_dao.get().uuid
+
+
+def _reload_systemd():
+    subprocess.call(['systemctl', 'daemon-reload'])
+
+
+def _set_system_conf(uuid):
+    with open(SYSTEM_CONF_FILENAME, 'r') as f:
+        original = list(f)
+
+    env_line = 'DefaultEnvironment='
+    with open(SYSTEM_CONF_FILENAME, 'w') as f:
+        for line in original:
+            if env_line not in line:
+                f.write(line)
+            elif line.startswith('#'):
+                f.write('{}"XIVO_UUID={}"\n'.format(env_line, uuid))
+            elif line.strip().endswith('='):
+                f.write('{}"XIVO_UUID={}"\n'.format(env_line, uuid))
+            else:
+                new_line = '{} "XIVO_UUID={}"\n'.format(line.strip(), uuid)
+                f.write(new_line)
+
+
+def _set_etc_profile(uuid):
+    content = XIVO_UUID_FILE.format(uuid=uuid)
+    with open(XIVO_UUID_FILENAME, 'w') as f:
+        f.write(content)
+
+
+def main():
+    if not _already_configured():
+        uuid = _get_uuid()
+        _set_etc_profile(uuid)
+        _set_system_conf(uuid)
+        _reload_systemd()
+
+
+if __name__ == '__main__':
+    main()

@@ -1,7 +1,7 @@
-xivo-postgres-test Docker image
-==========================
+XiVO Postgres test
+==================
 
-xivo-postgres is a [Postgres](http://postgresql.org) image with a minimal database already configured.
+xivo/postgres-test is a [Postgres](http://postgresql.org) image with a minimal database already configured.
 It is mainly used for running automated tests. Please note that the database is preconfigured as if
 the XiVO wizard has already been run, with default values already set.
 
@@ -25,6 +25,16 @@ Then you can build postgres-test:
 
 Using the image
 ===============
+
+Initializing the database
+-------------------------
+
+If you would like to execute SQL scripts before postgres starts, place them in ```/pg-init-db```. For example:
+
+    docker run -v /path/to/sql/scripts:/pg-init-db xivo/postgres-test
+
+Starting the database
+---------------------
 
 Start a new container with the right port opened:
 

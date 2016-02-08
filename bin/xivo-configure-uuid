@@ -42,9 +42,7 @@ def _set_system_conf(uuid):
         for line in original:
             if env_line not in line:
                 f.write(line)
-            elif line.startswith('#'):
-                f.write('{}"XIVO_UUID={}"\n'.format(env_line, uuid))
-            elif line.strip().endswith('='):
+            elif line.startswith('#') or line.strip().endswith('='):
                 f.write('{}"XIVO_UUID={}"\n'.format(env_line, uuid))
             else:
                 new_line = '{} "XIVO_UUID={}"\n'.format(line.strip(), uuid)

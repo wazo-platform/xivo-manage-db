@@ -17,6 +17,9 @@ SYSTEM_CONF_FILENAME = '/etc/systemd/system.conf'
 
 
 def _already_configured():
+    if 'XIVO_UUID' not in subprocess.check_output(['systemctl', 'show-environment']):
+        return False
+
     if not os.path.isfile(XIVO_UUID_FILENAME):
         return False
 
@@ -29,9 +32,8 @@ def _get_uuid():
     return infos_dao.get().uuid
 
 
-def _reload_systemd():
-    subprocess.call(['systemctl', 'daemon-reload'])
-
+def _set_systemd_environment(uuid):
+    subprocess.call(['systemctl', 'set-environment', 'XIVO_UUID={}'.format(uuid)])
 
 def _set_system_conf(uuid):
     with open(SYSTEM_CONF_FILENAME, 'r') as f:
@@ -60,7 +62,7 @@ def main():
         uuid = _get_uuid()
         _set_etc_profile(uuid)
         _set_system_conf(uuid)
-        _reload_systemd()
+        _set_systemd_environment(uuid)
 
 
 if __name__ == '__main__':

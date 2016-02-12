@@ -39,7 +39,8 @@ def _set_systemd_environment(uuid):
     try:
         subprocess.call(['systemctl', 'set-environment', 'XIVO_UUID={}'.format(uuid)])
     except subprocess.CalledProcessError:
-        'systemd is not running yet, a reboot is required anyway'
+        # systemd is not running yet, a reboot is required anyway
+        pass
 
 def _set_system_conf(uuid):
     with open(SYSTEM_CONF_FILENAME, 'r') as f:

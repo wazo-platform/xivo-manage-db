@@ -9,6 +9,7 @@ import subprocess
 from xivo_dao.helpers import db_manager
 from xivo_dao.resources.infos import dao as infos_dao
 
+XIVO_DEFAULT_FILENAME = '/etc/default/xivo'
 XIVO_UUID_FILENAME = '/etc/profile.d/xivo_uuid.sh'
 XIVO_UUID_FILE = '''\
 export XIVO_UUID={uuid}
@@ -61,6 +62,12 @@ def _set_system_conf(uuid):
 def _set_etc_profile(uuid):
     content = XIVO_UUID_FILE.format(uuid=uuid)
     with open(XIVO_UUID_FILENAME, 'w') as f:
+        f.write(content)
+
+
+def _add_sysv_compat(uuid):
+    content = XIVO_UUID_FILE.format(uuid=uuid)
+    with open(XIVO_DEFAULT_FILENAME, 'a') as f:
         f.write(content)
 
 

@@ -77,6 +77,7 @@ def main():
         _set_etc_profile(uuid)
         _set_system_conf(uuid)
         _set_systemd_environment(uuid)
+        _add_sysv_compat(uuid)
 
 
 if __name__ == '__main__':

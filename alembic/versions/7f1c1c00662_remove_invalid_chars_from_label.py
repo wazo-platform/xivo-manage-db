@@ -1,7 +1,7 @@
 """remove_invalid_chars_from_label
 
 Revision ID: 7f1c1c00662
-Revises: 4123465e114e
+Revises: 53ce4ff6ffe9
 
 """
 
@@ -10,7 +10,7 @@ from sqlalchemy import sql
 
 # revision identifiers, used by Alembic.
 revision = '7f1c1c00662'
-down_revision = '4123465e114e'
+down_revision = '53ce4ff6ffe9'
 
 fk_mapping = sql.table('func_key_mapping',
                        sql.column('label'))

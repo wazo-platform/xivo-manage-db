@@ -1,7 +1,7 @@
 """add_confd_acls_to_agid
 
 Revision ID: 3420040c5650
-Revises: 4123465e114e
+Revises: 7f1c1c00662
 
 """
 
@@ -11,7 +11,7 @@ from sqlalchemy.dialects.postgres import ARRAY, VARCHAR
 
 # revision identifiers, used by Alembic.
 revision = '3420040c5650'
-down_revision = '4123465e114e'
+down_revision = '7f1c1c00662'
 
 
 accesswebservice = sql.table('accesswebservice',

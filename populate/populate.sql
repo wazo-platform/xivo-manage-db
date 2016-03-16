@@ -208,7 +208,7 @@ INSERT INTO "ctidisplays" VALUES(DEFAULT,'Display','{"10": [ "Nom","name","","na
 INSERT INTO "ctidisplays" VALUES(DEFAULT, 'switchboard', '{ "10": [ "", "status", "", ""],"20": [ "Name", "name", "", "name"],"30": [ "Number", "number_office", "", "phone"]}', 1, '');
 
 
-INSERT INTO "ctimain" VALUES(DEFAULT, '127.0.0.1', 5038, 'xivo_cti_user', 'phaickbebs9', '0.0.0.0', 5003, 1, 1, '127.0.0.1', 5004, 1, '127.0.0.1', 5005, 1, '', '', 10, 5, 0, 1);
+INSERT INTO "ctimain" VALUES(DEFAULT, '0.0.0.0', 5003, 1, 1, '127.0.0.1', 5004, 1, '127.0.0.1', 5005, 1, '', '', 10, 5, 0, 1);
 
 
 INSERT INTO "ctiphonehints" VALUES(DEFAULT,1,'-2','Inexistant','#9E9E9E');

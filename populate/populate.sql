@@ -3,7 +3,7 @@ BEGIN;
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
 INSERT INTO "accesswebservice" (name, login, passwd, acl) VALUES ('xivo-agentd-cli', 'xivo-agentd-cli', substring(gen_salt('bf',4),8), '{agentd.#}');
-INSERT INTO "accesswebservice" (name, login, passwd, acl) VALUES ('xivo-agid', 'xivo-agid', substring(gen_salt('bf',4),8), '{dird.directories.reverse.*.*.read, agentd.#, confd.devices.read, confd.lines.read, confd.lines.*.devices.*.update, confd.devices.*.synchronize.read}');
+INSERT INTO "accesswebservice" (name, login, passwd, acl) VALUES ('xivo-agid', 'xivo-agid', substring(gen_salt('bf',4),8), '{dird.directories.reverse.*.*.read, agentd.#, confd.devices.read, confd.lines.read, confd.lines.*.devices.*.update, confd.devices.*.synchronize.read, confd.users.*.services.*.*, confd.users.*.forwards.*.*}');
 INSERT INTO "accesswebservice" (name, login, passwd, acl) VALUES ('xivo-ctid', 'xivo-ctid', substring(gen_salt('bf',4),8), '{dird.#, agentd.#}');
 INSERT INTO "accesswebservice" (name, login, passwd, acl) VALUES ('xivo-ctid-ng', 'xivo-ctid-ng', substring(gen_salt('bf',4),8), '{confd.#}');
 INSERT INTO "accesswebservice" (name, login, passwd, acl) VALUES ('xivo-dird-phoned', 'xivo-dird-phoned', substring(gen_salt('bf',4),8), '{dird.directories.menu.*.*.read, dird.directories.input.*.*.read, dird.directories.lookup.*.*.read}');

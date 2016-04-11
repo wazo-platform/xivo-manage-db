@@ -1,13 +1,13 @@
 """remove exchange voicemail
 
 Revision ID: 30d59d9b4b6e
-Revises: 3b7b334edb5c
+Revises: 18cb96cb384
 
 """
 
 # revision identifiers, used by Alembic.
 revision = '30d59d9b4b6e'
-down_revision = '3b7b334edb5c'
+down_revision = '18cb96cb384'
 
 from alembic import op
 

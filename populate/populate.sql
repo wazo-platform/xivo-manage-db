@@ -710,7 +710,7 @@ INSERT INTO "staticvoicemail" VALUES (DEFAULT,0,0,1,'voicemail.conf','general','
 INSERT INTO "staticvoicemail" VALUES (DEFAULT,0,0,1,'voicemail.conf','general','backupdeleted',NULL);
 
 
-INSERT INTO "general" VALUES (DEFAULT, 'Europe/Paris', NULL, NULL, 0);
+INSERT INTO "general" VALUES (DEFAULT, 'Europe/Paris');
 
 
 INSERT INTO "agentglobalparams" VALUES (DEFAULT,'general','multiplelogin','no');

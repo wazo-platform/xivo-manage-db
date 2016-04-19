@@ -2,13 +2,13 @@
 
 
 Revision ID: 3133fb4958ef
-Revises: 3b7b334edb5c
+Revises: 1b6be5d5e4ac
 
 """
 
 # revision identifiers, used by Alembic.
 revision = '3133fb4958ef'
-down_revision = '3b7b334edb5c'
+down_revision = '1b6be5d5e4ac'
 
 from alembic import op
 from sqlalchemy import sql

@@ -29,7 +29,6 @@ def upgrade():
                     sql.and_(
                         linefeatures_table.c.protocol == None,
                         linefeatures_table.c.protocolid == None,
-                        linefeatures_table.c.device == None,
                         linefeatures_table.c.id.notin_(sql.select([user_line_table.c.line_id])))
                 ))
 

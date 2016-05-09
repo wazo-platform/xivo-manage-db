@@ -1,5 +1,5 @@
 FROM debian:jessie
-MAINTAINER XiVO Team "dev@avencall.com"
+MAINTAINER XiVO Team "dev+docker@proformatique.com"
 
 ENV DEBIAN_FRONTEND=noninteractive \
     LC_ALL=C.UTF-8 \
@@ -34,10 +34,8 @@ RUN \
     && mkdir /usr/share/xivo-manage-db /usr/lib/xivo-manage-db \
     && cp -a alembic alembic.ini migration populate /usr/share/xivo-manage-db \
     && ln -s /usr/local/bin/pg-populate-db /usr/lib/xivo-manage-db/pg-populate-db \
-    && ln -s /usr/local/bin/xivo-init-db /usr/lib/xivo-manage-db/pg-init-db \
     && $PG_CTL -o "--config-file=$PG_CONF" start \
     && while [ "$($PG_CTL status)" = "pg_ctl: no server running" ]; do sleep 1; done \
-    && sudo -u postgres pg-init-db \
     && xivo-init-db --init \
     && $PG_CTL -o "--config-file=$PG_CONF" stop \
     && apt-get purge -y $BUILD_PACKAGES \

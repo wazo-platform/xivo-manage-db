@@ -1,6 +1,6 @@
-# -*- coding: UTF-8 -*-
+# -*- coding: utf-8 -*-
 
-# Copyright (C) 2014 Avencall
+# Copyright (C) 2014-2016 Avencall
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -25,7 +25,6 @@ AST_LAST = os.path.join(VAR_LIB, 'update-db', 'asterisk-last')
 XIVO_LAST = os.path.join(VAR_LIB, 'update-db', 'xivo-last')
 
 PG_DROP_DB = os.path.join(USR_LIB, 'pg-drop-db')
-PG_INIT_DB = os.path.join(USR_LIB, 'pg-init-db')
 PG_MERGE_DB = os.path.join(USR_LIB, 'pg-merge-db')
 PG_POPULATE_DB = os.path.join(USR_LIB, 'pg-populate-db')
 

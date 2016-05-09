@@ -1,7 +1,7 @@
 #!/usr/bin/env python
-# -*- coding: UTF-8 -*-
+# -*- coding: utf-8 -*-
 
-# Copyright (C) 2014  Avencall
+# Copyright (C) 2014-2016  Avencall
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -26,9 +26,14 @@ setup(
     version='0.1',
     description='XIVO DB LIB',
     author='Avencall',
-    author_email='xivo-dev@lists.proformatique.com',
+    author_email='dev+pkg@proformatique.com',
     url='http://www.xivo.io/',
     license='GPLv3',
     packages=find_packages('.'),
-    scripts=['bin/pg-drop-db', 'bin/pg-init-db', 'bin/pg-merge-db', 'bin/pg-populate-db', 'bin/xivo-check-db', 'bin/xivo-init-db', 'bin/xivo-update-db'],
+    scripts=['bin/pg-drop-db',
+             'bin/pg-merge-db',
+             'bin/pg-populate-db',
+             'bin/xivo-check-db',
+             'bin/xivo-init-db',
+             'bin/xivo-update-db'],
 )

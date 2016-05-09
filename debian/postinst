@@ -15,7 +15,7 @@ case "$1" in
 
         # When installing from ISO, Postgres is not running
         if pg_lsclusters --no-header | grep -q online ; then
-            if ! (su - postgres -c 'psql asterisk -c "SELECT * from infos"' 2>&1 | grep -q '(1 row)'); then
+            if su - postgres -c 'psql -tA asterisk -c "SELECT count(*) from infos"' 2>&1 | grep -qx "1" ; then
                 xivo-init-db --init
             fi
 

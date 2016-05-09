@@ -1,6 +1,7 @@
 BEGIN;
 
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 INSERT INTO "accesswebservice" (name, login, passwd, acl) VALUES ('xivo-agentd-cli', 'xivo-agentd-cli', substring(gen_salt('bf',4),8), '{agentd.#}');
 INSERT INTO "accesswebservice" (name, login, passwd, acl) VALUES ('xivo-agid', 'xivo-agid', substring(gen_salt('bf',4),8), '{dird.directories.reverse.*.*.read, agentd.#, confd.devices.read, confd.lines.read, confd.lines.*.devices.*.update, confd.devices.*.synchronize.read, confd.devices.*.autoprov.read, confd.users.*.services.*.*, confd.users.*.forwards.#}');
@@ -865,9 +866,6 @@ INSERT INTO "monitoring" VALUES (DEFAULT,0,NULL,NULL,NULL);
 INSERT INTO "provisioning" VALUES(DEFAULT, '', '127.0.0.1', 'admin', 'admin', 0, 8666, 8667, 0, 0);
 
 
-CREATE EXTENSION "uuid-ossp";
 INSERT INTO "infos" VALUES (uuid_generate_v4());
-DROP EXTENSION "uuid-ossp";
-
 
 COMMIT;

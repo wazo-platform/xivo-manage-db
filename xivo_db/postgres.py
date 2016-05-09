@@ -17,13 +17,57 @@
 
 import subprocess
 import getpass
+import psycopg2
+import time
+import sys
+import os
 
+from pwd import getpwnam
+
+from xivo import db_helper
 from xivo_db import path
 from xivo_db.exception import DBError
 
 
+def run_as(user_name):
+    def wrapper(f):
+        def decorator(*args, **kwargs):
+            starting_uid = os.geteuid()
+            user = getpwnam(user_name)
+            os.seteuid(user.pw_uid)
+            res = f(*args, **kwargs)
+            os.seteuid(starting_uid)
+            return res
+        return decorator
+    return wrapper
+
+
+@run_as('postgres')
 def init_db():
-    _call_as_postgres(path.PG_INIT_DB)
+    db_name = 'asterisk'
+    db_user = 'asterisk'
+    db_user_password = 'proformatique'
+
+    for _ in xrange(40):
+        try:
+            conn = psycopg2.connect('postgresql:///postgres')
+            break
+        except psycopg2.OperationalError:
+            time.sleep(0.25)
+    else:
+        print >> sys.stderr, 'Failed to connect to postgres'
+
+    conn.autocommit = True
+    with conn:
+        with conn.cursor() as cursor:
+            print 'Checking if user exists'
+            if not db_helper.db_user_exists(cursor, db_user):
+                print 'Adding user'
+                db_helper.create_db_user(cursor, db_user, db_user_password)
+            print 'Checking if db exists'
+            if not db_helper.db_exists(cursor, db_name):
+                print 'Creating db'
+                db_helper.create_db(cursor, db_name, db_user)
 
 
 def drop_db():

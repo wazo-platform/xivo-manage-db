@@ -60,13 +60,9 @@ def init_db():
     conn.autocommit = True
     with conn:
         with conn.cursor() as cursor:
-            print 'Checking if user exists'
             if not db_helper.db_user_exists(cursor, db_user):
-                print 'Adding user'
                 db_helper.create_db_user(cursor, db_user, db_user_password)
-            print 'Checking if db exists'
             if not db_helper.db_exists(cursor, db_name):
-                print 'Creating db'
                 db_helper.create_db(cursor, db_name, db_user)
 
 

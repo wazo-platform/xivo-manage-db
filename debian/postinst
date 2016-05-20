@@ -31,7 +31,9 @@ case "$1" in
             fi
 
             xivo-update-db
-            update_timezone
+            if dpkg --compare-versions "$previous_version" "<<" "16.07"; then
+                update_timezone
+            fi
             xivo-update-keys
             xivo-configure-uuid
         fi

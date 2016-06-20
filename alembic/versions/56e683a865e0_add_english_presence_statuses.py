@@ -49,15 +49,13 @@ def rename_presences(old, new):
 
 
 def add_presences(name, description):
-    conn = op.get_bind()
-    op.execute(ctipresences_table.insert().values(name=name,
-                                                  description=description,
-                                                  deletable=0))
-    id_ = 0
-    for row in conn.execute(ctipresences_table.select()):
-        id_ = row['id'] if row['id'] > id_ else id_
-
-    return id_
+    insert_query = (ctipresences_table
+                    .insert()
+                    .returning(ctipresences_table.c.id)
+                    .values(name=name,
+                            description=description,
+                            deletable=0))
+    return op.get_bind().execute(insert_query).scalar()
 
 
 def remove_presences(name, description):

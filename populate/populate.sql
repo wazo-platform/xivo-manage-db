@@ -69,7 +69,7 @@ INSERT INTO "cti_xlet_layout" VALUES (DEFAULT, 'tab');
 INSERT INTO "ctiphonehintsgroup" VALUES(DEFAULT,'xivo','De base non supprimable',0);
 
 
-INSERT INTO "ctipresences" VALUES(DEFAULT,'francais','Présences francophone par défaut',0);
+INSERT INTO "ctipresences" VALUES(DEFAULT,'francais','Présences francophones par défaut',0);
 INSERT INTO "ctipresences" VALUES(DEFAULT,'english','Default english presence statuses',0);
 
 

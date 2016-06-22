@@ -239,11 +239,11 @@ INSERT INTO "ctistatus" VALUES(DEFAULT,1,'donotdisturb','Ne pas déranger','enab
 INSERT INTO "ctistatus" VALUES(DEFAULT,1,'berightback','Bientôt de retour','enablednd(false)','#F2833A','1,2,3,4,5',1);
 INSERT INTO "ctistatus" VALUES(DEFAULT,1,'disconnected','Déconnecté','agentlogoff()','#9E9E9E','',0);
 
-INSERT INTO "ctistatus" VALUES(DEFAULT,2,'available','Available','enablednd(false)','#9BC920','1,2,3,4,5',0);
-INSERT INTO "ctistatus" VALUES(DEFAULT,2,'away','Away','enablednd(false)','#FFDD00','1,2,3,4,5',1);
-INSERT INTO "ctistatus" VALUES(DEFAULT,2,'outtolunch','Out to lunch','enablednd(false)','#6CA6FF','1,2,3,4,5',1);
-INSERT INTO "ctistatus" VALUES(DEFAULT,2,'donotdisturb','Do not disturb','enablednd(true)','#D13224','1,2,3,4,5',1);
-INSERT INTO "ctistatus" VALUES(DEFAULT,2,'berightback','Be right back','enablednd(false)','#F2833A','1,2,3,4,5',1);
+INSERT INTO "ctistatus" VALUES(DEFAULT,2,'available','Available','enablednd(false)','#9BC920','7,8,9,10,11',0);
+INSERT INTO "ctistatus" VALUES(DEFAULT,2,'away','Away','enablednd(false)','#FFDD00','7,8,9,10,11',1);
+INSERT INTO "ctistatus" VALUES(DEFAULT,2,'outtolunch','Out to lunch','enablednd(false)','#6CA6FF','7,8,9,10,11',1);
+INSERT INTO "ctistatus" VALUES(DEFAULT,2,'donotdisturb','Do not disturb','enablednd(true)','#D13224','7,8,9,10,11',1);
+INSERT INTO "ctistatus" VALUES(DEFAULT,2,'berightback','Be right back','enablednd(false)','#F2833A','7,8,9,10,11',1);
 INSERT INTO "ctistatus" VALUES(DEFAULT,2,'disconnected','Disconnected','agentlogoff()','#9E9E9E','',0);
 
 

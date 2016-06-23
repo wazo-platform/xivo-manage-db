@@ -51,6 +51,7 @@ available_presence_map = {
     'berightback': ['available', 'away', 'outtolunch', 'donotdisturb', 'berightback'],
     'disconnected': [],
 }
+fk_name = 'ctistatus_presence_id_fkey'
 
 
 def rename_presences(old, new):
@@ -105,7 +106,25 @@ def insert_english_presences(group_id, presences):
         update_presence(presence_id, avail_ids)
 
 
+def delete_orphaned_statuses():
+    presence_ids = set([row['id'] for row in op.get_bind().execute(ctipresences_table.select())])
+    op.execute(ctistatus_table.delete().where(~ctistatus_table.c.presence_id.in_(presence_ids)))
+
+
+def add_foreign_key():
+    delete_orphaned_statuses()
+    op.create_foreign_key(fk_name,
+                          'ctistatus', 'ctipresences',
+                          ['presence_id'], ['id'],
+                          ondelete='CASCADE')
+
+
+def remove_foreign_key():
+    op.drop_constraint(fk_name, 'ctistatus')
+
+
 def upgrade():
+    add_foreign_key()
     rename_presences(old, new)
     group_id = add_presence_group(*english_params)
     insert_english_presences(group_id, english_presences)
@@ -114,3 +133,4 @@ def upgrade():
 def downgrade():
     remove_presences(*english_params)
     rename_presences(new, old)
+    remove_foreign_key()

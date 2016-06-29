@@ -69,7 +69,8 @@ INSERT INTO "cti_xlet_layout" VALUES (DEFAULT, 'tab');
 INSERT INTO "ctiphonehintsgroup" VALUES(DEFAULT,'xivo','De base non supprimable',0);
 
 
-INSERT INTO "ctipresences" VALUES(DEFAULT,'xivo','De base non supprimable',0);
+INSERT INTO "ctipresences" VALUES(DEFAULT,'francais','Présences francophones par défaut',0);
+INSERT INTO "ctipresences" VALUES(DEFAULT,'english','Default english presence statuses',0);
 
 
 INSERT INTO "cti_profile" VALUES (DEFAULT, 'Supervisor', 1, 1);
@@ -237,6 +238,13 @@ INSERT INTO "ctistatus" VALUES(DEFAULT,1,'outtolunch','Parti Manger','enablednd(
 INSERT INTO "ctistatus" VALUES(DEFAULT,1,'donotdisturb','Ne pas déranger','enablednd(true)','#D13224','1,2,3,4,5',1);
 INSERT INTO "ctistatus" VALUES(DEFAULT,1,'berightback','Bientôt de retour','enablednd(false)','#F2833A','1,2,3,4,5',1);
 INSERT INTO "ctistatus" VALUES(DEFAULT,1,'disconnected','Déconnecté','agentlogoff()','#9E9E9E','',0);
+
+INSERT INTO "ctistatus" VALUES(DEFAULT,2,'available','Available','enablednd(false)','#9BC920','7,8,9,10,11',0);
+INSERT INTO "ctistatus" VALUES(DEFAULT,2,'away','Away','enablednd(false)','#FFDD00','7,8,9,10,11',1);
+INSERT INTO "ctistatus" VALUES(DEFAULT,2,'outtolunch','Out to lunch','enablednd(false)','#6CA6FF','7,8,9,10,11',1);
+INSERT INTO "ctistatus" VALUES(DEFAULT,2,'donotdisturb','Do not disturb','enablednd(true)','#D13224','7,8,9,10,11',1);
+INSERT INTO "ctistatus" VALUES(DEFAULT,2,'berightback','Be right back','enablednd(false)','#F2833A','7,8,9,10,11',1);
+INSERT INTO "ctistatus" VALUES(DEFAULT,2,'disconnected','Disconnected','agentlogoff()','#9E9E9E','',0);
 
 
 INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*31.','extenfeatures','agentstaticlogin');

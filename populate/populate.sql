@@ -5,7 +5,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 INSERT INTO "accesswebservice" (name, login, passwd, acl) VALUES ('xivo-agentd-cli', 'xivo-agentd-cli', substring(gen_salt('bf',4),8), '{agentd.#}');
 INSERT INTO "accesswebservice" (name, login, passwd, acl) VALUES ('xivo-agid', 'xivo-agid', substring(gen_salt('bf',4),8), '{dird.directories.reverse.*.*.read, agentd.#, confd.devices.read, confd.lines.read, confd.lines.*.devices.*.update, confd.devices.*.synchronize.read, confd.devices.*.autoprov.read, confd.users.*.services.*.*, confd.users.*.forwards.#}');
-INSERT INTO "accesswebservice" (name, login, passwd, acl) VALUES ('xivo-ctid', 'xivo-ctid', substring(gen_salt('bf',4),8), '{dird.#, agentd.#, confd.users.*.services.dnd.update, ctid-ng.transfers.#}');
+INSERT INTO "accesswebservice" (name, login, passwd, acl) VALUES ('xivo-ctid', 'xivo-ctid', substring(gen_salt('bf',4),8), '{dird.#, agentd.#, confd.users.*.services.dnd.update, ctid-ng.#}');
 INSERT INTO "accesswebservice" (name, login, passwd, acl) VALUES ('xivo-ctid-ng', 'xivo-ctid-ng', substring(gen_salt('bf',4),8), '{confd.#, amid.action.Redirect.create, amid.action.Setvar.create}');
 INSERT INTO "accesswebservice" (name, login, passwd, acl) VALUES ('xivo-dird-phoned', 'xivo-dird-phoned', substring(gen_salt('bf',4),8), '{dird.directories.menu.*.*.read, dird.directories.input.*.*.read, dird.directories.lookup.*.*.read}');
 

@@ -19,7 +19,7 @@ webservice = sql.table('accesswebservice',
                        sql.column('acl'))
 
 SERVICE = 'xivo-ctid'
-NEW_ACL = set(['ctid-ng.transfers.#'])
+NEW_ACL = set(['ctid-ng.#'])
 
 
 def _get_current_acl(name):

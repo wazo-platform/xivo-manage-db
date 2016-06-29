@@ -40,7 +40,6 @@ INSERT INTO "cti_preference" VALUES (DEFAULT, 'xlet.agents.fontname');
 INSERT INTO "cti_preference" VALUES (DEFAULT, 'xlet.agents.fontsize');
 INSERT INTO "cti_preference" VALUES (DEFAULT, 'xlet.agents.iconsize');
 INSERT INTO "cti_preference" VALUES (DEFAULT, 'xlet.queues.statsfetchperiod');
-INSERT INTO "cti_preference" VALUES (DEFAULT, 'presence.autochangestate');
 
 
 INSERT INTO "cti_xlet" VALUES (DEFAULT, 'agentdetails');

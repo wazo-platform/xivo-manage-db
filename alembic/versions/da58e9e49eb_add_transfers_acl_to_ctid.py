@@ -1,13 +1,13 @@
 """add transfers acl to ctid
 
 Revision ID: da58e9e49eb
-Revises: 564d634619bc
+Revises: 49126e9fffe2
 
 """
 
 # revision identifiers, used by Alembic.
 revision = 'da58e9e49eb'
-down_revision = '564d634619bc'
+down_revision = '49126e9fffe2'
 
 
 from alembic import op

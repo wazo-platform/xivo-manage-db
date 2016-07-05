@@ -2,13 +2,6 @@
 
 set -e
 
-update_timezone() {
-    if ! timezone=$(pg_conftool -s 9.4 main postgresql.conf show timezone) || [ "$timezone" != 'localtime' ]; then
-        pg_conftool 9.4 main postgresql.conf set timezone localtime
-        pg_ctlcluster 9.4 main reload
-    fi
-}
-
 case "$1" in
     configure)
         new_dir=/var/lib/xivo-manage-db/update-db
@@ -31,9 +24,6 @@ case "$1" in
             fi
 
             xivo-update-db
-            if dpkg --compare-versions "$previous_version" "<<" "16.07"; then
-                update_timezone
-            fi
             xivo-update-keys
             xivo-configure-uuid
         fi

@@ -13,7 +13,7 @@ psql="psql -v ON_ERROR_STOP="
 pg_dump xivo | $psql asterisk
 
 # set the owner of all objects to asterisk
-pg_dump -s asterisk | grep -E 'public\..*OWNER TO' | sed -e 's/OWNER TO.*;$/OWNER TO asterisk;/' | $psql asterisk
+pg_dump -s asterisk | grep -E '^ALTER.*OWNER TO' | sed -e 's/OWNER TO.*;$/OWNER TO asterisk;/' | $psql asterisk
 
 # drop database xivo and role xivo
 $psql asterisk <<'EOF'

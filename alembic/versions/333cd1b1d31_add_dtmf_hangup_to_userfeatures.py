@@ -17,7 +17,9 @@ from alembic import op
 
 def upgrade():
     op.add_column('userfeatures', Column('dtmf_hangup', Integer, nullable=False, server_default='0'))
+    op.alter_column('userfeatures', Column('enablexfer', Integer, nullable=False, server_default='0'))
 
 
 def downgrade():
     op.drop_column('userfeatures', 'dtmf_hangup')
+    op.alter_column('userfeatures', Column('enablexfer', Integer, nullable=False, server_default='1'))

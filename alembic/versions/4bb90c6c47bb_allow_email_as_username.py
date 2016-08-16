@@ -1,13 +1,13 @@
 """allow email as username
 
 Revision ID: 4bb90c6c47bb
-Revises: 333cd1b1d31
+Revises: edb58b09b15
 
 """
 
 # revision identifiers, used by Alembic.
 revision = '4bb90c6c47bb'
-down_revision = '333cd1b1d31'
+down_revision = 'edb58b09b15'
 
 from alembic import op
 from sqlalchemy.types import String

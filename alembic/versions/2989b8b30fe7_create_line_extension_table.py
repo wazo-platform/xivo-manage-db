@@ -62,7 +62,8 @@ def _get_all_line_extension_from_user_line():
         sa.sql.select(
             [user_line_table.c.line_id, user_line_table.c.extension_id])
         .where(
-            user_line_table.c.extension_id != None))  # noqa
+            user_line_table.c.extension_id != None)  # noqa
+        .distinct())
     return op.get_bind().execute(query).fetchall()
 
 

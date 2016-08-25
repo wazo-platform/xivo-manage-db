@@ -16,7 +16,7 @@ Depends: ${python:Depends},
          python-sqlalchemy (>= 0.9.4-1),
          python-unidecode,
          systemd,
-         xivo-dbms,
+         xivo-dbms (>= 16.11~20160825.142748.ed6556f),
          xivo-lib-python (>= 16.06~20160509.153738.904a909),
          xivo-libdao (>= 14.08~),
          xivo-auth-keys (>= 16.01~20160201.125515.f4abdfe)

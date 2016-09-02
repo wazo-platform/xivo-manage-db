@@ -598,7 +598,6 @@ INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','qualifyfreq'
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','qualifygap',100);
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','qualifypeers',1);
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','parkinglot',NULL);
-INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','permaturemedia',NULL);
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','sdpsession',NULL);
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','sdpowner',NULL);
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','authfailureevents','no');

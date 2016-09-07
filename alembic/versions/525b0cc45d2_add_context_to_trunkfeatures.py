@@ -1,13 +1,13 @@
 """add_context_to_trunkfeatures
 
 Revision ID: 525b0cc45d2
-Revises: 2989b8b30fe7
+Revises: 3f310bfa7f9a
 
 """
 
 # revision identifiers, used by Alembic.
 revision = '525b0cc45d2'
-down_revision = '2989b8b30fe7'
+down_revision = '3f310bfa7f9a'
 
 from alembic import op
 import sqlalchemy as sa

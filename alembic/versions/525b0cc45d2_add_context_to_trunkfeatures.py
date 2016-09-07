@@ -34,7 +34,7 @@ usercustom_table = sa.sql.table('usercustom',
 def upgrade():
     op.alter_column('trunkfeatures', 'protocol', nullable=True)
     op.alter_column('trunkfeatures', 'protocolid', nullable=True)
-    op.add_column('trunkfeatures', sa.Column('context', sa.String))
+    op.add_column('trunkfeatures', sa.Column('context', sa.String(39)))
     _populate_context_from_usersip()
     _populate_context_from_useriax()
     _populate_context_from_usercustom()

@@ -1,13 +1,13 @@
 """add xivo-ctid-ng acl
 
 Revision ID: 4977a626c01
-Revises: 2989b8b30fe7
+Revises: 525b0cc45d2
 
 """
 
 # revision identifiers, used by Alembic.
 revision = '4977a626c01'
-down_revision = '2989b8b30fe7'
+down_revision = '525b0cc45d2'
 
 from alembic import op
 from sqlalchemy import sql

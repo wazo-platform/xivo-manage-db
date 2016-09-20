@@ -1,13 +1,13 @@
 """remove_null_constraint_exten_context_from_incall
 
 Revision ID: 1aef8dfb5a12
-Revises: 544f8b1e6905
+Revises: 549c621ae619
 
 """
 
 # revision identifiers, used by Alembic.
 revision = '1aef8dfb5a12'
-down_revision = '544f8b1e6905'
+down_revision = '549c621ae619'
 
 from alembic import op
 

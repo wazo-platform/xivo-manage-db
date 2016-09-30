@@ -50,7 +50,7 @@ def upgrade():
     op.add_column('ctidirectories',
                   sa.Column('directory_id',
                             sa.Integer(),
-                            sa.ForeignKey('directories.id')))
+                            sa.ForeignKey('directories.id', ondelete='CASCADE')))
     conn = op.get_bind()
 
     ldap_filters = list_ldap_filters(conn)

@@ -179,8 +179,20 @@ INSERT INTO "cticontexts" VALUES(DEFAULT,'default','xivodir,internal','Display',
 INSERT INTO "cticontexts" VALUES(DEFAULT, '__switchboard_directory', 'xivodir', 'switchboard', '', 1);
 
 
-INSERT INTO "ctidirectories" VALUES(DEFAULT,'xivodir', 'http://localhost/service/ipbx/json.php/private/pbx_services/phonebook', '', '["phonebook.firstname","phonebook.lastname","phonebook.displayname","phonebook.society","phonebooknumber.office.number"]','["phonebooknumber.office.number","phonebooknumber.mobile.number"]','Répertoire XiVO Externe',1);
-INSERT INTO "ctidirectories" VALUES(DEFAULT,'internal','http://localhost:9487','','["firstname","lastname"]','','Répertoire XiVO Interne',1);
+INSERT INTO "ctidirectories" ("name", "match_direct", "match_reverse", "description", "deletable", "directory_id")
+        VALUES('xivodir',
+               '["phonebook.firstname","phonebook.lastname","phonebook.displayname","phonebook.society","phonebooknumber.office.number"]',
+               '["phonebooknumber.office.number","phonebooknumber.mobile.number"]',
+               'Répertoire XiVO Externe',
+               1,
+               (SELECT "id" FROM "directories" WHERE "name" = 'xivo'));
+INSERT INTO "ctidirectories" ("name", "match_direct", "match_reverse", "description", "deletable", "directory_id")
+        VALUES('internal',
+               '["firstname","lastname"]',
+               '',
+               'Répertoire XiVO Interne',
+               1,
+               (SELECT "id" FROM "directories" WHERE "name" = 'phonebook'));
 
 
 INSERT INTO "ctidirectoryfields" VALUES(1, 'firstname', '{phonebook.firstname}');

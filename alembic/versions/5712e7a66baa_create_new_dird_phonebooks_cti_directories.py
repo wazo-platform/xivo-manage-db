@@ -30,6 +30,10 @@ cti_directories = sql.table('ctidirectories',
                             sql.column('deletable'),
                             sql.column('directory_id'),
                             sql.column('description'))
+directory_fields = sql.table('ctidirectoryfields',
+                             sql.column('dir_id'),
+                             sql.column('fieldname'),
+                             sql.column('value'))
 
 
 class DefinitionGenerator(object):
@@ -47,8 +51,8 @@ class DefinitionGenerator(object):
                 if not new_directory_id:
                     continue
                 new.append({'name': '{}-{}'.format(entity, definition.name),
-                            'match_direct': definition.match_direct,
-                            'match_reverse': definition.match_reverse,
+                            'match_direct': format_fieldname(definition.match_direct),
+                            'match_reverse': format_fieldname(definition.match_reverse),
                             'deletable': definition.deletable,
                             'directory_id': new_directory_id,
                             'description': definition.description})
@@ -63,15 +67,67 @@ class DefinitionGenerator(object):
                         return directory.id
 
 
+class FieldGenerator(object):
+
+    def __init__(self, entities, phonebook_definitions, dird_definitions, directories, fields):
+        self.entities = entities
+        self.phonebook_definitions = phonebook_definitions
+        self.dird_definitions = dird_definitions
+        self.directories = directories
+        self.fields = fields
+
+    def generate(self):
+        new = []
+        for phonebook in self.phonebook_definitions:
+            for dird in self.dird_definitions:
+                if not dird.name.endswith('-{}'.format(phonebook.name)):
+                    continue
+                for field in self.fields:
+                    if field.dir_id != phonebook.id:
+                        continue
+                    new.append({'dir_id': dird.id,
+                                'fieldname': field.fieldname,
+                                'value': format_fieldname(field.value)})
+        return new
+
+
+def format_fieldname(fieldname):
+    # {phonebook.firstname} => {firstname}
+    fieldname = fieldname.replace('phonebook.', '')
+
+    # {phonebooknumber.office.number} => {number_office}
+    fieldname = fieldname.replace('phonebooknumber.', 'number_')
+    fieldname = fieldname.replace('.number', '')
+
+    # {phonebookaddress.office.*} => {address_office_*}
+    fieldname = fieldname.replace('phonebookaddress.', 'address_')
+    for type_ in ['office', 'home', 'other']:
+        fieldname = fieldname.replace('address_{}.'.format(type_),
+                                      'address_{}_'.format(type_))
+
+    return fieldname
+
+
 def upgrade():
     conn = op.get_bind()
 
     entities = list_entities(conn)
-    cti_phonebook_directories = list_cti_phonebook_directories(conn)
+    cti_phonebook_directories = list_cti_directories(conn, 'phonebook')
     directories = get_directories(conn)
 
     generator = DefinitionGenerator(entities, cti_phonebook_directories, directories)
     op.bulk_insert(cti_directories, generator.generate())
+
+    cti_dird_phonebook_directories = list_cti_directories(conn, 'dird_phonebook')
+    fields = list_fields(conn)
+
+    generator = FieldGenerator(entities,
+                               cti_phonebook_directories,
+                               cti_dird_phonebook_directories,
+                               directories,
+                               fields)
+
+    op.bulk_insert(directory_fields, generator.generate())
 
 
 def downgrade():
@@ -83,14 +139,19 @@ def get_directories(conn):
     return [d for d in conn.execute(query)]
 
 
-def list_cti_phonebook_directories(conn):
+def list_cti_directories(conn, type_):
     query = sql.select(
         [cti_directories]
     ).where(and_(cti_directories.c.directory_id == directories.c.id,
-                 directories.c.dirtype == 'phonebook'))
+                 directories.c.dirtype == type_))
     return [directory for directory in conn.execute(query)]
 
 
 def list_entities(conn):
     query = sql.select([entity])
     return [e.name for e in conn.execute(query)]
+
+
+def list_fields(conn):
+    query = sql.select([directory_fields])
+    return [f for f in conn.execute(query)]

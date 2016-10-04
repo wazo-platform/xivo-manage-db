@@ -26,7 +26,7 @@ entity = sql.table('entity',
 
 old_local_phonebook_uri = 'http://localhost/service/ipbx/json.php/private/pbx_services/phonebook'
 new_dird_phonebook_uri = 'postgresql://asterisk:proformatique@localhost/asterisk'
-default_dird_phonebook = 'XiVO'
+default_dird_phonebook = 'xivo'
 
 
 def upgrade():

@@ -8,6 +8,7 @@ INSERT INTO "accesswebservice" (name, login, passwd, acl) VALUES ('xivo-agid', '
 INSERT INTO "accesswebservice" (name, login, passwd, acl) VALUES ('xivo-ctid', 'xivo-ctid', substring(gen_salt('bf',4),8), '{dird.#, agentd.#, confd.users.*.services.dnd.update, ctid-ng.#}');
 INSERT INTO "accesswebservice" (name, login, passwd, acl) VALUES ('xivo-ctid-ng', 'xivo-ctid-ng', substring(gen_salt('bf',4),8), '{confd.#, amid.action.Redirect.create, amid.action.Setvar.create, amid.action.ShowDialplan.create, amid.action.Command.create}');
 INSERT INTO "accesswebservice" (name, login, passwd, acl) VALUES ('xivo-dird-phoned', 'xivo-dird-phoned', substring(gen_salt('bf',4),8), '{dird.directories.menu.*.*.read, dird.directories.input.*.*.read, dird.directories.lookup.*.*.read}');
+INSERT INTO "accesswebservice" (name, login, passwd, acl) VALUES ('xivo-wizard', 'xivo-wizard', substring(gen_salt('bf',4),8), '{dird.tenants.*.phonebooks.create}');
 
 
 INSERT INTO "agentgroup" VALUES (DEFAULT,1,'default','',0,0,'');

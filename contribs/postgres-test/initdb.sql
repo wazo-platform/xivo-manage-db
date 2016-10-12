@@ -2,11 +2,11 @@ INSERT INTO "entity" (name, displayname, description) VALUES ('xivotest', 'xivot
 
 INSERT INTO "accesswebservice" (name, login, passwd, description) VALUES ('admin', 'admin', 'proformatique', '');
 
-INSERT INTO "context" (name, displayname, contexttype, description, entity) 
-VALUES 
+INSERT INTO "context" (name, displayname, contexttype, description, entity)
+VALUES
 ('default', 'Default', 'internal', '', 'xivotest'),
 ('from-extern', 'Incalls', 'incall', '', 'xivotest'),
-('to-extern', 'Outcalls', 'incall', '', 'xivotest');
+('to-extern', 'Outcalls', 'outcall', '', 'xivotest');
 
 INSERT INTO "contextinclude" (context, include) VALUES ('default', 'to-extern');
 

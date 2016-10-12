@@ -14,13 +14,13 @@ case "$1" in
 
         # When installing from ISO, Postgres is not running
         if pg_lsclusters --no-header | grep -q online ; then
-            if ! su - postgres -c 'psql -tA asterisk --quiet -c "SELECT count(*) from userfeatures" > /dev/null 2>&1' ; then
+            if ! sudo -u postgres psql -tA asterisk --quiet -c "SELECT count(*) from userfeatures" > /dev/null 2>&1 ; then
                 xivo-init-db --init
             fi
 
             previous_version="$2"
             if dpkg --compare-versions "$previous_version" "<<" "16.01~20160125"; then
-                su - -c "psql -c 'create extension if not exists pgcrypto;' asterisk > /dev/null 2>&1" postgres
+                sudo -u postgres psql -c 'create extension if not exists pgcrypto;' asterisk > /dev/null 2>&1
             fi
 
             xivo-update-db

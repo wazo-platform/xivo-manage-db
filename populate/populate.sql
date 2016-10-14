@@ -8,6 +8,7 @@ INSERT INTO "accesswebservice" (name, login, passwd, acl) VALUES ('xivo-agid', '
 INSERT INTO "accesswebservice" (name, login, passwd, acl) VALUES ('xivo-ctid', 'xivo-ctid', substring(gen_salt('bf',4),8), '{dird.#, agentd.#, confd.users.*.services.dnd.update, ctid-ng.#}');
 INSERT INTO "accesswebservice" (name, login, passwd, acl) VALUES ('xivo-ctid-ng', 'xivo-ctid-ng', substring(gen_salt('bf',4),8), '{confd.#, amid.action.Redirect.create, amid.action.Setvar.create, amid.action.ShowDialplan.create, amid.action.Command.create}');
 INSERT INTO "accesswebservice" (name, login, passwd, acl) VALUES ('xivo-dird-phoned', 'xivo-dird-phoned', substring(gen_salt('bf',4),8), '{dird.directories.menu.*.*.read, dird.directories.input.*.*.read, dird.directories.lookup.*.*.read}');
+INSERT INTO "accesswebservice" (name, login, passwd, acl) VALUES ('xivo-wizard', 'xivo-wizard', substring(gen_salt('bf',4),8), '{dird.tenants.*.phonebooks.create}');
 
 
 INSERT INTO "agentgroup" VALUES (DEFAULT,1,'default','',0,0,'');
@@ -175,17 +176,10 @@ INSERT INTO "cti_profile_service" VALUES ((SELECT "id" FROM "cti_profile" WHERE 
                                           (SELECT "id" FROM "cti_service" WHERE "key" = 'fwdrna'));
 
 
-INSERT INTO "cticontexts" VALUES(DEFAULT,'default','xivodir,internal','Display','Contexte par défaut',1);
-INSERT INTO "cticontexts" VALUES(DEFAULT, '__switchboard_directory', 'xivodir', 'switchboard', '', 1);
+INSERT INTO "cticontexts" VALUES(DEFAULT,'default','internal','Display','Contexte par défaut',1);
+INSERT INTO "cticontexts" VALUES(DEFAULT, '__switchboard_directory', '', 'switchboard', '', 1);
 
 
-INSERT INTO "ctidirectories" ("name", "match_direct", "match_reverse", "description", "deletable", "directory_id")
-        VALUES('xivodir',
-               '["phonebook.firstname","phonebook.lastname","phonebook.displayname","phonebook.society","phonebooknumber.office.number"]',
-               '["phonebooknumber.office.number","phonebooknumber.mobile.number"]',
-               'Répertoire XiVO Externe',
-               1,
-               (SELECT "id" FROM "directories" WHERE "name" = 'xivo'));
 INSERT INTO "ctidirectories" ("name", "match_direct", "match_reverse", "description", "deletable", "directory_id")
         VALUES('internal',
                '["firstname","lastname"]',
@@ -195,26 +189,11 @@ INSERT INTO "ctidirectories" ("name", "match_direct", "match_reverse", "descript
                (SELECT "id" FROM "directories" WHERE "name" = 'phonebook'));
 
 
-INSERT INTO "ctidirectoryfields" VALUES(1, 'firstname', '{phonebook.firstname}');
-INSERT INTO "ctidirectoryfields" VALUES(1, 'lastname', '{phonebook.lastname}');
-INSERT INTO "ctidirectoryfields" VALUES(1, 'fullname', '{phonebook.fullname}');
-INSERT INTO "ctidirectoryfields" VALUES(1, 'name', '{phonebook.fullname}');
-INSERT INTO "ctidirectoryfields" VALUES(1, 'display_name', '{phonebook.displayname}');
-INSERT INTO "ctidirectoryfields" VALUES(1, 'phone', '{phonebooknumber.office.number}');
-INSERT INTO "ctidirectoryfields" VALUES(1, 'phone_mobile', '{phonebooknumber.mobile.number}');
-INSERT INTO "ctidirectoryfields" VALUES(1, 'phone_home', '{phonebooknumber.home.number}');
-INSERT INTO "ctidirectoryfields" VALUES(1, 'phone_other', '{phonebooknumber.other.number}');
-INSERT INTO "ctidirectoryfields" VALUES(1, 'company', '{phonebook.society}');
-INSERT INTO "ctidirectoryfields" VALUES(1, 'email', '{phonebook.email}');
-INSERT INTO "ctidirectoryfields" VALUES(1, 'reverse', '{phonebook.fullname}');
-INSERT INTO "ctidirectoryfields" VALUES(2, 'firstname', '{firstname}');
-INSERT INTO "ctidirectoryfields" VALUES(2, 'lastname', '{lastname}');
-INSERT INTO "ctidirectoryfields" VALUES(2, 'name', '{firstname} {lastname}');
-INSERT INTO "ctidirectoryfields" VALUES(2, 'display_name', '{firstname} {lastname}');
-INSERT INTO "ctidirectoryfields" VALUES(2, 'phone', '{exten}');
-INSERT INTO "ctidirectoryfields" VALUES(2, 'phone_mobile', '{mobile_phone_number}');
-INSERT INTO "ctidirectoryfields" VALUES(2, 'email', '{email}');
-INSERT INTO "ctidirectoryfields" VALUES(2, 'voicemail', '{voicemail_number}');
+INSERT INTO "ctidirectoryfields" VALUES(1, 'name', '{firstname} {lastname}');
+INSERT INTO "ctidirectoryfields" VALUES(1, 'display_name', '{firstname} {lastname}');
+INSERT INTO "ctidirectoryfields" VALUES(1, 'phone', '{exten}');
+INSERT INTO "ctidirectoryfields" VALUES(1, 'phone_mobile', '{mobile_phone_number}');
+INSERT INTO "ctidirectoryfields" VALUES(1, 'voicemail', '{voicemail_number}');
 
 
 INSERT INTO "ctidisplays" VALUES(DEFAULT,'Display','{"10": [ "Nom","name","","name" ],"20": [ "Numéro","number","","phone" ], "30": [ "Mobile","callable","","phone_mobile" ], "40": ["Boîte vocale", "voicemail", "", "voicemail"], "50": ["Favoris", "favorite", "", "favorite"], "60": ["E-mail", "email", "", "email"], "70": ["Personnel", "personal", "", ""]}',1,'Affichage par défaut');

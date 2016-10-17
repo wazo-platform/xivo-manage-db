@@ -180,13 +180,16 @@ INSERT INTO "cticontexts" VALUES(DEFAULT,'default','internal','Display','Context
 INSERT INTO "cticontexts" VALUES(DEFAULT, '__switchboard_directory', '', 'switchboard', '', 1);
 
 
+INSERT INTO "directories" ("uri", "dirtype", "name", "description") VALUES ('http://localhost:9487' , 'xivo', 'xivo' , 'XiVO internal users');
+
+
 INSERT INTO "ctidirectories" ("name", "match_direct", "match_reverse", "description", "deletable", "directory_id")
         VALUES('internal',
                '["firstname","lastname"]',
                '',
                'Répertoire XiVO Interne',
                1,
-               (SELECT "id" FROM "directories" WHERE "name" = 'phonebook'));
+               (SELECT "id" FROM "directories" WHERE "name" = 'xivo'));
 
 
 INSERT INTO "ctidirectoryfields" VALUES(1, 'name', '{firstname} {lastname}');
@@ -839,10 +842,6 @@ CREATE TRIGGER "change_queue_log_agent"
     WHEN (NEW."event" = 'PAUSEALL' OR NEW."event" = 'UNPAUSEALL')
     EXECUTE PROCEDURE "set_agent_on_pauseall"();
 
-
-
-INSERT INTO "directories" ("uri", "dirtype", "name", "description") VALUES ('http://localhost:9487' , 'xivo', 'xivo' , 'XiVO internal users');
-INSERT INTO "directories" ("uri", "dirtype", "name", "description") VALUES ('http://localhost/service/ipbx/json.php/private/pbx_services/phonebook', 'phonebook', 'phonebook', 'XiVO phonebook');
 
 
 INSERT INTO "resolvconf" VALUES(DEFAULT, '', '', NULL, NULL, NULL, NULL, '');

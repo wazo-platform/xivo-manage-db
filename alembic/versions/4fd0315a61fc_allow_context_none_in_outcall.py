@@ -1,13 +1,13 @@
 """allow-context-none-in-outcall.py
 
 Revision ID: 4fd0315a61fc
-Revises: 15b236bd8060
+Revises: 241ba0a6d087
 
 """
 
 # revision identifiers, used by Alembic.
 revision = '4fd0315a61fc'
-down_revision = '15b236bd8060'
+down_revision = '241ba0a6d087'
 
 from alembic import op
 

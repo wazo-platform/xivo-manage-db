@@ -16,12 +16,12 @@ Building the image
 This image depends on xivo/postgres. Build this image first from the root directory of xivo-manage-db:
 
     cd xivo-manage-db
-    docker build -t xivo/postgres .
+    docker build -t wazopbx/postgres .
 
 Then you can build postgres-test:
 
     cd contribs/xivo-postgres
-    docker build -t xivo/postgres-test -f contribs/postgres-test/Dockerfile .
+    docker build -t wazopbx/postgres-test -f contribs/postgres-test/Dockerfile .
 
 Using the image
 ===============

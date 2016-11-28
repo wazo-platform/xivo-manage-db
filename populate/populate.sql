@@ -67,7 +67,7 @@ INSERT INTO "cti_xlet_layout" VALUES (DEFAULT, 'grid');
 INSERT INTO "cti_xlet_layout" VALUES (DEFAULT, 'tab');
 
 
-INSERT INTO "ctiphonehintsgroup" VALUES(DEFAULT,'xivo','De base non supprimable',0);
+INSERT INTO "ctiphonehintsgroup" VALUES(DEFAULT,'wazo','De base non supprimable',0);
 
 
 INSERT INTO "ctipresences" VALUES(DEFAULT,'francais','Présences francophones par défaut',0);
@@ -180,16 +180,16 @@ INSERT INTO "cticontexts" VALUES(DEFAULT,'default','internal','Display','Context
 INSERT INTO "cticontexts" VALUES(DEFAULT, '__switchboard_directory', '', 'switchboard', '', 1);
 
 
-INSERT INTO "directories" ("uri", "dirtype", "name", "description") VALUES ('http://localhost:9487' , 'xivo', 'xivo' , 'XiVO internal users');
+INSERT INTO "directories" ("uri", "dirtype", "name", "description") VALUES ('http://localhost:9487' , 'xivo', 'wazo' , 'wazo internal users');
 
 
 INSERT INTO "ctidirectories" ("name", "match_direct", "match_reverse", "description", "deletable", "directory_id")
         VALUES('internal',
                '["firstname","lastname"]',
                '',
-               'Répertoire XiVO Interne',
+               'Répertoire Wazo Interne',
                1,
-               (SELECT "id" FROM "directories" WHERE "name" = 'xivo'));
+               (SELECT "id" FROM "directories" WHERE "name" = "wazo"));
 
 
 INSERT INTO "ctidirectoryfields" VALUES(1, 'name', '{firstname} {lastname}');
@@ -217,10 +217,10 @@ INSERT INTO "ctiphonehints" VALUES(DEFAULT,1,'9','(En Ligne OU Appelle) ET Sonne
 INSERT INTO "ctiphonehints" VALUES(DEFAULT,1,'16','En Attente','#FFDD00');
 
 
-INSERT INTO "ctisheetactions" VALUES(DEFAULT,'XiVO','Modèle de fiche de base.','dest','{"10": [ "Nom","title","","{xivo-calleridname}",0 ],"20": [ "Numéro","text","","{xivo-calleridnum}",0 ],"30": [ "Origine","text","","{xivo-origin}",0 ]}','{"10": [ "Nom","title","","{xivo-calledidname}" ],"20": [ "Numéro","body","","{xivo-calleridnum}" ],"30": [ "Origine","body","","{xivo-origin}" ]}','','{}',0,1,1);
+INSERT INTO "ctisheetactions" VALUES(DEFAULT,'Wazo','Modèle de fiche de base.','dest','{"10": [ "Nom","title","","{xivo-calleridname}",0 ],"20": [ "Numéro","text","","{xivo-calleridnum}",0 ],"30": [ "Origine","text","","{xivo-origin}",0 ]}','{"10": [ "Nom","title","","{xivo-calledidname}" ],"20": [ "Numéro","body","","{xivo-calleridnum}" ],"30": [ "Origine","body","","{xivo-origin}" ]}','','{}',0,1,1);
 
 
-INSERT INTO "ctisheetevents" VALUES(DEFAULT,'','','XiVO','','');
+INSERT INTO "ctisheetevents" VALUES(DEFAULT,'','','Wazo','','');
 
 
 INSERT INTO "ctistatus" VALUES(DEFAULT,1,'available','Disponible','enablednd(false)','#9BC920','1,2,3,4,5',0);
@@ -498,12 +498,12 @@ INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','autodomain',
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,1,'sip.conf','general','domain',NULL);
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','allowexternaldomains','yes');
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','usereqphone','no');
-INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','realm','xivo');
+INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','realm','wazo');
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','alwaysauthreject','no');
-INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','useragent','XiVO PBX');
+INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','useragent','Wazo PBX');
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','buggymwi','no');
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,1,'sip.conf','general','regcontext',NULL);
-INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','callerid','xivo');
+INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','callerid','wazo');
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,1,'sip.conf','general','fromdomain',NULL);
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','sipdebug','no');
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','dumphistory','no');
@@ -657,14 +657,14 @@ INSERT INTO "staticvoicemail" VALUES (DEFAULT,0,0,1,'voicemail.conf','general','
 INSERT INTO "staticvoicemail" VALUES (DEFAULT,0,0,0,'voicemail.conf','general','attach','yes');
 INSERT INTO "staticvoicemail" VALUES (DEFAULT,0,0,0,'voicemail.conf','general','volgain',0);
 INSERT INTO "staticvoicemail" VALUES (DEFAULT,0,0,0,'voicemail.conf','general','mailcmd','/usr/sbin/sendmail -t');
-INSERT INTO "staticvoicemail" VALUES (DEFAULT,0,0,0,'voicemail.conf','general','serveremail','xivo');
+INSERT INTO "staticvoicemail" VALUES (DEFAULT,0,0,0,'voicemail.conf','general','serveremail','wazo');
 INSERT INTO "staticvoicemail" VALUES (DEFAULT,0,0,0,'voicemail.conf','general','charset','UTF-8');
-INSERT INTO "staticvoicemail" VALUES (DEFAULT,0,0,0,'voicemail.conf','general','fromstring','XiVO PBX');
+INSERT INTO "staticvoicemail" VALUES (DEFAULT,0,0,0,'voicemail.conf','general','fromstring','Wazo PBX');
 INSERT INTO "staticvoicemail" VALUES (DEFAULT,0,0,0,'voicemail.conf','general','emaildateformat','%Y-%m-%d à %H:%M:%S');
 INSERT INTO "staticvoicemail" VALUES (DEFAULT,0,0,0,'voicemail.conf','general','pbxskip','no');
-INSERT INTO "staticvoicemail" VALUES (DEFAULT,0,0,0,'voicemail.conf','general','emailsubject','Messagerie XiVO');
-INSERT INTO "staticvoicemail" VALUES (DEFAULT,0,0,0,'voicemail.conf','general','emailbody',E'Bonjour ${VM_NAME},\n\nVous avez reçu un message d''une durée de ${VM_DUR} minute(s), il vous reste actuellement ${VM_MSGNUM} message(s) non lu(s) sur votre messagerie vocale : ${VM_MAILBOX}.\n\nLe dernier a été envoyé par ${VM_CALLERID}, le ${VM_DATE}. Si vous le souhaitez vous pouvez l''écouter ou le consulter en tapant le *98 sur votre téléphone.\n\nMerci.\n\n-- Messagerie XiVO --');
-INSERT INTO "staticvoicemail" VALUES (DEFAULT,0,0,0,'voicemail.conf','general','pagerfromstring','XiVO PBX');
+INSERT INTO "staticvoicemail" VALUES (DEFAULT,0,0,0,'voicemail.conf','general','emailsubject','Messagerie Wazo');
+INSERT INTO "staticvoicemail" VALUES (DEFAULT,0,0,0,'voicemail.conf','general','emailbody',E'Bonjour ${VM_NAME},\n\nVous avez reçu un message d''une durée de ${VM_DUR} minute(s), il vous reste actuellement ${VM_MSGNUM} message(s) non lu(s) sur votre messagerie vocale : ${VM_MAILBOX}.\n\nLe dernier a été envoyé par ${VM_CALLERID}, le ${VM_DATE}. Si vous le souhaitez vous pouvez l''écouter ou le consulter en tapant le *98 sur votre téléphone.\n\nMerci.\n\n-- Messagerie Wazo --');
+INSERT INTO "staticvoicemail" VALUES (DEFAULT,0,0,0,'voicemail.conf','general','pagerfromstring','Wazo PBX');
 INSERT INTO "staticvoicemail" VALUES (DEFAULT,0,0,1,'voicemail.conf','general','pagersubject',NULL);
 INSERT INTO "staticvoicemail" VALUES (DEFAULT,0,0,1,'voicemail.conf','general','pagerbody',NULL);
 INSERT INTO "staticvoicemail" VALUES (DEFAULT,0,0,0,'voicemail.conf','general','adsifdn','0000000F');
@@ -857,7 +857,7 @@ INSERT INTO "user" VALUES (DEFAULT,NULL,'root','proformatique','root',1,0,EXTRAC
 INSERT INTO "dhcp" VALUES (DEFAULT,0,'','','');
 
 
-INSERT INTO "mail" VALUES (DEFAULT,'','xivo-clients.proformatique.com','','','');
+INSERT INTO "mail" VALUES (DEFAULT,'','example.wazo.community','','','');
 
 
 INSERT INTO "monitoring" VALUES (DEFAULT,0,NULL,NULL,NULL);

@@ -189,7 +189,7 @@ INSERT INTO "ctidirectories" ("name", "match_direct", "match_reverse", "descript
                '',
                'Répertoire Wazo Interne',
                1,
-               (SELECT "id" FROM "directories" WHERE "name" = "wazo"));
+               (SELECT "id" FROM "directories" WHERE "name" = 'wazo'));
 
 
 INSERT INTO "ctidirectoryfields" VALUES(1, 'name', '{firstname} {lastname}');

@@ -27,7 +27,7 @@ setup(
     description='XIVO DB LIB',
     author='Avencall',
     author_email='dev+pkg@proformatique.com',
-    url='http://www.xivo.io/',
+    url='http://wazo.community/',
     license='GPLv3',
     packages=find_packages('.'),
     scripts=['bin/pg-drop-db',

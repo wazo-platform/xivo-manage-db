@@ -25,7 +25,7 @@ setup(
     name='xivo-db',
     version='0.1',
     description='XIVO DB LIB',
-    author='Avencall',
+    author='Wazo developers',
     author_email='dev.wazo@gmail.com',
     url='http://wazo.community/',
     license='GPLv3',

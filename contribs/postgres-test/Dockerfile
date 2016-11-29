@@ -1,4 +1,4 @@
-FROM xivo/postgres
+FROM wazopbx/postgres
 MAINTAINER XiVO Team "dev@avencall.com"
 USER root
 

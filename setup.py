@@ -26,7 +26,7 @@ setup(
     version='0.1',
     description='XIVO DB LIB',
     author='Avencall',
-    author_email='dev+pkg@proformatique.com',
+    author_email='dev.wazo@gmail.com',
     url='http://wazo.community/',
     license='GPLv3',
     packages=find_packages('.'),

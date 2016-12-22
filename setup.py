@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2014-2016  Avencall
+# Copyright 2014-2016 The Wazo Authors  (see the AUTHORS file)
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -24,10 +24,10 @@ from setuptools import setup, find_packages
 setup(
     name='xivo-db',
     version='0.1',
-    description='XIVO DB LIB',
-    author='Wazo developers',
+    description='Wazo DB LIB',
+    author='Wazo Authors',
     author_email='dev.wazo@gmail.com',
-    url='http://wazo.community/',
+    url='http://wazo.community',
     license='GPLv3',
     packages=find_packages('.'),
     scripts=['bin/pg-drop-db',

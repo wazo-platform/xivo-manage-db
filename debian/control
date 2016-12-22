@@ -1,10 +1,9 @@
 Source: xivo-manage-db
 Section: admin
 Priority: extra
-Maintainer: XiVO DEV Team <dev+pkg@proformatique.com>
-Uploaders: XiVO Builder Team <dev+pkg@proformatique.com>
+Maintainer: Wazo Maintainers <dev.wazo@gmail.com>
 Build-Depends: debhelper (>= 9), dh-python, python-all (>=2.7), python-setuptools
-Standards-Version: 3.9.4
+Standards-Version: 3.9.6
 X-Python-Version: >= 2.7
 
 Package: xivo-manage-db
@@ -19,5 +18,5 @@ Depends: ${python:Depends},
          xivo-lib-python (>= 16.06~20160509.153738.904a909),
          xivo-libdao (>= 14.08~),
          xivo-auth-keys (>= 16.01~20160201.125515.f4abdfe)
-Description: XiVO database tools manager
- This package provide XiVO managing database tools
+Description: Wazo database tools manager
+ This package provide Wazo managing database tools

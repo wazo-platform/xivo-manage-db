@@ -44,7 +44,8 @@ tmp_type = sa.Enum(*new_options, name='dialaction_action_being_replaced')
 
 dialaction = sa.sql.table('dialaction',
                           sa.Column('action', new_type, nullable=False),
-                          sa.Column('actionarg1', sa.String(255), nullable=False, server_default=''))
+                          sa.Column('actionarg1', sa.String(255), nullable=False, server_default=''),
+                          sa.Column('actionarg2', sa.String(255), nullable=False, server_default=''))
 
 
 def upgrade():

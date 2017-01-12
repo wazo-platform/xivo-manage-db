@@ -50,15 +50,15 @@ dialaction = sa.sql.table('dialaction',
 def upgrade():
     op.create_table(
         'switchboard',
-        sa.Column('id', sa.String(38), nullable=False),
+        sa.Column('uuid', sa.String(38), nullable=False),
         sa.Column('name', sa.String(128), nullable=False),
-        sa.PrimaryKeyConstraint('id'),
+        sa.PrimaryKeyConstraint('uuid'),
     )
     op.create_table(
         'switchboard_member_user',
-        sa.Column('switchboard_id', sa.String(38), nullable=False),
+        sa.Column('switchboard_uuid', sa.String(38), nullable=False),
         sa.Column('user_uuid', sa.String(38), nullable=False),
-        sa.PrimaryKeyConstraint('switchboard_id', 'user_uuid'),
+        sa.PrimaryKeyConstraint('switchboard_uuid', 'user_uuid'),
     )
     _add_dialaction()
 

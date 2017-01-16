@@ -60,6 +60,9 @@ def upgrade():
         sa.Column('switchboard_uuid', sa.String(38), nullable=False),
         sa.Column('user_uuid', sa.String(38), nullable=False),
         sa.PrimaryKeyConstraint('switchboard_uuid', 'user_uuid'),
+        sa.ForeignKeyConstraint(['switchboard_uuid'], ['switchboard.uuid']),
+        sa.ForeignKeyConstraint(['user_uuid'], ['userfeatures.uuid']),
+        sa.Index('switchboard_member_user__idx__switchboard_uuid', 'switchboard_uuid')
     )
     _add_dialaction()
 

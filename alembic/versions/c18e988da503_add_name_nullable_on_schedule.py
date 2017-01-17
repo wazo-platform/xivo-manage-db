@@ -13,7 +13,7 @@ from alembic import op
 
 
 def upgrade():
-    op.alter_column('schedule', 'name', nullable=True, server_default=False)
+    op.alter_column('schedule', 'name', nullable=True, server_default=None)
 
 
 def downgrade():

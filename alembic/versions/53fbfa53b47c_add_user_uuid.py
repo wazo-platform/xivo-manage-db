@@ -1,13 +1,13 @@
 """add user UUID
 
 Revision ID: 53fbfa53b47c
-Revises: 1a72b3da2baf
+Revises: e66504d94e2e
 
 """
 
 # revision identifiers, used by Alembic.
 revision = '53fbfa53b47c'
-down_revision = '1a72b3da2baf'
+down_revision = 'e66504d94e2e'
 
 from alembic import op
 import sqlalchemy as sa

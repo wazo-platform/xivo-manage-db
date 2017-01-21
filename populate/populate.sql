@@ -518,6 +518,7 @@ INSERT INTO "staticsip" VALUES (DEFAULT,0,0,1,'sip.conf','general','externip',NU
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,1,'sip.conf','general','externhost',NULL);
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','externrefresh',10);
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','matchexterniplocally','no');
+INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','websocket_enabled','yes');
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,1,'sip.conf','general','outboundproxy',NULL);
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','g726nonstandard','no');
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,1,'sip.conf','general','disallow',NULL);
@@ -562,11 +563,6 @@ INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','vmexten','*9
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','trustrpid','no');
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','sendrpid','no');
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','insecure','no');
-INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','rtcachefriends','no');
-INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','rtupdate','no');
-INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','ignoreregexpire','no');
-INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','rtsavesysname','no');
-INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','rtautoclear','no');
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,1,'sip.conf','general','subscribecontext',NULL);
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','match_auth_username','no');
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','udpbindaddr','0.0.0.0');
@@ -603,9 +599,6 @@ INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','session-time
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','session-expires',600);
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','session-minse',90);
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','session-refresher','uas');
-INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','hash_users',NULL);
-INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','hash_peers',NULL);
-INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','hash_dialogs',NULL);
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','notifycid','no');
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','callcounter','no');
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','stunaddr',NULL);

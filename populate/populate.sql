@@ -3,12 +3,12 @@ BEGIN;
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-INSERT INTO "accesswebservice" (name, login, passwd, acl) VALUES ('xivo-agentd-cli', 'xivo-agentd-cli', substring(gen_salt('bf',4),8), '{agentd.#}');
-INSERT INTO "accesswebservice" (name, login, passwd, acl) VALUES ('xivo-agid', 'xivo-agid', substring(gen_salt('bf',4),8), '{dird.directories.reverse.*.*.read, agentd.#, confd.devices.read, confd.lines.read, confd.lines.*.devices.*.update, confd.devices.*.synchronize.read, confd.devices.*.autoprov.read, confd.users.*.services.*.*, confd.users.*.forwards.#}');
-INSERT INTO "accesswebservice" (name, login, passwd, acl) VALUES ('xivo-ctid', 'xivo-ctid', substring(gen_salt('bf',4),8), '{dird.#, agentd.#, confd.users.*.services.dnd.update, ctid-ng.#}');
-INSERT INTO "accesswebservice" (name, login, passwd, acl) VALUES ('xivo-ctid-ng', 'xivo-ctid-ng', substring(gen_salt('bf',4),8), '{confd.#, amid.action.Redirect.create, amid.action.Setvar.create, amid.action.ShowDialplan.create, amid.action.Command.create}');
-INSERT INTO "accesswebservice" (name, login, passwd, acl) VALUES ('xivo-dird-phoned', 'xivo-dird-phoned', substring(gen_salt('bf',4),8), '{dird.directories.menu.*.*.read, dird.directories.input.*.*.read, dird.directories.lookup.*.*.read}');
-INSERT INTO "accesswebservice" (name, login, passwd, acl) VALUES ('xivo-wizard', 'xivo-wizard', substring(gen_salt('bf',4),8), '{dird.tenants.*.phonebooks.create}');
+INSERT INTO "accesswebservice" (uuid, name, login, passwd, acl) VALUES (uuid_generate_v4(), 'xivo-agentd-cli', 'xivo-agentd-cli', substring(gen_salt('bf',4),8), '{agentd.#}');
+INSERT INTO "accesswebservice" (uuid, name, login, passwd, acl) VALUES (uuid_generate_v4(), 'xivo-agid', 'xivo-agid', substring(gen_salt('bf',4),8), '{dird.directories.reverse.*.*.read, agentd.#, confd.devices.read, confd.lines.read, confd.lines.*.devices.*.update, confd.devices.*.synchronize.read, confd.devices.*.autoprov.read, confd.users.*.services.*.*, confd.users.*.forwards.#}');
+INSERT INTO "accesswebservice" (uuid, name, login, passwd, acl) VALUES (uuid_generate_v4(), 'xivo-ctid', 'xivo-ctid', substring(gen_salt('bf',4),8), '{dird.#, agentd.#, confd.users.*.services.dnd.update, ctid-ng.#}');
+INSERT INTO "accesswebservice" (uuid, name, login, passwd, acl) VALUES (uuid_generate_v4(), 'xivo-ctid-ng', 'xivo-ctid-ng', substring(gen_salt('bf',4),8), '{confd.#, amid.action.Redirect.create, amid.action.Setvar.create, amid.action.ShowDialplan.create, amid.action.Command.create}');
+INSERT INTO "accesswebservice" (uuid, name, login, passwd, acl) VALUES (uuid_generate_v4(), 'xivo-dird-phoned', 'xivo-dird-phoned', substring(gen_salt('bf',4),8), '{dird.directories.menu.*.*.read, dird.directories.input.*.*.read, dird.directories.lookup.*.*.read}');
+INSERT INTO "accesswebservice" (uuid, name, login, passwd, acl) VALUES (uuid_generate_v4(), 'xivo-wizard', 'xivo-wizard', substring(gen_salt('bf',4),8), '{dird.tenants.*.phonebooks.create}');
 
 
 INSERT INTO "agentgroup" VALUES (DEFAULT,1,'default','',0,0,'');
@@ -844,7 +844,7 @@ CREATE TRIGGER "change_queue_log_agent"
 INSERT INTO "resolvconf" VALUES(DEFAULT, '', '', NULL, NULL, NULL, NULL, '');
 
 
-INSERT INTO "user" VALUES (DEFAULT, DEFAULT, NULL,'root','proformatique','root',1,0,EXTRACT(EPOCH from now()),0,'');
+INSERT INTO "user" VALUES (DEFAULT, uuid_generate_v4(), NULL,'root','proformatique','root',1,0,EXTRACT(EPOCH from now()),0,'');
 
 
 INSERT INTO "dhcp" VALUES (DEFAULT,0,'','','');

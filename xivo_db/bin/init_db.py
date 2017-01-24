@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 #
-# Copyright (C) 2014 Avencall
+# Copyright 2014-2017 The Wazo Authors  (see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -32,6 +32,13 @@ def _create_tables():
     Base.metadata.create_all()
 
 
+def _enable_extensions():
+    logger.info('Enabling extensions...')
+    extensions = ['pgcrypto', 'uuid-ossp']
+    for extension in extensions:
+        postgres.enable_extension(extension)
+
+
 def _populate_db():
     logger.info('Populating database...')
     postgres.populate_db()
@@ -59,6 +66,7 @@ def main():
 
     if parsed_args.init:
         _init_db()
+        _enable_extensions()
         _create_tables()
         _populate_db()
 

@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-# Copyright (C) 2014-2016 Avencall
+# Copyright 2014-2017 The Wazo Authors  (see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -64,6 +64,13 @@ def init_db():
                 db_helper.create_db_user(cursor, db_user, db_user_password)
             if not db_helper.db_exists(cursor, db_name):
                 db_helper.create_db(cursor, db_name, db_user)
+
+
+@run_as('postgres')
+def enable_extension(extension):
+    with psycopg2.connect('postgresql:///asterisk') as conn:
+        with conn.cursor() as cursor:
+            cursor.execute('CREATE EXTENSION IF NOT EXISTS "{}"'.format(extension))
 
 
 def drop_db():

@@ -19,8 +19,11 @@ case "$1" in
             fi
 
             previous_version="$2"
-            if dpkg --compare-versions "$previous_version" "<<" "16.01~20160125"; then
+            if dpkg --compare-versions "$previous_version" lt "16.01~20160125"; then
                 sudo -u postgres psql -c 'create extension if not exists pgcrypto;' asterisk > /dev/null 2>&1
+            fi
+            if dpkg --compare-versions "$previous_version" lt "17.02"; then
+                sudo -u postgres psql -c 'create extension if not exists "uuid-ossp";' asterisk > /dev/null 2>&1
             fi
 
             xivo-update-db

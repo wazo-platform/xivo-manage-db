@@ -409,11 +409,7 @@ VALUES (
                                 AND var_name = 'automixmon')
 );
 
-INSERT INTO "musiconhold" VALUES (DEFAULT,0,0,0,'musiconhold.conf','default','mode','files');
-INSERT INTO "musiconhold" VALUES (DEFAULT,0,0,1,'musiconhold.conf','default','application','');
-INSERT INTO "musiconhold" VALUES (DEFAULT,0,0,0,'musiconhold.conf','default','random','no');
-INSERT INTO "musiconhold" VALUES (DEFAULT,0,0,0,'musiconhold.conf','default','directory','/var/lib/xivo/moh/default');
-
+INSERT INTO "moh" (uuid, name, mode) VALUES (uuid_generate_v4(), 'default', 'files');
 
 INSERT INTO "staticiax" VALUES (DEFAULT,0,0,0,'iax.conf','general','bindport',4569);
 INSERT INTO "staticiax" VALUES (DEFAULT,0,0,0,'iax.conf','general','bindaddr','0.0.0.0');

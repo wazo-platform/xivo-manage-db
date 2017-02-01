@@ -28,7 +28,6 @@ case "$1" in
 
             xivo-update-db
             xivo-update-keys
-            xivo-configure-uuid
         fi
     ;;
 

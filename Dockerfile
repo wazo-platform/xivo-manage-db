@@ -1,5 +1,5 @@
 FROM debian:jessie
-MAINTAINER XiVO Team "dev+docker@proformatique.com"
+MAINTAINER XiVO Team "dev+docker@wazo.community"
 
 ENV DEBIAN_FRONTEND=noninteractive \
     LC_ALL=C.UTF-8 \
@@ -31,6 +31,7 @@ RUN \
     apt-get -y install $BUILD_PACKAGES \
     && pip install -r requirements.txt \
     && python setup.py install \
+    && xivo-configure-uuid \
     && mkdir /usr/share/xivo-manage-db /usr/lib/xivo-manage-db \
     && cp -a alembic alembic.ini migration populate /usr/share/xivo-manage-db \
     && ln -s /usr/local/bin/pg-populate-db /usr/lib/xivo-manage-db/pg-populate-db \

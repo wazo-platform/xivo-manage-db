@@ -24,6 +24,7 @@ import os
 
 from pwd import getpwnam
 
+from wazo_uuid.uuid_ import get_wazo_uuid
 from xivo import db_helper
 from xivo_db import path
 from xivo_db.exception import DBError
@@ -82,7 +83,7 @@ def merge_db():
 
 
 def populate_db():
-    _call_as_postgres(path.PG_POPULATE_DB)
+    _call_as_postgres(path.PG_POPULATE_DB.format(wazo_uuid=get_wazo_uuid()))
 
 
 def _call_as_postgres(pathname):

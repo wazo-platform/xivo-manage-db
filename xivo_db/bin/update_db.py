@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-# Copyright (C) 2014 Avencall
+# Copyright 2014-2017 The Wazo Authors  (see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,15 +16,19 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 import argparse
+import os
 import sys
+
 from xivo_db import alembic
 from xivo_db import old
 from xivo_db import postgres
 from xivo_db.exception import DBError
+from wazo_uuid.uuid_ import get_wazo_uuid
 
 
 def main():
     parsed_args = _parse_args()
+    os.environ['XIVO_UUID'] = get_wazo_uuid()
 
     print 'Updating database...'
     try:

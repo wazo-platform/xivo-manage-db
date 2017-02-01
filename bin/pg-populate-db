@@ -8,6 +8,7 @@ export PGOPTIONS='--client-min-messages=warning'
 export POPULATE_SCRIPT='/usr/share/xivo-manage-db/populate/populate.sql'
 
 psql="psql asterisk -v ON_ERROR_STOP="
-
+wazo_uuid=$1
 
 $psql < $POPULATE_SCRIPT
+$psql <<< "UPDATE infos SET uuid = '${wazo_uuid}'";

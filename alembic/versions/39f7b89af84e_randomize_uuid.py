@@ -9,7 +9,8 @@ Revises: 3770e116222d
 revision = '39f7b89af84e'
 down_revision = '3770e116222d'
 
-import uuid
+import os
+
 from alembic import op
 import sqlalchemy as sa
 
@@ -18,7 +19,7 @@ infos_table = sa.sql.table('infos', sa.sql.column('uuid'))
 
 
 def upgrade():
-    new_uuid = unicode(uuid.uuid4())
+    new_uuid = os.environ['XIVO_UUID']
     infos_query = infos_table.update().values({'uuid': new_uuid})
     op.get_bind().execute(infos_query)
 

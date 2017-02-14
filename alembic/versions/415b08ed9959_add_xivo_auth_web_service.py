@@ -17,8 +17,10 @@ webservice = sql.table('accesswebservice',
                        sql.column('name'),
                        sql.column('login'),
                        sql.column('passwd'),
-                       sql.column('acl'))
+                       sql.column('acl'),
+                       sql.column('description'))
 ACL = '{confd.users.read}'
+DESCRIPTION = 'Automatically created during upgrade'
 SERVICE = 'xivo-auth'
 
 
@@ -28,7 +30,8 @@ def upgrade():
                .values(name=SERVICE,
                        login=SERVICE,
                        passwd=func.substring(func.gen_salt('bf', 4), 8),
-                       acl=ACL))
+                       acl=ACL,
+                       description=DESCRIPTION))
 
 
 def downgrade():

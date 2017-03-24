@@ -17,7 +17,7 @@ def upgrade():
     op.add_column('agent_login_status',
                   sa.Column('paused', sa.Boolean, nullable=False, server_default='false'))
     op.add_column('agent_login_status',
-                  sa.Column('paused_reason', sa.String(256), nullable=True))
+                  sa.Column('paused_reason', sa.String(80), nullable=True))
 
 
 def downgrade():

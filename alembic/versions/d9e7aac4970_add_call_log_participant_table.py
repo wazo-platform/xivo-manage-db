@@ -16,11 +16,12 @@ from alembic import op
 def upgrade():
     op.create_table(
         'call_log_participant',
-        sa.Column('uuid', sa.String(38), nullable=False),
-        sa.Column('call_log_id', sa.Integer, nullable=False),
+        sa.Column('uuid', sa.String(38)),
+        sa.Column('call_log_id', sa.Integer),
         sa.Column('user_uuid', sa.String(38), nullable=False),
         sa.Column('line_id', sa.Integer),
-        sa.Column('role', sa.Enum('source', 'destination', name='call_log_participant_role')),
+        sa.Column('role', sa.Enum('source', 'destination', name='call_log_participant_role'), nullable=False),
+        sa.PrimaryKeyConstraint('uuid'),
         sa.ForeignKeyConstraint(['call_log_id'], ['call_log.id'], name='fk_call_log_id', ondelete='CASCADE'),
         sa.Index('call_log_participant__idx__user_uuid', 'user_uuid')
     )

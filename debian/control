@@ -15,7 +15,7 @@ Depends: ${python:Depends},
          python-unidecode,
          systemd,
          wazo-uuid,
-         xivo-dbms (>= 17.02~20170124.142659.8a51536),
+         xivo-dbms (>= 17.07~20170508.180305.57e01e3),
          xivo-lib-python (>= 16.06~20160509.153738.904a909),
          xivo-libdao (>= 14.08~),
          xivo-auth-keys (>= 16.01~20160201.125515.f4abdfe)

@@ -21,7 +21,7 @@ webservice = sql.table('accesswebservice',
                        sql.column('description'))
 ACL = '{plugind.plugins.create, plugind.plugins.*.*.delete}'
 DESCRIPTION = 'Automatically created during upgrade'
-SERVICE = 'wazo-plugind'
+SERVICE = 'wazo-plugind-cli'
 
 
 def upgrade():

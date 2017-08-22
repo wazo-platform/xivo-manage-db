@@ -3,7 +3,7 @@ MAINTAINER Wazo Maintainers <dev@wazo.community>
 
 ENV DEBIAN_FRONTEND=noninteractive \
     LC_ALL=C.UTF-8 \
-    BUILD_PACKAGES="python3-pip python3-dev libpq-dev" \
+    BUILD_PACKAGES="python-pip python3-pip python-dev python3-dev libpq-dev" \
     PYTHON_PACKAGES="alembic psycopg2 sqlalchemy https://github.com/wazo-pbx/xivo-lib-python/archive/master.zip" \
     PG_PACKAGES="postgresql-9.4 postgresql-contrib-9.4 postgresql-client"
 
@@ -19,6 +19,7 @@ RUN echo "listen_addresses='*'" >> /etc/postgresql/9.4/main/postgresql.conf
 RUN mkdir -p /var/run/postgresql/9.4-main.pg_stat_tmp
 RUN chown -R postgres:postgres /var/run/postgresql
 RUN apt-get -y install $BUILD_PACKAGES
+RUN pip install $PYTHON_PACKAGES
 RUN pip3 install $PYTHON_PACKAGES
 
 ADD ./bin/pg_start /usr/local/bin/pg_start

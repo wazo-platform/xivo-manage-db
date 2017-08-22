@@ -1,0 +1,30 @@
+FROM debian:jessie
+MAINTAINER Wazo Maintainers <dev@wazo.community>
+
+ENV DEBIAN_FRONTEND=noninteractive \
+    LC_ALL=C.UTF-8 \
+    BUILD_PACKAGES="python3-pip python3-dev libpq-dev" \
+    PYTHON_PACKAGES="alembic psycopg2 sqlalchemy https://github.com/wazo-pbx/xivo-lib-python/archive/master.zip" \
+    PG_PACKAGES="postgresql-9.4 postgresql-contrib-9.4 postgresql-client" \
+    PG_CTL="sudo -u postgres /usr/lib/postgresql/9.4/bin/pg_ctl -D /var/lib/postgresql/9.4/main" \
+    PG_CONF="/etc/postgresql/9.4/main/postgresql.conf"
+
+#Locales must be configured before installing postgres, otherwise the database encoding defaults to SQL_ASCII
+RUN apt-get update
+RUN apt-get install -y sudo locales
+RUN dpkg-reconfigure locales
+RUN locale-gen C.UTF-8 
+RUN /usr/sbin/update-locale LANG=C.UTF-8
+RUN apt-get -y install $PG_PACKAGES
+RUN echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/9.4/main/pg_hba.conf
+RUN echo "listen_addresses='*'" >> /etc/postgresql/9.4/main/postgresql.conf
+RUN mkdir -p /var/run/postgresql/9.4-main.pg_stat_tmp
+RUN chown -R postgres:postgres /var/run/postgresql
+RUN apt-get -y install $BUILD_PACKAGES
+RUN pip3 install $PYTHON_PACKAGES
+RUN echo "#!/bin/sh\n$PG_CTL -o \"--config-file=$PG_CONF\" start\nwhile [ \"\$($PG_CTL status)\" = \"pg_ctl: no server running\" ]; do\n  sleep 1\ndone" > /usr/local/bin/pg_start
+RUN echo "#!/bin/sh\n$PG_CTL -o \"--config-file=$PG_CONF\" stop" > /usr/local/bin/pg_stop
+RUN chmod a+x /usr/local/bin/pg_start /usr/local/bin/pg_stop
+
+EXPOSE 5432
+CMD ["/usr/lib/postgresql/9.4/bin/postgres", "-D", "/var/lib/postgresql/9.4/main", "--config-file=/etc/postgresql/9.4/main/postgresql.conf"]

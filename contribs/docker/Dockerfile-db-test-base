@@ -8,19 +8,21 @@ ENV DEBIAN_FRONTEND=noninteractive \
     PG_PACKAGES="postgresql-9.4 postgresql-contrib-9.4 postgresql-client"
 
 #Locales must be configured before installing postgres, otherwise the database encoding defaults to SQL_ASCII
-RUN apt-get update
-RUN apt-get install -y sudo locales
-RUN dpkg-reconfigure locales
-RUN locale-gen C.UTF-8 
-RUN /usr/sbin/update-locale LANG=C.UTF-8
-RUN apt-get -y install $PG_PACKAGES
-RUN echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/9.4/main/pg_hba.conf
-RUN echo "listen_addresses='*'" >> /etc/postgresql/9.4/main/postgresql.conf
-RUN mkdir -p /var/run/postgresql/9.4-main.pg_stat_tmp
-RUN chown -R postgres:postgres /var/run/postgresql
-RUN apt-get -y install $BUILD_PACKAGES
-RUN pip install $PYTHON_PACKAGES
-RUN pip3 install $PYTHON_PACKAGES
+RUN true \
+    && apt-get update \
+    && apt-get install -y sudo locales \
+    && dpkg-reconfigure locales \
+    && locale-gen C.UTF-8  \
+    && /usr/sbin/update-locale LANG=C.UTF-8 \
+    && apt-get -y install $PG_PACKAGES \
+    && echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/9.4/main/pg_hba.conf \
+    && echo "listen_addresses='*'" >> /etc/postgresql/9.4/main/postgresql.conf \
+    && mkdir -p /var/run/postgresql/9.4-main.pg_stat_tmp \
+    && chown -R postgres:postgres /var/run/postgresql \
+    && apt-get -y install $BUILD_PACKAGES \
+    && pip install $PYTHON_PACKAGES \
+    && pip3 install $PYTHON_PACKAGES \
+    && true
 
 ADD ./bin/pg_start /usr/local/bin/pg_start
 ADD ./bin/pg_stop /usr/local/bin/pg_stop

@@ -1,5 +1,5 @@
 FROM wazopbx/wazo-base-db
-MAINTAINER XiVO Team "dev+docker@wazo.community"
+MAINTAINER Wazo Maintainers <dev@wazo.community>
 
 ADD . /usr/src/xivo-manage-db
 WORKDIR /usr/src/xivo-manage-db

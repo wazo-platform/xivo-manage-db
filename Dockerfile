@@ -5,6 +5,7 @@ ADD . /usr/src/xivo-manage-db
 WORKDIR /usr/src/xivo-manage-db
 
 RUN true \
+    && apt-get update \
     && apt-get install -yq python-yaml git \
     && pip install -r requirements.txt \
     && python setup.py install \

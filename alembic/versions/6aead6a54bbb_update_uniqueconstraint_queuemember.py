@@ -16,7 +16,7 @@ table_name = 'queuemember'
 old_columns_name = ['queue_name', 'channel', 'usertype', 'userid', 'category']
 new_columns_name = ['queue_name', 'channel', 'interface', 'usertype', 'userid', 'category', 'position']
 old_constraint_name = '{}_{}_key'.format(table_name, '_'.join(old_columns_name))
-new_constraint_name = '{}_{}_key'.format(table_name, '_'.join(new_columns_name))
+new_constraint_name = '{}_queue_name_channel_interface_usertype_userid_ca_key'.format(table_name)
 
 
 def upgrade():

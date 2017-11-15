@@ -1,7 +1,7 @@
 BEGIN;
 
 INSERT INTO "accesswebservice" (uuid, name, login, passwd, acl) VALUES (uuid_generate_v4(), 'wazo-plugind', 'wazo-plugind', substring(gen_salt('bf',4),8), '{confd.infos.read}');
-INSERT INTO "accesswebservice" (uuid, name, login, passwd, acl) VALUES (uuid_generate_v4(), 'wazo-plugind-cli', 'wazo-plugind-cli', substring(gen_salt('bf',4),8), '{plugind.plugins.create, plugind.plugins.*.*.delete, plugind.plugins.read}');
+INSERT INTO "accesswebservice" (uuid, name, login, passwd, acl) VALUES (uuid_generate_v4(), 'wazo-plugind-cli', 'wazo-plugind-cli', substring(gen_salt('bf',4),8), '{plugind.#}');
 INSERT INTO "accesswebservice" (uuid, name, login, passwd, acl) VALUES (uuid_generate_v4(), 'xivo-agentd-cli', 'xivo-agentd-cli', substring(gen_salt('bf',4),8), '{agentd.#}');
 INSERT INTO "accesswebservice" (uuid, name, login, passwd, acl) VALUES (uuid_generate_v4(), 'xivo-agid', 'xivo-agid', substring(gen_salt('bf',4),8), '{dird.directories.reverse.*.*.read, agentd.#, confd.devices.read, confd.lines.read, confd.lines.*.devices.*.update, confd.devices.*.synchronize.read, confd.devices.*.autoprov.read, confd.users.*.services.*.*, confd.users.*.forwards.#}');
 INSERT INTO "accesswebservice" (uuid, name, login, passwd, acl) VALUES (uuid_generate_v4(), 'wazo-auth', 'wazo-auth', substring(gen_salt('bf',4),8), '{confd.users.read}');

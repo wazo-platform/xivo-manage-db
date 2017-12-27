@@ -1,8 +1,8 @@
 git+https://github.com/wazo-pbx/xivo-lib-python.git  # from xivo-dao
 git+https://github.com/wazo-pbx/xivo-dao.git
 git+https://github.com/wazo-pbx/wazo-uuid.git
-alembic==0.6.5
-psycopg2==2.5.4  # from xivo-dao
-pyyaml==3.11  # from xivo-lib-python
-sqlalchemy==0.9.8  # from xivo-dao
-unidecode==0.04.16
+alembic==0.8.8
+psycopg2==2.6.2  # from xivo-dao
+pyyaml==3.12  # from xivo-lib-python
+sqlalchemy==1.0.15  # from xivo-dao
+unidecode==0.04.19

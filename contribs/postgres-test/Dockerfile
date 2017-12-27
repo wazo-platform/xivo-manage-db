@@ -1,7 +1,7 @@
 FROM wazopbx/postgres
 MAINTAINER Wazo Maintainers <dev@wazo.community>
 USER root
-ENV PG_CONF="/etc/postgresql/9.4/main/postgresql.conf"
+ENV PG_CONF="/etc/postgresql/9.6/main/postgresql.conf"
 
 #Insert data required for running integration tests
 COPY contribs/postgres-test/initdb.sql /usr/src/initdb.sql

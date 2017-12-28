@@ -1,0 +1,12 @@
+#!/bin/sh
+
+PG_CONF="/etc/postgresql/9.6/main/postgresql.conf"
+PG_CTL="sudo -u postgres /usr/lib/postgresql/9.6/bin/pg_ctl -D /var/lib/postgresql/9.6/main"
+
+# Start the server
+$PG_CTL -o "--config-file=$PG_CONF" start
+
+# Wait for the server to be started
+while [ "$($PG_CTL status)" = "pg_ctl: no server running" ]; do
+  sleep 1
+done

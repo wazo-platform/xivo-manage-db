@@ -1,10 +1,13 @@
 BEGIN;
 
+INSERT INTO "accesswebservice" (uuid, name, login, passwd, acl) VALUES (uuid_generate_v4(), 'wazo-plugind', 'wazo-plugind', substring(gen_salt('bf',4),8), '{confd.infos.read}');
+INSERT INTO "accesswebservice" (uuid, name, login, passwd, acl) VALUES (uuid_generate_v4(), 'wazo-plugind-cli', 'wazo-plugind-cli', substring(gen_salt('bf',4),8), '{plugind.#}');
 INSERT INTO "accesswebservice" (uuid, name, login, passwd, acl) VALUES (uuid_generate_v4(), 'xivo-agentd-cli', 'xivo-agentd-cli', substring(gen_salt('bf',4),8), '{agentd.#}');
 INSERT INTO "accesswebservice" (uuid, name, login, passwd, acl) VALUES (uuid_generate_v4(), 'xivo-agid', 'xivo-agid', substring(gen_salt('bf',4),8), '{dird.directories.reverse.*.*.read, agentd.#, confd.devices.read, confd.lines.read, confd.lines.*.devices.*.update, confd.devices.*.synchronize.read, confd.devices.*.autoprov.read, confd.users.*.services.*.*, confd.users.*.forwards.#}');
-INSERT INTO "accesswebservice" (uuid, name, login, passwd, acl) VALUES (uuid_generate_v4(), 'xivo-auth', 'xivo-auth', substring(gen_salt('bf',4),8), '{confd.users.read}');
+INSERT INTO "accesswebservice" (uuid, name, login, passwd, acl) VALUES (uuid_generate_v4(), 'wazo-auth', 'wazo-auth', substring(gen_salt('bf',4),8), '{confd.users.read}');
+INSERT INTO "accesswebservice" (uuid, name, login, passwd, acl) VALUES (uuid_generate_v4(), 'wazo-call-logd', 'wazo-call-logd', substring(gen_salt('bf',4),8), '{confd.lines.read, confd.users.*.read}');
 INSERT INTO "accesswebservice" (uuid, name, login, passwd, acl) VALUES (uuid_generate_v4(), 'xivo-ctid', 'xivo-ctid', substring(gen_salt('bf',4),8), '{dird.#, agentd.#, confd.users.*.services.dnd.update, ctid-ng.#}');
-INSERT INTO "accesswebservice" (uuid, name, login, passwd, acl) VALUES (uuid_generate_v4(), 'xivo-ctid-ng', 'xivo-ctid-ng', substring(gen_salt('bf',4),8), '{confd.#, amid.action.Redirect.create, amid.action.Setvar.create, amid.action.ShowDialplan.create, amid.action.Command.create}');
+INSERT INTO "accesswebservice" (uuid, name, login, passwd, acl) VALUES (uuid_generate_v4(), 'xivo-ctid-ng', 'xivo-ctid-ng', substring(gen_salt('bf',4),8), '{confd.#, amid.action.Redirect.create, amid.action.Setvar.create, amid.action.ShowDialplan.create, amid.action.Command.create, websocketd, websocketd.#, mongooseim.admin}');
 INSERT INTO "accesswebservice" (uuid, name, login, passwd, acl) VALUES (uuid_generate_v4(), 'xivo-dird-phoned', 'xivo-dird-phoned', substring(gen_salt('bf',4),8), '{dird.directories.menu.*.*.read, dird.directories.input.*.*.read, dird.directories.lookup.*.*.read}');
 INSERT INTO "accesswebservice" (uuid, name, login, passwd, acl) VALUES (uuid_generate_v4(), 'xivo-wizard', 'xivo-wizard', substring(gen_salt('bf',4),8), '{dird.tenants.*.phonebooks.create}');
 
@@ -480,6 +483,15 @@ INSERT INTO "staticqueue" VALUES (DEFAULT,0,0,0,'queues.conf','general','updatec
 INSERT INTO "staticqueue" VALUES (DEFAULT,0,0,0,'queues.conf','general','shared_lastcall','yes');
 
 
+INSERT INTO "asterisk_file" (name) VALUES ('confbridge.conf');
+INSERT INTO "asterisk_file_section" (name, priority, asterisk_file_id) VALUES ('general', 0, (SELECT id FROM asterisk_file WHERE name = 'confbridge.conf'));
+INSERT INTO "asterisk_file_section" (name, priority, asterisk_file_id) VALUES ('default_bridge', NULL, (SELECT id FROM asterisk_file WHERE name = 'confbridge.conf'));
+INSERT INTO "asterisk_file_section" (name, priority, asterisk_file_id) VALUES ('default_user', NULL, (SELECT id FROM asterisk_file WHERE name = 'confbridge.conf'));
+INSERT INTO "asterisk_file_variable" (key, value, asterisk_file_section_id) VALUES ('dsp_drop_silence', 'yes', (SELECT id FROM asterisk_file_section
+                                                                                                                 WHERE name = 'default_user'
+                                                                                                                 AND asterisk_file_id = (SELECT id FROM asterisk_file WHERE name = 'confbridge.conf')));
+
+
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','bindport',5060);
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','autocreatepeer','persist');
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','autocreate_context','xivo-initconfig');
@@ -545,7 +557,7 @@ INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','jbresyncthre
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','jbimpl','fixed');
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','jblog','no');
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,1,'sip.conf','general','context',NULL);
-INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','nat','no');
+INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','nat','auto_force_rport');
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','dtmfmode','rfc2833');
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','qualify','no');
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','useclientcode','no');
@@ -854,6 +866,6 @@ INSERT INTO "provisioning" VALUES(DEFAULT, '', '127.0.0.1', 'admin', 'admin', 0,
 
 /* The UUID "populate-uuid" will be replaced by pg-populate-db */
 /* The version is bumped automatically during the release process */
-INSERT INTO "infos" VALUES ('populate-uuid', '17.05');
+INSERT INTO "infos" VALUES ('populate-uuid', '18.01');
 
 COMMIT;

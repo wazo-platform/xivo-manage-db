@@ -10,7 +10,8 @@ Package: xivo-manage-db
 Architecture: all
 Depends: ${python:Depends},
          ${misc:Depends},
-         alembic,
+         alembic (>= 0.8.8),
+         python-alembic (>= 0.8.8),
          python-sqlalchemy (>= 0.9.4-1),
          python-unidecode,
          systemd,

@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-# Copyright (C) 2014 Avencall
+# Copyright 2014-2017 The Wazo Authors  (see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@ _AlembicCurrentStatus = collections.namedtuple('_AlembicCurrentStatus', ['revisi
 
 def check_db():
     print 'Checking database...'
-    p = _new_alembic_popen(['current', '--head-only'], stdout=subprocess.PIPE)
+    p = _new_alembic_popen(['current'], stdout=subprocess.PIPE)
     output = p.communicate()[0]
     if p.returncode:
         raise Exception('alembic command returned %s' % p.returncode)

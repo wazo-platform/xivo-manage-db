@@ -485,11 +485,17 @@ INSERT INTO "staticqueue" VALUES (DEFAULT,0,0,0,'queues.conf','general','shared_
 
 INSERT INTO "asterisk_file" (name) VALUES ('confbridge.conf');
 INSERT INTO "asterisk_file_section" (name, priority, asterisk_file_id) VALUES ('general', 0, (SELECT id FROM asterisk_file WHERE name = 'confbridge.conf'));
-INSERT INTO "asterisk_file_section" (name, priority, asterisk_file_id) VALUES ('default_bridge', NULL, (SELECT id FROM asterisk_file WHERE name = 'confbridge.conf'));
-INSERT INTO "asterisk_file_section" (name, priority, asterisk_file_id) VALUES ('default_user', NULL, (SELECT id FROM asterisk_file WHERE name = 'confbridge.conf'));
+INSERT INTO "asterisk_file_section" (name, priority, asterisk_file_id) VALUES ('wazo_default_bridge', NULL, (SELECT id FROM asterisk_file WHERE name = 'confbridge.conf'));
+INSERT INTO "asterisk_file_variable" (key, value, asterisk_file_section_id) VALUES ('type', 'bridge', (SELECT id FROM asterisk_file_section
+                                                                                                       WHERE name = 'wazo_default_bridge'
+                                                                                                       AND asterisk_file_id = (SELECT id FROM asterisk_file WHERE name = 'confbridge.conf')));
+INSERT INTO "asterisk_file_section" (name, priority, asterisk_file_id) VALUES ('wazo_default_user', NULL, (SELECT id FROM asterisk_file WHERE name = 'confbridge.conf'));
+INSERT INTO "asterisk_file_variable" (key, value, asterisk_file_section_id) VALUES ('type', 'user', (SELECT id FROM asterisk_file_section
+                                                                                                     WHERE name = 'wazo_default_user'
+                                                                                                     AND asterisk_file_id = (SELECT id FROM asterisk_file WHERE name = 'confbridge.conf')));
 INSERT INTO "asterisk_file_variable" (key, value, asterisk_file_section_id) VALUES ('dsp_drop_silence', 'yes', (SELECT id FROM asterisk_file_section
-                                                                                                                 WHERE name = 'default_user'
-                                                                                                                 AND asterisk_file_id = (SELECT id FROM asterisk_file WHERE name = 'confbridge.conf')));
+                                                                                                                WHERE name = 'wazo_default_user'
+                                                                                                                AND asterisk_file_id = (SELECT id FROM asterisk_file WHERE name = 'confbridge.conf')));
 
 
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','bindport',5060);

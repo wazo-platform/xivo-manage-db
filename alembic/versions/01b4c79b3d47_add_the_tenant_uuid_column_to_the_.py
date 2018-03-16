@@ -29,8 +29,8 @@ def upgrade():
         sa.Column(
             'tenant_uuid',
             sa.String(36),
-            nullable=False,
             sa.ForeignKey('tenant.uuid'),
+            nullable=False,
             server_default=dummy_tenant_uuid,
         ),
     )

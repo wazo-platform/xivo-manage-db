@@ -30,8 +30,8 @@ def upgrade():
             'tenant_uuid',
             sa.String(36),
             nullable=False,
+            sa.ForeignKey('tenant.uuid'),
             server_default=dummy_tenant_uuid,
-            sa.ForeignKey='tenant.uuid',
         ),
     )
 

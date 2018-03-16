@@ -17,7 +17,7 @@ down_revision = '404300b7c16d'
 def upgrade():
     op.create_table(
         'tenant',
-        sa.Column('uuid', sa.String(38), server_default=sa.text('uuid_generate_v4()'), primary_key=True),
+        sa.Column('uuid', sa.String(36), server_default=sa.text('uuid_generate_v4()'), primary_key=True),
     )
 
 

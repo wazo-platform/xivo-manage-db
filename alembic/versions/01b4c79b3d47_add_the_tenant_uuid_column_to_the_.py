@@ -26,17 +26,10 @@ def upgrade():
     dummy_tenant_uuid = _create_tenant()
     op.add_column(
         'entity',
-        sa.Column('tenant_uuid', sa.String(38), nullable=False, server_default=dummy_tenant_uuid),
+        sa.Column('tenant_uuid', sa.String(36), nullable=False, server_default=dummy_tenant_uuid, ForeignKey='tenant.uuid'),
     )
 
     op.alter_column('entity', 'tenant_uuid', server_default=None)
-    op.create_foreign_key(
-        'entity_tenant_fk',
-        'entity',
-        'tenant',
-        ['tenant_uuid'],
-        ['uuid'],
-    )
 
 
 def downgrade():

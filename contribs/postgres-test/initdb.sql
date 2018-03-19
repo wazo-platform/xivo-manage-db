@@ -1,4 +1,5 @@
-INSERT INTO "entity" (name, displayname, description) VALUES ('xivotest', 'xivotest', '');
+INSERT INTO "tenant" (uuid) VALUES ('46e5e03f-e043-495c-8cff-11de941f8ba5');
+INSERT INTO "entity" (name, displayname, description, tenant_uuid) VALUES ('xivotest', 'xivotest', '', '46e5e03f-e043-495c-8cff-11de941f8ba5');
 
 INSERT INTO "accesswebservice" (name, login, passwd, description) VALUES ('admin', 'admin', 'proformatique', '');
 

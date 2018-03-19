@@ -11,7 +11,7 @@ INSERT INTO "accesswebservice" (uuid, name, login, passwd, acl) VALUES (uuid_gen
 INSERT INTO "accesswebservice" (uuid, name, login, passwd, acl) VALUES (uuid_generate_v4(), 'xivo-ctid', 'xivo-ctid', substring(gen_salt('bf',4),8), '{dird.#, agentd.#, confd.users.*.services.dnd.update, ctid-ng.#}');
 INSERT INTO "accesswebservice" (uuid, name, login, passwd, acl) VALUES (uuid_generate_v4(), 'xivo-ctid-ng', 'xivo-ctid-ng', substring(gen_salt('bf',4),8), '{confd.#, amid.action.Redirect.create, amid.action.Setvar.create, amid.action.ShowDialplan.create, amid.action.Command.create, websocketd, websocketd.#, mongooseim.admin}');
 INSERT INTO "accesswebservice" (uuid, name, login, passwd, acl) VALUES (uuid_generate_v4(), 'xivo-dird-phoned', 'xivo-dird-phoned', substring(gen_salt('bf',4),8), '{dird.directories.menu.*.*.read, dird.directories.input.*.*.read, dird.directories.lookup.*.*.read}');
-INSERT INTO "accesswebservice" (uuid, name, login, passwd, acl) VALUES (uuid_generate_v4(), 'xivo-wizard', 'xivo-wizard', substring(gen_salt('bf',4),8), '{dird.tenants.*.phonebooks.create}');
+INSERT INTO "accesswebservice" (uuid, name, login, passwd, acl) VALUES (uuid_generate_v4(), 'xivo-wizard', 'xivo-wizard', substring(gen_salt('bf',4),8), '{dird.tenants.*.phonebooks.create, auth.tenants.create}');
 
 
 INSERT INTO "agentgroup" VALUES (DEFAULT,1,'default','',0,0,'');

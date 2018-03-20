@@ -1,7 +1,7 @@
-"""add the tenant_uuid column to the entity table
+"""add tenant_uuid to userfeatures
 
-Revision ID: 01b4c79b3d47
-Revises: 3b2e82f0bfbe
+Revision ID: 68507181de97
+Revises: 3462497a56f8
 
 """
 
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '01b4c79b3d47'
-down_revision = '3b2e82f0bfbe'
+revision = '68507181de97'
+down_revision = '3462497a56f8'
 
 tenant_table = sa.sql.table('tenant', sa.sql.column('uuid'))
 
@@ -22,11 +22,11 @@ def _create_tenant():
 
 
 def upgrade():
-    # The dummy tenant is to be able to add a foreign key on the entity table.
+    # The dummy tenant is to be able to add a foreign key on the userfeatures table.
     # The real relationship will be added as a post-start script.
     dummy_tenant_uuid = _create_tenant()
     op.add_column(
-        'entity',
+        'userfeatures',
         sa.Column(
             'tenant_uuid',
             sa.String(36),
@@ -36,8 +36,8 @@ def upgrade():
         ),
     )
 
-    op.alter_column('entity', 'tenant_uuid', server_default=None)
+    op.alter_column('userfeatures', 'tenant_uuid', server_default=None)
 
 
 def downgrade():
-    op.drop_column('entity', 'tenant_uuid')
+    op.drop_column('userfeatures', 'tenant_uuid')

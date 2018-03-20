@@ -15,6 +15,7 @@ down_revision = '3462497a56f8'
 
 tenant_table = sa.sql.table('tenant', sa.sql.column('uuid'))
 
+
 def _create_tenant():
     insert_query = tenant_table.insert().returning(tenant_table.c.uuid)
     return op.get_bind().execute(insert_query).scalar()
@@ -26,7 +27,7 @@ def upgrade():
     dummy_tenant_uuid = _create_tenant()
     op.add_column(
         'userfeatures',
-        sa.Column('tenant_uuid', sa.String(38), nullable=False, server_default=dummy_tenant_uuid),
+        sa.Column('tenant_uuid', sa.String(36), nullable=False, server_default=dummy_tenant_uuid),
     )
 
     op.alter_column('userfeatures', 'tenant_uuid', server_default=None)

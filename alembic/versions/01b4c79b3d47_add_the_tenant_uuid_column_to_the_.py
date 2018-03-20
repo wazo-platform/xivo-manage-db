@@ -15,6 +15,7 @@ down_revision = '3b2e82f0bfbe'
 
 tenant_table = sa.sql.table('tenant', sa.sql.column('uuid'))
 
+
 def _create_tenant():
     insert_query = tenant_table.insert().returning(tenant_table.c.uuid)
     return op.get_bind().execute(insert_query).scalar()
@@ -39,5 +40,4 @@ def upgrade():
 
 
 def downgrade():
-    op.drop_constraint('user_tenant_fk', 'entity', type_='foreignkey')
     op.drop_column('entity', 'tenant_uuid')

@@ -184,7 +184,35 @@ INSERT INTO "cticontexts" VALUES(DEFAULT,'default','internal','Display','Context
 INSERT INTO "cticontexts" VALUES(DEFAULT, '__switchboard_directory', '', 'switchboard', '', 1);
 
 
-INSERT INTO "directories" ("uri", "dirtype", "name", "description") VALUES ('http://localhost:9487' , 'xivo', 'wazo' , 'wazo internal users');
+INSERT INTO "directories" (
+  "uri",
+  "dirtype",
+  "name",
+  "description",
+  "xivo_username",
+  "xivo_password",
+  "auth_backend",
+  "auth_verify_certificate",
+  "auth_custom_ca_path",
+  "auth_host",
+  "auth_port",
+  "xivo_verify_certificate",
+  "xivo_custom_ca_path"
+) VALUES (
+  'https://localhost:9486',
+  'xivo',
+  'wazo',
+  'wazo internal users',
+  'wazo-dird-xivo-backend',
+  (SELECT "passwd" FROM "accesswebservice" WHERE "login" = 'wazo-dird-xivo-backend'),
+  'xivo_service',
+  true,
+  '/usr/share/xivo-certs/server.crt',
+  'localhost',
+  9497,
+  true,
+  '/usr/share/xivo-certs/server.crt'
+);
 
 
 INSERT INTO "ctidirectories" ("name", "match_direct", "match_reverse", "description", "deletable", "directory_id")

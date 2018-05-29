@@ -3,11 +3,11 @@ INSERT INTO "entity" (name, displayname, description, tenant_uuid) VALUES ('xivo
 
 INSERT INTO "accesswebservice" (name, login, passwd, description) VALUES ('admin', 'admin', 'proformatique', '');
 
-INSERT INTO "context" (name, displayname, contexttype, description, entity)
+INSERT INTO "context" (name, displayname, contexttype, description, entity, tenant_uuid)
 VALUES
-('default', 'Default', 'internal', '', 'xivotest'),
-('from-extern', 'Incalls', 'incall', '', 'xivotest'),
-('to-extern', 'Outcalls', 'outcall', '', 'xivotest');
+('default', 'Default', 'internal', '', 'xivotest', '46e5e03f-e043-495c-8cff-11de941f8ba5'),
+('from-extern', 'Incalls', 'incall', '', 'xivotest', '46e5e03f-e043-495c-8cff-11de941f8ba5'),
+('to-extern', 'Outcalls', 'outcall', '', 'xivotest', '46e5e03f-e043-495c-8cff-11de941f8ba5');
 
 INSERT INTO "contextinclude" (context, include) VALUES ('default', 'to-extern');
 

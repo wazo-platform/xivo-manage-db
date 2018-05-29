@@ -31,7 +31,7 @@ def associate_tenants(default_tenant):
         op.execute(query)
 
     query = tbl.delete().where(tbl.c.tenant_uuid == None)
-    op.execte(query)
+    op.execute(query)
 
 
 def get_entity_tenant_map():

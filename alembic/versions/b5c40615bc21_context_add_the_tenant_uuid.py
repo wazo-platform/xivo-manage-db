@@ -30,6 +30,9 @@ def associate_tenants(default_tenant):
         query = tbl.update().where(tbl.c.entity == name).values(tenant_uuid=uuid)
         op.execute(query)
 
+    query = tbl.delete().where(tbl.c.tenant_uuid == None)
+    op.execte(query)
+
 
 def get_entity_tenant_map():
     query = sa.sql.select([entity_table.c.name, entity_table.c.tenant_uuid])

@@ -766,6 +766,8 @@ INSERT INTO "sccpgeneralsettings" VALUES (DEFAULT, 'dialtimeout', '5');
 INSERT INTO "sccpgeneralsettings" VALUES (DEFAULT, 'keepalive', '10');
 INSERT INTO "sccpgeneralsettings" VALUES (DEFAULT, 'language', 'en_US');
 INSERT INTO "sccpgeneralsettings" VALUES (DEFAULT, 'allow', '');
+INSERT INTO "sccpgeneralsettings" VALUES (DEFAULT, 'guest', 'no');
+INSERT INTO "sccpgeneralsettings" VALUES (DEFAULT, 'max_guests', '100');
 
 
 DROP TYPE IF EXISTS "queue_statistics" CASCADE;

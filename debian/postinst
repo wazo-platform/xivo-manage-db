@@ -1,16 +1,12 @@
-#!/bin/sh
+#!/bin/bash
 
 set -e
 
 case "$1" in
     configure)
-        new_dir=/var/lib/xivo-manage-db/update-db
-        for old_dir in /var/lib/xivo-update-db /var/lib/xivo-upgrade/update-db ; do
-            if [ -d "$old_dir" ]; then
-                mv "$old_dir"/* "$new_dir"
-                rm -fr "$old_dir"
-            fi
-        done
+        # In wazo 18.07 we completely remove the old migration system
+        rm -f /var/lib/xivo-manage-db
+        rm -rf /usr/share/xivo-manage-db/migration
 
         # When installing from ISO, Postgres is not running
         if pg_lsclusters --no-header | grep -q online ; then
@@ -19,10 +15,10 @@ case "$1" in
             fi
 
             previous_version="$2"
-            if dpkg --compare-versions "$previous_version" lt "16.01~20160125"; then
+            if [[ -z "${previous_version}" ]]; then
                 sudo -u postgres psql -c 'create extension if not exists pgcrypto;' asterisk > /dev/null 2>&1
             fi
-            if dpkg --compare-versions "$previous_version" lt "17.02"; then
+            if [[ -z "${previous_version}" ]]; then
                 sudo -u postgres psql -c 'create extension if not exists "uuid-ossp";' asterisk > /dev/null 2>&1
             fi
 

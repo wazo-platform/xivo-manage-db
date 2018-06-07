@@ -3,7 +3,6 @@ bin/xivo-init-db usr/bin/
 bin/xivo-update-db usr/bin/
 bin/xivo-check-db-old /usr/lib/xivo-manage-db/
 bin/xivo-update-db-old /usr/lib/xivo-manage-db/
-bin/pg-merge-db /usr/lib/xivo-manage-db/
 bin/pg-drop-db /usr/lib/xivo-manage-db/
 bin/pg-populate-db /usr/lib/xivo-manage-db/
 alembic usr/share/xivo-manage-db/

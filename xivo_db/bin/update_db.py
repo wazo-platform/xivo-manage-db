@@ -1,6 +1,6 @@
-# -*- coding: UTF-8 -*-
+# -*- coding: utf-8 -*-
 
-# Copyright 2014-2017 The Wazo Authors  (see the AUTHORS file)
+# Copyright 2014-2018 The Wazo Authors  (see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -21,7 +21,6 @@ import sys
 
 from xivo_db import alembic
 from xivo_db import old
-from xivo_db import postgres
 from xivo_db.exception import DBError
 from wazo_uuid.uuid_ import get_wazo_uuid
 
@@ -34,7 +33,6 @@ def main():
     try:
         if old.is_active():
             old.update_db(parsed_args.verbose)
-            postgres.merge_db()
             old.deactivate()
 
         alembic.update_db()

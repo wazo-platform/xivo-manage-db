@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright 2014-2017 The Wazo Authors  (see the AUTHORS file)
+# Copyright 2014-2018 The Wazo Authors  (see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -25,7 +25,6 @@ AST_LAST = os.path.join(VAR_LIB, 'update-db', 'asterisk-last')
 XIVO_LAST = os.path.join(VAR_LIB, 'update-db', 'xivo-last')
 
 PG_DROP_DB = os.path.join(USR_LIB, 'pg-drop-db')
-PG_MERGE_DB = os.path.join(USR_LIB, 'pg-merge-db')
 PG_POPULATE_DB = os.path.join(USR_LIB, 'pg-populate-db {wazo_uuid}')
 
 XIVO_CHECK_DB_OLD = os.path.join(USR_LIB, 'xivo-check-db-old')

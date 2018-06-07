@@ -15,34 +15,20 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
-import argparse
 import os
 import sys
 
 from xivo_db import alembic
-from xivo_db import old
 from xivo_db.exception import DBError
 from wazo_uuid.uuid_ import get_wazo_uuid
 
 
 def main():
-    parsed_args = _parse_args()
     os.environ['XIVO_UUID'] = get_wazo_uuid()
 
     print 'Updating database...'
     try:
-        if old.is_active():
-            old.update_db(parsed_args.verbose)
-            old.deactivate()
-
         alembic.update_db()
         print 'Updating database done.'
     except DBError:
         sys.exit(1)
-
-
-def _parse_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-v', '--verbose', action='store_true',
-                        help='increase verbosity')
-    return parser.parse_args()

@@ -21,11 +21,7 @@ USR_LIB = '/usr/lib/xivo-manage-db'
 VAR_LIB = '/var/lib/xivo-manage-db'
 USR_SHARE = '/usr/share/xivo-manage-db'
 
-AST_LAST = os.path.join(VAR_LIB, 'update-db', 'asterisk-last')
-XIVO_LAST = os.path.join(VAR_LIB, 'update-db', 'xivo-last')
-
 PG_DROP_DB = os.path.join(USR_LIB, 'pg-drop-db')
 PG_POPULATE_DB = os.path.join(USR_LIB, 'pg-populate-db {wazo_uuid}')
 
 XIVO_CHECK_DB_OLD = os.path.join(USR_LIB, 'xivo-check-db-old')
-XIVO_UPDATE_DB_OLD = os.path.join(USR_LIB, 'xivo-update-db-old')

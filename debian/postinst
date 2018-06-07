@@ -4,6 +4,10 @@ set -e
 
 case "$1" in
     configure)
+        # In wazo 18.07 we completely remove the old migration system
+        rm -f /var/lib/xivo-manage-db/update-db/asterisk-last
+        rm -f /var/lib/xivo-manage-db/update-db/xivo-last
+
         # When installing from ISO, Postgres is not running
         if pg_lsclusters --no-header | grep -q online ; then
             if ! sudo -u postgres psql -tA asterisk --quiet -c "SELECT count(*) from userfeatures" > /dev/null 2>&1 ; then

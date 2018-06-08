@@ -40,24 +40,35 @@ def upgrade():
     queue_ids = [r.id for r in conn.execute(sql.select([queuefeatures.c.id])).fetchall()]
     user_ids = [r.id for r in conn.execute(sql.select([userfeatures.c.id])).fetchall()]
 
-    op.execute(
-        pickupmember
-        .delete()
-        .where(sql.or_(
+    filters = []
+    if group_ids:
+        filters.append(
             sql.and_(
                 pickupmember.c.membertype == 'group',
                 sql.not_(pickupmember.c.memberid.in_(group_ids)),
-            ),
+            )
+        )
+    if queue_ids:
+        filters.append(
             sql.and_(
                 pickupmember.c.membertype == 'queue',
                 sql.not_(pickupmember.c.memberid.in_(queue_ids)),
             ),
+        )
+    if user_ids:
+        filters.append(
             sql.and_(
                 pickupmember.c.membertype == 'user',
                 sql.not_(pickupmember.c.memberid.in_(user_ids)),
             ),
-        ))
-    )
+        )
+
+    if filters:
+        op.execute(
+            pickupmember
+            .delete()
+            .where(sql.or_(*filters))
+        )
 
 
 def downgrade():

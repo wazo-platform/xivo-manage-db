@@ -1,13 +1,13 @@
-INSERT INTO "tenant" (uuid) VALUES ('46e5e03f-e043-495c-8cff-11de941f8ba5');
-INSERT INTO "entity" (name, displayname, description, tenant_uuid) VALUES ('xivotest', 'xivotest', '', '46e5e03f-e043-495c-8cff-11de941f8ba5');
+INSERT INTO "tenant" (uuid) VALUES ('eeeeeeee-eeee-eeee-eeee-eeeeeeeeeee1');
+INSERT INTO "entity" (name, displayname, description, tenant_uuid) VALUES ('xivotest', 'xivotest', '', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeee1');
 
 INSERT INTO "accesswebservice" (name, login, passwd, description) VALUES ('admin', 'admin', 'proformatique', '');
 
 INSERT INTO "context" (name, displayname, contexttype, description, entity, tenant_uuid)
 VALUES
-('default', 'Default', 'internal', '', 'xivotest', '46e5e03f-e043-495c-8cff-11de941f8ba5'),
-('from-extern', 'Incalls', 'incall', '', 'xivotest', '46e5e03f-e043-495c-8cff-11de941f8ba5'),
-('to-extern', 'Outcalls', 'outcall', '', 'xivotest', '46e5e03f-e043-495c-8cff-11de941f8ba5');
+('default', 'Default', 'internal', '', 'xivotest', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeee1'),
+('from-extern', 'Incalls', 'incall', '', 'xivotest', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeee1'),
+('to-extern', 'Outcalls', 'outcall', '', 'xivotest', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeee1');
 
 INSERT INTO "contextinclude" (context, include) VALUES ('default', 'to-extern');
 

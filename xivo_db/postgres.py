@@ -15,14 +15,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
-import subprocess
-import getpass
-import psycopg2
 import time
 import sys
 import os
 
 from pwd import getpwnam
+
+import subprocess
+import getpass
+import psycopg2
 
 from wazo_uuid.uuid_ import get_wazo_uuid
 from xivo import db_helper

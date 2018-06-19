@@ -2,7 +2,7 @@ BEGIN;
 
 INSERT INTO "accesswebservice" (uuid, name, login, passwd, acl) VALUES (uuid_generate_v4(), 'wazo-auth', 'wazo-auth', substring(gen_salt('bf',4),8), '{confd.users.read}');
 INSERT INTO "accesswebservice" (uuid, name, login, passwd, acl) VALUES (uuid_generate_v4(), 'wazo-dird-xivo-backend', 'wazo-dird-xivo-backend', substring(gen_salt('bf',4),8), '{confd.users.read, confd.infos.read}');
-INSERT INTO "accesswebservice" (uuid, name, login, passwd, acl) VALUES (uuid_generate_v4(), 'wazo-call-logd', 'wazo-call-logd', substring(gen_salt('bf',4),8), '{confd.lines.read, confd.users.*.read}');
+INSERT INTO "accesswebservice" (uuid, name, login, passwd, acl) VALUES (uuid_generate_v4(), 'wazo-call-logd', 'wazo-call-logd', substring(gen_salt('bf',4),8), '{auth.tenants.read, confd.lines.read, confd.users.*.read}');
 INSERT INTO "accesswebservice" (uuid, name, login, passwd, acl) VALUES (uuid_generate_v4(), 'wazo-plugind', 'wazo-plugind', substring(gen_salt('bf',4),8), '{confd.infos.read}');
 INSERT INTO "accesswebservice" (uuid, name, login, passwd, acl) VALUES (uuid_generate_v4(), 'wazo-plugind-cli', 'wazo-plugind-cli', substring(gen_salt('bf',4),8), '{plugind.#}');
 INSERT INTO "accesswebservice" (uuid, name, login, passwd, acl) VALUES (uuid_generate_v4(), 'wazo-upgrade', 'wazo-upgrade', substring(gen_salt('bf',4),8), '{plugind.#,confd.#,auth.#}');

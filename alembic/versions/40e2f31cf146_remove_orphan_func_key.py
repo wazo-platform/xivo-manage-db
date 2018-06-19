@@ -133,6 +133,9 @@ def upgrade():
     )
     func_key_ids = [func_key_result.id for func_key_result in func_key_results]
 
+    if not func_key_ids:
+        return
+
     op.execute(
         func_key_mapping
         .delete()

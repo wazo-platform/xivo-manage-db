@@ -1,7 +1,7 @@
 """remove_orphan_func_key
 
 Revision ID: 40e2f31cf146
-Revises: 3e185fe069be
+Revises: 014b218f97dd
 
 """
 
@@ -11,7 +11,7 @@ from sqlalchemy import sql
 
 # revision identifiers, used by Alembic.
 revision = '40e2f31cf146'
-down_revision = '3e185fe069be'
+down_revision = '014b218f97dd'
 
 func_key = sql.table(
     'func_key',

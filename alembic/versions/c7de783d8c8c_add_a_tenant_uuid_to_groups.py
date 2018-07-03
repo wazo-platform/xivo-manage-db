@@ -27,8 +27,6 @@ def find_default_tenant_uuid():
     for row in op.get_bind().execute(query):
         return row.tenant_uuid
 
-    raise Exception('Failed to find an entity')
-
 
 def get_context_tenant_map():
     tbl = sa.sql.table('context', sa.sql.column('name'), sa.sql.column('tenant_uuid'))

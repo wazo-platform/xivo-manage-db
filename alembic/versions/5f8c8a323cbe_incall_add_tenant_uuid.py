@@ -47,7 +47,7 @@ def upgrade():
         sa.Column(
             'tenant_uuid',
             sa.String(36),
-            sa.ForeignKey('tenant.uuid'),
+            sa.ForeignKey('tenant.uuid', ondelete='CASCADE'),
             nullable=False,
             server_default=default_tenant_uuid,
         )

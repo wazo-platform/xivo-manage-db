@@ -15,6 +15,8 @@ INSERT INTO "accesswebservice" (uuid, name, login, passwd, acl) VALUES (uuid_gen
 INSERT INTO "accesswebservice" (uuid, name, login, passwd, acl) VALUES (uuid_generate_v4(), 'xivo-wizard', 'xivo-wizard', substring(gen_salt('bf',4),8), '{dird.tenants.*.phonebooks.create, auth.tenants.create}');
 
 
+INSERT INTO "tenant" (uuid) VALUES (DEFAULT);
+
 INSERT INTO "agentgroup" VALUES (DEFAULT,1,'default','',0,0,'');
 
 

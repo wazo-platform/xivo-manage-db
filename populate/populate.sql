@@ -446,7 +446,12 @@ VALUES (
                                 AND var_name = 'automixmon')
 );
 
-INSERT INTO "moh" (uuid, name, mode) VALUES (uuid_generate_v4(), 'default', 'files');
+INSERT INTO "moh" (uuid, name, mode, tenant_uuid) VALUES (
+    uuid_generate_v4(),
+    'default',
+    'files',
+    (SELECT "uuid" FROM "tenant" LIMIT 1)
+);
 
 INSERT INTO "staticiax" VALUES (DEFAULT,0,0,0,'iax.conf','general','bindport',4569);
 INSERT INTO "staticiax" VALUES (DEFAULT,0,0,0,'iax.conf','general','bindaddr','0.0.0.0');

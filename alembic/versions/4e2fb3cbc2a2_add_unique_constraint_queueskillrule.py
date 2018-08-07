@@ -11,10 +11,15 @@ from alembic import op
 revision = '4e2fb3cbc2a2'
 down_revision = '129646f8f81f'
 
+table_name = 'queueskillrule'
+constraint_name = '{}_name_key'.format(table_name)
+
 
 def upgrade():
-    op.alter_column('queueskillrule', 'name', unique=True, nullable=False)
+    op.alter_column(table_name, 'name', nullable=False)
+    op.create_unique_constraint(constraint_name, table_name, ['name'])
 
 
 def downgrade():
-    op.alter_column('queueskillrule', 'name', unique=False, nullable=True)
+    op.drop_constraint(constraint_name, table_name)
+    op.alter_column(table_name, 'name', nullable=True)

@@ -529,6 +529,17 @@ INSERT INTO "asterisk_file_variable" (key, value, asterisk_file_section_id) VALU
                                                                                                                 AND asterisk_file_id = (SELECT id FROM asterisk_file WHERE name = 'confbridge.conf')));
 
 
+INSERT INTO "asterisk_file" (name) VALUES ('rtp.conf');
+INSERT INTO "asterisk_file_section" (name, priority, asterisk_file_id) VALUES ('general', 0, (SELECT id FROM asterisk_file WHERE name = 'rtp.conf'));
+INSERT INTO "asterisk_file_variable" (key, value, asterisk_file_section_id) VALUES ('rtpstart', '10000', (SELECT id FROM asterisk_file_section
+                                                                                                          WHERE name = 'general'
+                                                                                                          AND asterisk_file_id = (SELECT id FROM asterisk_file WHERE name = 'rtp.conf')));
+INSERT INTO "asterisk_file_variable" (key, value, asterisk_file_section_id) VALUES ('rtpend', '20000', (SELECT id FROM asterisk_file_section
+                                                                                                          WHERE name = 'general'
+                                                                                                          AND asterisk_file_id = (SELECT id FROM asterisk_file WHERE name = 'rtp.conf')));
+INSERT INTO "asterisk_file_section" (name, priority, asterisk_file_id) VALUES ('ice_host_candidates', NULL, (SELECT id FROM asterisk_file WHERE name = 'rtp.conf'));
+
+
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','bindport',5060);
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','autocreatepeer','persist');
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','autocreate_context','xivo-initconfig');

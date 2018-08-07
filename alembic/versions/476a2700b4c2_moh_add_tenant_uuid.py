@@ -1,7 +1,7 @@
 """moh_add_tenant_uuid
 
 Revision ID: 476a2700b4c2
-Revises: 129646f8f81f
+Revises: 5a285558e46e
 
 """
 
@@ -11,7 +11,7 @@ import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 revision = '476a2700b4c2'
-down_revision = '129646f8f81f'
+down_revision = '5a285558e46e'
 
 TABLE = 'moh'
 

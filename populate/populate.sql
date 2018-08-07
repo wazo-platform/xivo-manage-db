@@ -15,6 +15,8 @@ INSERT INTO "accesswebservice" (uuid, name, login, passwd, acl) VALUES (uuid_gen
 INSERT INTO "accesswebservice" (uuid, name, login, passwd, acl) VALUES (uuid_generate_v4(), 'xivo-wizard', 'xivo-wizard', substring(gen_salt('bf',4),8), '{dird.tenants.*.phonebooks.create, auth.tenants.create}');
 
 
+INSERT INTO "tenant" (uuid) VALUES (DEFAULT);
+
 INSERT INTO "agentgroup" VALUES (DEFAULT,1,'default','',0,0,'');
 
 
@@ -444,7 +446,12 @@ VALUES (
                                 AND var_name = 'automixmon')
 );
 
-INSERT INTO "moh" (uuid, name, mode) VALUES (uuid_generate_v4(), 'default', 'files');
+INSERT INTO "moh" (uuid, name, mode, tenant_uuid) VALUES (
+    uuid_generate_v4(),
+    'default',
+    'files',
+    (SELECT "uuid" FROM "tenant" LIMIT 1)
+);
 
 INSERT INTO "staticiax" VALUES (DEFAULT,0,0,0,'iax.conf','general','bindport',4569);
 INSERT INTO "staticiax" VALUES (DEFAULT,0,0,0,'iax.conf','general','bindaddr','0.0.0.0');

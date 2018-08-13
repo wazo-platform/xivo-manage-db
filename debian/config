@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -e
+
+. /usr/share/debconf/confmodule
+
+db_input high xivo-manage-db/db-skip || true
+db_go || true
+db_stop

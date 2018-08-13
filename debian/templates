@@ -1,0 +1,6 @@
+Template: xivo-manage-db/db-skip
+Type: boolean
+Default: false
+Description: Skip DB configuration
+ Should we skip the database configuration for now?
+ .

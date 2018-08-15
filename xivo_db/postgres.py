@@ -32,14 +32,10 @@ def run_as(user_name):
 
 
 @run_as('postgres')
-def init_db():
-    db_name = 'asterisk'
-    db_user = 'asterisk'
-    db_user_password = 'proformatique'
-
+def init_db(db_name, db_user, db_user_password, pg_db_uri):
     for _ in xrange(40):
         try:
-            conn = psycopg2.connect('postgresql:///postgres')
+            conn = psycopg2.connect(pg_db_uri)
             break
         except psycopg2.OperationalError:
             time.sleep(0.25)
@@ -56,18 +52,18 @@ def init_db():
 
 
 @run_as('postgres')
-def enable_extension(extension):
-    with psycopg2.connect('postgresql:///asterisk') as conn:
+def enable_extension(extension, app_db_uri):
+    with psycopg2.connect(app_db_uri) as conn:
         with conn.cursor() as cursor:
             cursor.execute('CREATE EXTENSION IF NOT EXISTS "{}"'.format(extension))
 
 
-def drop_db():
-    _call_as_postgres(path.PG_DROP_DB)
+def drop_db(pg_db_uri, app_db_name):
+    _call_as_postgres(path.PG_DROP_DB.format(pg_db_uri=pg_db_uri, app_db_name=app_db_name))
 
 
-def populate_db():
-    _call_as_postgres(path.PG_POPULATE_DB.format(wazo_uuid=get_wazo_uuid()))
+def populate_db(app_db_uri):
+    _call_as_postgres(path.PG_POPULATE_DB.format(wazo_uuid=get_wazo_uuid(), app_db_uri=app_db_uri))
 
 
 def _call_as_postgres(pathname):

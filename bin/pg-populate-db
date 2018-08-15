@@ -1,14 +1,19 @@
 #!/bin/bash
+
+# Copyright 2018 The Wazo Authors  (see the AUTHORS file)
+# SPDX-License-Identifier: GPL-3.0+
+
 # This script initialize role and database
 #
-# It must be executed as user postgres.
+# It must either be given a DB URI or be executed as user postgres with URI postgresql:///asterisk.
 
 set -e
 export PGOPTIONS='--client-min-messages=warning'
 export POPULATE_SCRIPT='/usr/share/xivo-manage-db/populate/populate.sql'
 
-psql="psql asterisk -v ON_ERROR_STOP="
 wazo_uuid=$1
+db_uri=$2
+psql="psql $db_uri -v ON_ERROR_STOP="
 
 $psql < $POPULATE_SCRIPT
 $psql <<< "UPDATE infos SET uuid = '${wazo_uuid}'";

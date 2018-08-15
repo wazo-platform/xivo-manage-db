@@ -28,16 +28,32 @@ case "$1" in
             db_get xivo-manage-db/db-app-password
             db_app_password="$RET"
 
-            if ! sudo -u postgres psql -tA asterisk --quiet -c "SELECT count(*) from userfeatures" > /dev/null 2>&1 ; then
-                xivo-init-db --init
+
+            if [ "$db_admin_password" = '' ] ; then
+                psql_cmd='sudo -u postgres psql'
+                pg_db_uri="postgresql:///postgres"
+                app_db_uri="postgresql:///$db_app_name"
+            else
+                pg_db_uri="postgresql://$db_admin_username:$db_admin_password@$db_host:$db_port/postgres"
+                app_db_uri="postgresql://$db_admin_username:$db_admin_password@$db_host:$db_port/$db_app_name"
+                psql_cmd="psql $app_db_uri"
+            fi
+
+            if ! $psql_cmd -tA asterisk --quiet -c "SELECT count(*) from userfeatures" > /dev/null 2>&1 ; then
+                xivo-init-db --init \
+                --pg_db_uri "$pg_db_uri" \
+                --owner "$db_app_username" \
+                --password "$db_app_password" \
+                --db "$db_app_name" \
+                --app_db_uri "$app_db_uri"
             fi
 
             previous_version="$2"
             if [[ -z "${previous_version}" ]]; then
-                sudo -u postgres psql -c 'create extension if not exists pgcrypto;' asterisk > /dev/null 2>&1
+                $psql_cmd -c 'create extension if not exists pgcrypto;' asterisk > /dev/null 2>&1
             fi
             if [[ -z "${previous_version}" ]]; then
-                sudo -u postgres psql -c 'create extension if not exists "uuid-ossp";' asterisk > /dev/null 2>&1
+                $psql_cmd -c 'create extension if not exists "uuid-ossp";' asterisk > /dev/null 2>&1
             fi
 
             xivo-update-db

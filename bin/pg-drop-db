@@ -1,17 +1,23 @@
 #!/bin/bash
+
+# Copyright 2018 The Wazo Authors  (see the AUTHORS file)
+# SPDX-License-Identifier: GPL-3.0+
+
 # This script drop role and database
 #
-# It must be executed as user postgres.
+# It must be given a DB URI or be executed as user postgres with URI postgresql:///postgres.
 
 set -e
 export PGOPTIONS='--client-min-messages=warning'
 
-psql="psql -v ON_ERROR_STOP="
+db_uri=$1
+db_name=$2
+psql="psql $db_uri -v ON_ERROR_STOP="
 
 
-$psql <<'EOF'
+$psql <<EOF
 
-DROP DATABASE "asterisk";
-DROP ROLE "asterisk";
+DROP DATABASE "$db_name";
+DROP ROLE "$db_name";
 
 EOF

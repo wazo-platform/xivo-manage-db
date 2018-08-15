@@ -13,6 +13,21 @@ case "$1" in
         db_get xivo-manage-db/db-skip
         db_skip="$RET"
         if [ "$db_skip" = "false" ] ; then
+            db_get xivo-manage-db/db-host
+            db_host="$RET"
+            db_get xivo-manage-db/db-port
+            db_port="$RET"
+            db_get xivo-manage-db/db-admin-username
+            db_admin_username="$RET"
+            db_get xivo-manage-db/db-admin-password
+            db_admin_password="$RET"
+            db_get xivo-manage-db/db-app-name
+            db_app_name="$RET"
+            db_get xivo-manage-db/db-app-username
+            db_app_username="$RET"
+            db_get xivo-manage-db/db-app-password
+            db_app_password="$RET"
+
             if ! sudo -u postgres psql -tA asterisk --quiet -c "SELECT count(*) from userfeatures" > /dev/null 2>&1 ; then
                 xivo-init-db --init
             fi

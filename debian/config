@@ -6,4 +6,18 @@ set -e
 
 db_input high xivo-manage-db/db-skip || true
 db_go || true
+
+db_get xivo-manage-db/db-skip
+db_skip=$RET
+if [ "$db_skip" = "false" ] ; then
+    db_input high xivo-manage-db/db-host || true
+    db_input high xivo-manage-db/db-port || true
+    db_input high xivo-manage-db/db-admin-username || true
+    db_input high xivo-manage-db/db-admin-password || true
+    db_input high xivo-manage-db/db-app-name || true
+    db_input high xivo-manage-db/db-app-username || true
+    db_input high xivo-manage-db/db-app-password || true
+    db_go || true
+fi
+
 db_stop

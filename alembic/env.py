@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
 
+# Copyright 2018 The Wazo Authors  (see the AUTHORS file)
+# SPDX-License-Identifier: GPL-3.0+
+
+import os
 from alembic import context
-from sqlalchemy import engine_from_config, pool
+from sqlalchemy import create_engine
 from logging.config import fileConfig
 
 # this is the Alembic Config object, which provides
@@ -17,6 +21,9 @@ fileConfig(config.config_file_name)
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 
+URI = os.getenv('ALEMBIC_DB_URI', None)
+
+
 def run_migrations_offline():
     """Run migrations in 'offline' mode.
 
@@ -29,7 +36,7 @@ def run_migrations_offline():
     script output.
 
     """
-    url = config.get_main_option("sqlalchemy.url")
+    url = URI or config.get_main_option("sqlalchemy.url")
     context.configure(url=url)
 
     with context.begin_transaction():
@@ -43,10 +50,8 @@ def run_migrations_online():
     and associate a connection with the context.
 
     """
-    engine = engine_from_config(
-                config.get_section(config.config_ini_section),
-                prefix='sqlalchemy.',
-                poolclass=pool.NullPool)
+    url = URI or config.get_main_option("sqlalchemy.url")
+    engine = create_engine(url)
 
     connection = engine.connect()
     context.configure(connection=connection)

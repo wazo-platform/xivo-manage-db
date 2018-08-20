@@ -6,6 +6,7 @@
 import os
 from alembic import context
 from sqlalchemy import create_engine
+from sqlalchemy.pool import NullPool
 from logging.config import fileConfig
 
 # this is the Alembic Config object, which provides
@@ -51,7 +52,7 @@ def run_migrations_online():
 
     """
     url = URI or config.get_main_option("sqlalchemy.url")
-    engine = create_engine(url)
+    engine = create_engine(url, poolclass=NullPool)
 
     connection = engine.connect()
     context.configure(connection=connection)

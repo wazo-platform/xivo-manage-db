@@ -49,5 +49,5 @@ def upgrade():
 
 
 def downgrade():
-    op.drop_table('application')
     op.drop_table('application_dest_node')
+    op.drop_table('application')

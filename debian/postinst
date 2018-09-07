@@ -37,7 +37,7 @@ case "$1" in
                 pg_db_uri="postgresql://$db_admin_username:$db_admin_password@$db_host:$db_port/postgres"
                 app_db_uri="postgresql://$db_admin_username:$db_admin_password@$db_host:$db_port/$db_app_name"
                 psql_cmd="psql $app_db_uri"
-                export ALEMBIC_DB_URI="postgresql://$db_admin_username:$db_admin_password@$db_host:$db_port/$db_app_name"
+                export ALEMBIC_DB_URI="postgresql://$db_app_username:$db_app_password@$db_host:$db_port/$db_app_name"
             fi
 
             if ! $psql_cmd -tA asterisk --quiet -c "SELECT count(*) from userfeatures" > /dev/null 2>&1 ; then

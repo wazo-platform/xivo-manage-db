@@ -121,8 +121,9 @@ class LDAPFilter(object):
             fields.append(DirectoryField(field_name, field_value))
 
         if self.additional_type == 'custom':
-            print 'warning: LDAP filter {}: ignoring custom phone number type "{}"'.format(
-                                                            self.name, self.additional_text)
+            print('warning: LDAP filter {}: ignoring custom phone number type "{}"'.format(
+                self.name, self.additional_text
+            ))
             phone_suffix = ''
         else:
             phone_suffix = '_{}'.format(self.additional_type)
@@ -177,8 +178,9 @@ class LDAPDirectory(object):
             for existing_field in self.fields:
                 if new_field.name == existing_field.name:
                     if new_field.value != existing_field.value:
-                        print 'warning: directory {}: can\'t set field "{}" to "{}"; already defined as "{}"'.format(
-                                                    self.name, new_field.name, new_field.value, existing_field.value)
+                        print('warning: directory {}: can\'t set field "{}" to "{}"; already defined as "{}"'.format(
+                            self.name, new_field.name, new_field.value, existing_field.value
+                        ))
                     break
             else:
                 self.fields.append(new_field)

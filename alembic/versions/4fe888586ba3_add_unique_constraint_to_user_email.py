@@ -26,7 +26,9 @@ def upgrade():
 
 def _delete_duplicate_emails():
     for duplicate in _get_duplicate_emails():
-        print '[MIGRATE_USER_EMAIL] : Deleting email "{}" for user id "{}"'.format(duplicate.email, duplicate.array_id)
+        print('[MIGRATE_USER_EMAIL] : Deleting email "{}" for user id "{}"'.format(
+            duplicate.email, duplicate.array_id
+        ))
         query = (userfeatures_table.update()
                                    .values(email=None)
                                    .where(userfeatures_table.c.email == duplicate.email))

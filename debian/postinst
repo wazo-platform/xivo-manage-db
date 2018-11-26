@@ -58,7 +58,6 @@ case "$1" in
             fi
 
             xivo-update-db
-            xivo-update-keys
         fi
     ;;
 

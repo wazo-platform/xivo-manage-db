@@ -894,9 +894,6 @@ CREATE TRIGGER "change_queue_log_agent"
 INSERT INTO "resolvconf" VALUES(DEFAULT, '', '', NULL, NULL, NULL, NULL, '');
 
 
-INSERT INTO "user" VALUES (DEFAULT, uuid_generate_v4(), NULL,'root','proformatique','root',1,0,EXTRACT(EPOCH from now()),0,'');
-
-
 INSERT INTO "dhcp" VALUES (DEFAULT,0,'','','');
 
 

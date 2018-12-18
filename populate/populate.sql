@@ -188,7 +188,7 @@ INSERT INTO "directories" (
   "xivo_custom_ca_path"
 ) VALUES (
   'https://localhost:9486',
-  'xivo',
+  'wazo',
   'wazo',
   'wazo internal users',
   'wazo-dird-xivo-backend',

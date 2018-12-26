@@ -17,7 +17,7 @@ if [ "$(ls -A $SCRIPTS)" ]; then
     $PG_CTL -w -o "--config-file=$PG_CONF" stop
 fi
 
-gosu postgres \
+exec gosu postgres \
     /usr/lib/postgresql/9.6/bin/postgres \
     -D /var/lib/postgresql/9.6/main \
     --config-file=/etc/postgresql/9.6/main/postgresql.conf

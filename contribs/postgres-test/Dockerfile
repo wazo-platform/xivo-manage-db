@@ -21,5 +21,3 @@ RUN \
     && chmod +x /usr/local/bin/gosu
 
 ENTRYPOINT ["/bootstrap-pg.sh"]
-
-CMD ["postgres"]

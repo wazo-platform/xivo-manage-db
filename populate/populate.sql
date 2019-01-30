@@ -521,6 +521,9 @@ INSERT INTO "asterisk_file_variable" (key, value, asterisk_file_section_id) VALU
 INSERT INTO "asterisk_file_variable" (key, value, asterisk_file_section_id) VALUES ('dsp_drop_silence', 'yes', (SELECT id FROM asterisk_file_section
                                                                                                                 WHERE name = 'wazo_default_user'
                                                                                                                 AND asterisk_file_id = (SELECT id FROM asterisk_file WHERE name = 'confbridge.conf')));
+INSERT INTO "asterisk_file_variable" (key, value, asterisk_file_section_id) VALUES ('talk_detection_events', 'yes', (SELECT id FROM asterisk_file_section
+                                                                                                                     WHERE name = 'wazo_default_user'
+                                                                                                                     AND asterisk_file_id = (SELECT id FROM asterisk_file WHERE name = 'confbridge.conf')));
 
 
 INSERT INTO "asterisk_file" (name) VALUES ('rtp.conf');

@@ -16,7 +16,7 @@ Depends: ${python:Depends},
          python-unidecode,
          systemd,
          wazo-uuid,
-         xivo-dbms (>= 18.09~20180813.122139.5a1dcf0.deb9),
+         xivo-dbms (>= 19.03~20190218.142812.1fd1d24.deb9),
          xivo-lib-python,
          xivo-libdao
 Description: Wazo database tools manager

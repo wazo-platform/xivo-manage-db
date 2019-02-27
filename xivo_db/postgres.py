@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2014-2018 The Wazo Authors  (see the AUTHORS file)
+# Copyright 2014-2019 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import time
@@ -33,14 +33,14 @@ def run_as(user_name):
 
 @run_as('postgres')
 def init_db(db_name, db_user, db_user_password, pg_db_uri):
-    for _ in xrange(40):
+    for _ in range(40):
         try:
             conn = psycopg2.connect(pg_db_uri)
             break
         except psycopg2.OperationalError:
             time.sleep(0.25)
     else:
-        print >> sys.stderr, 'Failed to connect to postgres'
+        print('Failed to connect to postgres', file=sys.stderr)
 
     conn.autocommit = True
     with conn:

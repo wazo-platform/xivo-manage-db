@@ -24,7 +24,7 @@ def upgrade():
                                     fields_table.c.fieldname,
                                     fields_table.c.value]).where(~fields_table.c.value.like('{%}')))
     to_upgrade = {(row.dir_id, row.fieldname): row.value for row in rows}
-    for (dir_id, fieldname), value in to_upgrade.iteritems():
+    for (dir_id, fieldname), value in to_upgrade.items():
         new_value = '{%s}' % '} {'.join(value.split(' '))
         op.execute(fields_table
                    .update()
@@ -39,7 +39,7 @@ def downgrade():
                                     fields_table.c.fieldname,
                                     fields_table.c.value]))
     to_upgrade = {(row.dir_id, row.fieldname): row.value for row in rows}
-    for (dir_id, fieldname), value in to_upgrade.iteritems():
+    for (dir_id, fieldname), value in to_upgrade.items():
         new_value = value.replace('{', '').replace('}', '')
         op.execute(fields_table
                    .update()

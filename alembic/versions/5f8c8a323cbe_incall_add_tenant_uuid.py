@@ -35,7 +35,7 @@ def associate_tenants():
     query = sa.sql.select([ctx_tbl.c.name, ctx_tbl.c.tenant_uuid])
     context_to_tenant = {row.name: row.tenant_uuid for row in op.get_bind().execute(query)}
 
-    for name, tenant_uuid in context_to_tenant.iteritems():
+    for name, tenant_uuid in context_to_tenant.items():
         query = incall_tbl.update().where(incall_tbl.c.context == name).values(tenant_uuid=tenant_uuid)
         op.execute(query)
 

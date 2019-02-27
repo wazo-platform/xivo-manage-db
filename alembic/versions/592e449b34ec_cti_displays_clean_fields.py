@@ -35,7 +35,7 @@ def upgrade():
     f = partial(sub_all, r'(.*)\{\w+-(\w+)\}(.*)', r'\1\2\3')
     to_upgrade = {row.id: f(row.data) for row in rows}
 
-    for id_, value in to_upgrade.iteritems():
+    for id_, value in to_upgrade.items():
         op.execute(t.update()
                    .where(t.c.id == id_)
                    .values(data=value))

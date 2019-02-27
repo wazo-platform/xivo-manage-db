@@ -41,7 +41,7 @@ def upgrade():
                                 'func_key_dest_agent',
                                 ('agent_id', 'extension_id'))
 
-    for action, wonky_action in ACTIONS.iteritems():
+    for action, wonky_action in ACTIONS.items():
         extension_query = (sql.select([extensions.c.id])
                            .where(extensions.c.typeval == wonky_action))
 
@@ -71,7 +71,7 @@ def downgrade():
                                'func_key_dest_agent',
                                "action IN ('login', 'logoff', 'toggle')")
 
-    for action, wonky_action in ACTIONS.iteritems():
+    for action, wonky_action in ACTIONS.items():
         extension_query = (sql.select([extensions.c.id])
                            .where(extensions.c.typeval == wonky_action)
                            .alias())

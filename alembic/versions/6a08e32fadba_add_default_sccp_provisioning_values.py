@@ -26,12 +26,12 @@ DEFAULT_CONFIG = {
 
 
 def upgrade():
-    values = [{'option_name': name, 'option_value': value} for name, value in DEFAULT_CONFIG.iteritems()]
+    values = [{'option_name': name, 'option_value': value} for name, value in DEFAULT_CONFIG.items()]
     op.bulk_insert(SCCP_GENERAL_SETTINGS_TABLE, values)
 
 
 def downgrade():
     query = SCCP_GENERAL_SETTINGS_TABLE.delete().where(
-        SCCP_GENERAL_SETTINGS_TABLE.c.option_name.in_(DEFAULT_CONFIG.keys())
+        SCCP_GENERAL_SETTINGS_TABLE.c.option_name.in_(list(DEFAULT_CONFIG.keys()))
     )
     op.execute(query)

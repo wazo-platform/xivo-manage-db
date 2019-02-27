@@ -46,7 +46,7 @@ def _update_directories(conn):
                         .where(directories.c.uri == 'http://localhost:9487'))
     configs = {row.id: {'match_direct': row.match_direct,
                         'match_reverse': row.match_reverse} for row in rows}
-    for id_, config in configs.iteritems():
+    for id_, config in configs.items():
         op.execute(directories.update()
                    .where(directories.c.id == id_)
                    .values(match_direct=_clean(config['match_direct']),

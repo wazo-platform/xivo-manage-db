@@ -26,7 +26,7 @@ def associate_tenants(default_tenant):
     query = tbl.update().values(tenant_uuid=default_tenant)
     op.execute(query)
 
-    for name, uuid in get_entity_tenant_map().iteritems():
+    for name, uuid in get_entity_tenant_map().items():
         query = tbl.update().where(tbl.c.entity == name).values(tenant_uuid=uuid)
         op.execute(query)
 

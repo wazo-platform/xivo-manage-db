@@ -38,7 +38,7 @@ def get_context_tenant_map():
 def associate_tenants():
     tbl = sa.sql.table(TABLE, sa.sql.column('context'), sa.sql.column('tenant_uuid'))
 
-    for name, uuid in get_context_tenant_map().iteritems():
+    for name, uuid in get_context_tenant_map().items():
         query = tbl.update().where(tbl.c.context == name).values(tenant_uuid=uuid)
         op.execute(query)
 

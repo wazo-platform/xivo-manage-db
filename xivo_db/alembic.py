@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-# Copyright 2014-2017 The Wazo Authors  (see the AUTHORS file)
+# Copyright 2014-2019 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import re
@@ -12,18 +11,18 @@ _AlembicCurrentStatus = collections.namedtuple('_AlembicCurrentStatus', ['revisi
 
 
 def check_db():
-    print 'Checking database...'
+    print('Checking database...')
     p = _new_alembic_popen(['current'], stdout=subprocess.PIPE)
     output = p.communicate()[0]
     if p.returncode:
         raise Exception('alembic command returned %s' % p.returncode)
 
-    status = _parse_alembic_current_output(output)
+    status = _parse_alembic_current_output(output.decode('utf-8'))
     if status.is_head:
         status_msg = 'OK'
     else:
         status_msg = 'NOK (current revision is %s)' % status.revision
-    print '\t%s' % status_msg
+    print('\t%s' % status_msg)
 
 
 def _parse_alembic_current_output(output):

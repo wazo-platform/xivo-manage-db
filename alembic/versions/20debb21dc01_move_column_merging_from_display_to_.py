@@ -40,7 +40,7 @@ def _get_display_config(display):
 
 def _find_formatted_fields(config):
     formatted_fields = []
-    for pos, (name, _, _, field) in config.iteritems():
+    for pos, (name, _, _, field) in config.items():
         if field and not field.isalpha():
             formatted_fields.append((name, pos, field))
     return formatted_fields

@@ -29,7 +29,7 @@ def upgrade():
         id_, config = row.id, _get_display_config(row)
         new_config = {}
         number_count = 0
-        for key, value in config.iteritems():
+        for key, value in config.items():
             new_value = list(value)
 
             # the type phone did not do anything but it was in the old default display

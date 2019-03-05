@@ -40,13 +40,13 @@ def upgrade():
 
 def downgrade():
     op.execute(usersip_table.update().
-               where(usersip_table.c.directmedia == u'outgoing').
+               where(usersip_table.c.directmedia == 'outgoing').
                values(directmedia='no'))
 
     op.execute(staticsip_table.update().
                where(sa.sql.and_(
-                   staticsip_table.c.var_name == u'directmedia',
-                   staticsip_table.c.var_val == u'outgoing')).
+                   staticsip_table.c.var_name == 'directmedia',
+                   staticsip_table.c.var_val == 'outgoing')).
                values(var_val='no'))
 
     op.drop_constraint('usersip_directmedia_check', 'usersip')

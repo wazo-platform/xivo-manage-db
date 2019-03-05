@@ -100,7 +100,7 @@ def insert_english_presences(group_id, presences):
         id_, name = insert_presence(group_id, *presence)
         presence_map[name] = id_
 
-    for name, availability in available_presence_map.iteritems():
+    for name, availability in available_presence_map.items():
         presence_id = presence_map[name]
         avail_ids = ','.join([str(presence_map[avail_name]) for avail_name in availability])
         update_presence(presence_id, avail_ids)

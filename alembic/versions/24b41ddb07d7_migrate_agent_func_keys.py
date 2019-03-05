@@ -288,7 +288,7 @@ def get_old_func_keys():
 
 def create_old_func_keys(row):
     supervision = 1 if row.blf else 0
-    reversed_actions = {value: key for key, value in ACTIONS.iteritems()}
+    reversed_actions = {value: key for key, value in ACTIONS.items()}
 
     row = {'iduserfeatures': row.user_id,
            'fknum': row.position,

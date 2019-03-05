@@ -6,9 +6,9 @@ WORKDIR /usr/src/xivo-manage-db
 
 RUN true \
     && apt-get update \
-    && apt-get install -yq python-yaml git \
-    && pip install -r requirements.txt \
-    && python setup.py install \
+    && apt-get install -yq python3-yaml git \
+    && pip3 install -r requirements.txt \
+    && python3 setup.py install \
     && xivo-configure-uuid \
     && mkdir /usr/share/xivo-manage-db /usr/lib/xivo-manage-db \
     && cp -a alembic alembic.ini populate /usr/share/xivo-manage-db \

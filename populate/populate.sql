@@ -292,6 +292,9 @@ INSERT INTO "extensions" VALUES (DEFAULT,1,'xivo-features','_*92.','extenfeature
 INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*96.','extenfeatures','vmuserslt');
 INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*11.','extenfeatures','paging');
 INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','*40','extenfeatures','cctoggle');
+INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*50.','extenfeatures','groupmembertoggle');
+INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*51.','extenfeatures','groupmemberjoin');
+INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*52.','extenfeatures','groupmemberleave');
 
 
 INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','parkext','700');
@@ -342,7 +345,8 @@ INSERT INTO "func_key_destination_type" (id, name) VALUES (1, 'user'),
                                                           (9, 'paging'),
                                                           (10, 'custom'),
                                                           (11, 'agent'),
-                                                          (12, 'bsfilter');
+                                                          (12, 'bsfilter')
+                                                          (13, 'groupmember');
 
 
 INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);

@@ -345,7 +345,7 @@ INSERT INTO "func_key_destination_type" (id, name) VALUES (1, 'user'),
                                                           (9, 'paging'),
                                                           (10, 'custom'),
                                                           (11, 'agent'),
-                                                          (12, 'bsfilter')
+                                                          (12, 'bsfilter'),
                                                           (13, 'groupmember');
 
 

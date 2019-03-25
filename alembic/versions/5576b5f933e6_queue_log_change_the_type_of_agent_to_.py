@@ -19,4 +19,4 @@ def upgrade():
 
 
 def downgrade():
-    pass
+    op.alter_column('queue_log', 'agent', nullable=False, server_default='', type_=sa.String(50))

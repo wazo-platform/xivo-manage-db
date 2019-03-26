@@ -1,7 +1,7 @@
 """queue add tenant_uuid
 
 Revision ID: a3b4e1bf633b
-Revises: 5576b5f933e6
+Revises: 12f9880ae872
 
 """
 
@@ -11,7 +11,7 @@ import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 revision = 'a3b4e1bf633b'
-down_revision = '5576b5f933e6'
+down_revision = '12f9880ae872'
 
 
 TABLE = 'queuefeatures'

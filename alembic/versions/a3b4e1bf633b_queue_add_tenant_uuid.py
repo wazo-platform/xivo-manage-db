@@ -32,9 +32,9 @@ def associate_tenants():
         op.execute(query)
 
 
-def remove_no_contexts():
-    tbl = sa.sql.table(TABLE, sa.sql.column('context'))
-    query = tbl.delete().where(tbl.c.context == None)
+def remove_no_tenants():
+    tbl = sa.sql.table(TABLE, sa.sql.column('tenant_uuid'))
+    query = tbl.delete().where(tbl.c.tenant_uuid == None)
     op.execute(query)
 
 
@@ -48,7 +48,7 @@ def upgrade():
             nullable=True),
     )
     associate_tenants()
-    remove_no_contexts()
+    remove_no_tenants()
     op.alter_column(TABLE, 'tenant_uuid', nullable=False)
 
 

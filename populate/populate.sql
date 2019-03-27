@@ -910,7 +910,7 @@ INSERT INTO "mail" VALUES (DEFAULT,'','example.wazo.community','','','');
 INSERT INTO "monitoring" VALUES (DEFAULT,0,NULL,NULL,NULL);
 
 
-INSERT INTO "provisioning" VALUES(DEFAULT, '', '127.0.0.1', 'admin', 'admin', 0, 8666, 8667, 0, 0);
+INSERT INTO "provisioning" VALUES(DEFAULT, '', '127.0.0.1', 0, 8666, 8667);
 
 /* The UUID "populate-uuid" will be replaced by pg-populate-db */
 /* The version is bumped automatically during the release process */

@@ -14,12 +14,6 @@ down_revision = 'a3b4e1bf633b'
 
 TABLE = 'provisioning'
 
-provisioning_table = sa.sql.table(
-    TABLE,
-    sa.sql.column('username'),
-    sa.sql.column('password'),
-)
-
 
 def upgrade():
     op.drop_column(TABLE, 'username')

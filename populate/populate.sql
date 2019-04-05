@@ -539,6 +539,11 @@ INSERT INTO "asterisk_file_variable" (key, value, asterisk_file_section_id) VALU
                                                                                                           WHERE name = 'general'
                                                                                                           AND asterisk_file_id = (SELECT id FROM asterisk_file WHERE name = 'rtp.conf')));
 INSERT INTO "asterisk_file_section" (name, priority, asterisk_file_id) VALUES ('ice_host_candidates', NULL, (SELECT id FROM asterisk_file WHERE name = 'rtp.conf'));
+INSERT INTO "asterisk_file" (name) VALUES ('hep.conf');
+INSERT INTO "asterisk_file_section" (name, priority, asterisk_file_id) VALUES ('general', 0, (SELECT id FROM asterisk_file WHERE name = 'hep.conf'));
+INSERT INTO "asterisk_file_variable" (key, value, asterisk_file_section_id) VALUES ('enabled', '0', (SELECT id FROM asterisk_file_section
+                                                                                                          WHERE name = 'general'
+                                                                                                          AND asterisk_file_id = (SELECT id FROM asterisk_file WHERE name = 'hep.conf')));
 
 
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','bindport',5060);

@@ -6,7 +6,7 @@ Revises: 87b36150b613
 """
 
 from alembic import op
-import sqlalchemy as sa
+from sqlalchemy import sql
 
 
 # revision identifiers, used by Alembic.

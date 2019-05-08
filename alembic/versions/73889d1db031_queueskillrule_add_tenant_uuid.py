@@ -1,7 +1,7 @@
 """queueskillrule add tenant_uuid
 
 Revision ID: 73889d1db031
-Revises: 0aeb61795700
+Revises: eaffdf929dd1
 
 """
 
@@ -11,7 +11,7 @@ import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 revision = '73889d1db031'
-down_revision = '0aeb61795700'
+down_revision = 'eaffdf929dd1'
 
 queueskillrule_tbl = sa.sql.table('queueskillrule', sa.sql.column('tenant_uuid'))
 queuefeatures_tbl = sa.sql.table('queuefeatures', sa.sql.column('tenant_uuid'))

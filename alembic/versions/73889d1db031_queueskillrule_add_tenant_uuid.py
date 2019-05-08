@@ -13,13 +13,7 @@ import sqlalchemy as sa
 revision = '73889d1db031'
 down_revision = '0aeb61795700'
 
-queueskillrule_tbl = sa.sql.table(
-    'queueskillrule',
-    sa.sql.column('id'),
-    sa.sql.column('name'),
-    sa.sql.column('rule'),
-    sa.sql.column('tenant_uuid'),
-)
+queueskillrule_tbl = sa.sql.table('queueskillrule')
 
 
 def delete_all():

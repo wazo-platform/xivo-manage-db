@@ -3,7 +3,7 @@ MAINTAINER Wazo Maintainers <dev@wazo.community>
 
 ENV DEBIAN_FRONTEND=noninteractive \
     LC_ALL=C.UTF-8 \
-    BUILD_PACKAGES="python3-pip python3-dev libpq-dev alembic python3-alembic python3-psycopg2 python3-sqlalchemy" \
+    BUILD_PACKAGES="python3-pip python3-dev libpq-dev alembic python3-alembic python3-psycopg2 python3-sqlalchemy python3-sqlalchemy-utils" \
     PYTHON_PACKAGES="https://github.com/wazo-pbx/xivo-lib-python/archive/master.zip" \
     PG_PACKAGES="postgresql-9.6 postgresql-contrib-9.6 postgresql-client"
 

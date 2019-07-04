@@ -19,7 +19,7 @@ def upgrade():
         'linefeatures',
         sa.Column(
             'application_uuid',
-            sa.String,
+            sa.String(36),
             sa.ForeignKey('application.uuid', ondelete='SET NULL'),
         )
     )

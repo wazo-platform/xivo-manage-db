@@ -13,18 +13,30 @@ import sqlalchemy as sa
 revision = '68507181de97'
 down_revision = '3462497a56f8'
 
-tenant_table = sa.sql.table('tenant', sa.sql.column('uuid'))
+
+def find_default_tenant_uuid():
+    entity_table = sa.sql.table(
+        'entity',
+        sa.sql.column('id'),
+        sa.sql.column('tenant_uuid'),
+    )
+    query = sa.sql.select([entity_table.c.tenant_uuid]).order_by(entity_table.c.id)
+    for row in op.get_bind().execute(query):
+        return row.tenant_uuid
 
 
-def _create_tenant():
-    insert_query = tenant_table.insert().returning(tenant_table.c.uuid)
-    return op.get_bind().execute(insert_query).scalar()
+def associate_tenants():
+    tbl = sa.sql.table('userfeatures', sa.sql.column('id'), sa.sql.column('tenant_uuid'))
+    sql = "SELECT userfeatures.id, entity.tenant_uuid FROM userfeatures, entity WHERE entity.id=userfeatures.entityid"
+    userfeatures_to_tenant = op.get_bind().execute(sa.sql.text(sql))
+
+    for userfeatures_id, tenant_uuid in userfeatures_to_tenant:
+        query = tbl.update().where(tbl.c.id == userfeatures_id).values(tenant_uuid=tenant_uuid)
+        op.execute(query)
 
 
 def upgrade():
-    # The dummy tenant is to be able to add a foreign key on the userfeatures table.
-    # The real relationship will be added as a post-start script.
-    dummy_tenant_uuid = _create_tenant()
+    default_tenant = find_default_tenant_uuid()
     op.add_column(
         'userfeatures',
         sa.Column(
@@ -32,10 +44,10 @@ def upgrade():
             sa.String(36),
             sa.ForeignKey('tenant.uuid'),
             nullable=False,
-            server_default=dummy_tenant_uuid,
+            server_default=default_tenant,
         ),
     )
-
+    associate_tenants()
     op.alter_column('userfeatures', 'tenant_uuid', server_default=None)
 
 

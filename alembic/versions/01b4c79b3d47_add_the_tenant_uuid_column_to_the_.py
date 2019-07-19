@@ -21,22 +21,30 @@ def _create_tenant():
     return op.get_bind().execute(insert_query).scalar()
 
 
+def associate_tenants():
+    tbl = sa.sql.table('entity', sa.sql.column('id'), sa.sql.column('tenant_uuid'))
+    sql = "SELECT entity.id FROM entity"
+    entities = op.get_bind().execute(sa.sql.text(sql))
+
+    for entity in entities:
+        # The real wazo-auth tenant will be created as a post-start script.
+        tenant_uuid = _create_tenant()
+        query = tbl.update().where(tbl.c.id == entity.id).values(tenant_uuid=tenant_uuid)
+        op.execute(query)
+
+
 def upgrade():
-    # The dummy tenant is to be able to add a foreign key on the entity table.
-    # The real relationship will be added as a post-start script.
-    dummy_tenant_uuid = _create_tenant()
     op.add_column(
         'entity',
         sa.Column(
             'tenant_uuid',
             sa.String(36),
             sa.ForeignKey('tenant.uuid'),
-            nullable=False,
-            server_default=dummy_tenant_uuid,
+            nullable=True,
         ),
     )
-
-    op.alter_column('entity', 'tenant_uuid', server_default=None)
+    associate_tenants()
+    op.alter_column('entity', 'tenant_uuid', nullable=False)
 
 
 def downgrade():

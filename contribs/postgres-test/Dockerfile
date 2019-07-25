@@ -15,7 +15,12 @@ RUN \
     && sed -i 's/#fsync.*/fsync = off/g' $PG_CONF \
     && pg_start \
     && sudo -u postgres psql asterisk < /usr/src/initdb.sql \
+    && cd /usr/share/xivo-manage-db \
+    && alembic -c alembic.ini branches \
+    && alembic -c alembic.ini show head \
     && xivo-update-db \
+    && alembic -c alembic.ini branches \
+    && alembic -c alembic.ini show head \
     && sudo -u postgres psql asterisk -c "CREATE DATABASE xivotemplate TEMPLATE asterisk;" \
     && pg_stop \
     && chmod +x /usr/local/bin/gosu

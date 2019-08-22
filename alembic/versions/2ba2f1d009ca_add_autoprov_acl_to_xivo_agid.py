@@ -11,7 +11,7 @@ down_revision = '2b0f5ee268c4'
 
 from alembic import op
 from sqlalchemy import sql
-from sqlalchemy.dialects.postgres import ARRAY, VARCHAR
+from sqlalchemy.dialects.postgresql import ARRAY, VARCHAR
 
 
 NEW_ACLS = ['confd.devices.*.autoprov.read']

@@ -11,7 +11,7 @@ down_revision = '6aead6a54bbb'
 
 from alembic import op
 from sqlalchemy import sql
-from sqlalchemy.dialects.postgres import ARRAY, VARCHAR
+from sqlalchemy.dialects.postgresql import ARRAY, VARCHAR
 
 webservice = sql.table('accesswebservice',
                        sql.column('id'),

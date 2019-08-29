@@ -738,6 +738,6 @@ INSERT INTO "provisioning" VALUES(DEFAULT, '', '127.0.0.1', 0, 8666, 8667);
 
 /* The UUID "populate-uuid" will be replaced by pg-populate-db */
 /* The version is bumped automatically during the release process */
-INSERT INTO "infos" VALUES ('populate-uuid', '19.13');
+INSERT INTO "infos" VALUES ('populate-uuid', '19.12');
 
 COMMIT;

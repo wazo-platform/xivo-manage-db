@@ -7,7 +7,7 @@ Revises: 52b66f888125
 
 from alembic import op
 from sqlalchemy import sql
-from sqlalchemy.dialects.postgres import ARRAY, VARCHAR
+from sqlalchemy.dialects.postgresql import ARRAY, VARCHAR
 
 # revision identifiers, used by Alembic.
 revision = '2984e5ede175'

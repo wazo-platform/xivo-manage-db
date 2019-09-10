@@ -1,7 +1,7 @@
 #!/bin/bash
 
-PG_CTL="sudo -u postgres /usr/lib/postgresql/9.6/bin/pg_ctl -D /var/lib/postgresql/9.6/main"
-PG_CONF="/etc/postgresql/9.6/main/postgresql.conf"
+PG_CTL="sudo -u postgres /usr/lib/postgresql/11/bin/pg_ctl -D /var/lib/postgresql/11/main"
+PG_CONF="/etc/postgresql/11/main/postgresql.conf"
 SCRIPTS="/pg-init-db"
 
 if [ "$1" != "postgres" ]; then
@@ -18,6 +18,6 @@ if [ "$(ls -A $SCRIPTS)" ]; then
 fi
 
 exec gosu postgres \
-    /usr/lib/postgresql/9.6/bin/postgres \
-    -D /var/lib/postgresql/9.6/main \
-    --config-file=/etc/postgresql/9.6/main/postgresql.conf
+    /usr/lib/postgresql/11/bin/postgres \
+    -D /var/lib/postgresql/11/main \
+    --config-file=/etc/postgresql/11/main/postgresql.conf

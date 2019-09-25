@@ -43,7 +43,7 @@ INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','*48378','extenfeatur
 INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','*27','extenfeatures','incallfilter');
 INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','*10','extenfeatures','phonestatus');
 INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*735.','extenfeatures','phoneprogfunckey');
-INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*8.','extenfeatures','pickup');
+INSERT INTO "extensions" VALUES (DEFAULT,1,'xivo-features','_*8.','extenfeatures','pickup');
 INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','*9','extenfeatures','recsnd');
 INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*99.','extenfeatures','vmboxmsgslt');
 INSERT INTO "extensions" VALUES (DEFAULT,1,'xivo-features','_*93.','extenfeatures','vmboxpurgeslt');

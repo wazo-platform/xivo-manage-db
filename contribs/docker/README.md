@@ -14,7 +14,7 @@ To install docker on Linux :
 
 To build the image, simply invoke
 
-    docker build -t xivo-manage-db github.com/wazo-pbx/xivo-manage-db
+    docker build -t xivo-manage-db github.com/wazo-platform/xivo-manage-db
 
 Or directly in the sources in contribs/docker
 

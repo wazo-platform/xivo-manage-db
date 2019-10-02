@@ -12,63 +12,6 @@ INSERT INTO "contexttype" VALUES(DEFAULT, 'services', 0, 0, '');
 INSERT INTO "contexttype" VALUES(DEFAULT, 'others', 0, 0, '');
 
 
-INSERT INTO "cticontexts" VALUES(DEFAULT,'default','internal','Display','Contexte par défaut',1);
-INSERT INTO "cticontexts" VALUES(DEFAULT, '__switchboard_directory', '', 'switchboard', '', 1);
-
-
-INSERT INTO "directories" (
-  "uri",
-  "dirtype",
-  "name",
-  "description",
-  "xivo_username",
-  "xivo_password",
-  "auth_key_file",
-  "auth_backend",
-  "auth_verify_certificate",
-  "auth_custom_ca_path",
-  "auth_host",
-  "auth_port",
-  "xivo_verify_certificate",
-  "xivo_custom_ca_path"
-) VALUES (
-  'https://localhost:9486',
-  'wazo',
-  'wazo',
-  'wazo internal users',
-  'wazo-dird-wazo-backend',
-  NULL,
-  '/var/lib/wazo-auth-keys/wazo-dird-wazo-backend-key.yml',
-  'xivo_service',
-  true,
-  '/usr/share/xivo-certs/server.crt',
-  'localhost',
-  9497,
-  true,
-  '/usr/share/xivo-certs/server.crt'
-);
-
-
-INSERT INTO "ctidirectories" ("name", "match_direct", "match_reverse", "description", "deletable", "directory_id")
-        VALUES('internal',
-               '["firstname","lastname"]',
-               '',
-               'Répertoire Wazo Interne',
-               1,
-               (SELECT "id" FROM "directories" WHERE "name" = 'wazo'));
-
-
-INSERT INTO "ctidirectoryfields" VALUES(1, 'name', '{firstname} {lastname}');
-INSERT INTO "ctidirectoryfields" VALUES(1, 'display_name', '{firstname} {lastname}');
-INSERT INTO "ctidirectoryfields" VALUES(1, 'phone', '{exten}');
-INSERT INTO "ctidirectoryfields" VALUES(1, 'phone_mobile', '{mobile_phone_number}');
-INSERT INTO "ctidirectoryfields" VALUES(1, 'voicemail', '{voicemail_number}');
-
-
-INSERT INTO "ctidisplays" VALUES(DEFAULT,'Display','{"10": [ "Nom","name","","name" ],"20": [ "Numéro","number","","phone" ], "30": [ "Mobile","callable","","phone_mobile" ], "40": ["Boîte vocale", "voicemail", "", "voicemail"], "50": ["Favoris", "favorite", "", "favorite"], "60": ["E-mail", "email", "", "email"], "70": ["Personnel", "personal", "", ""]}',1,'Affichage par défaut');
-INSERT INTO "ctidisplays" VALUES(DEFAULT, 'switchboard', '{ "10": [ "", "status", "", ""],"20": [ "Name", "name", "", "name"],"30": [ "Number", "number_office", "", "phone"]}', 1, '');
-
-
 INSERT INTO "ctimain" VALUES(DEFAULT, 1, '', '', 0, 1);
 
 

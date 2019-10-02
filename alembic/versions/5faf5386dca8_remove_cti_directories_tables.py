@@ -22,6 +22,7 @@ def upgrade():
     op.drop_table('cticontexts')
     op.drop_table('ctidirectoryfields')
     op.drop_table('ctidirectories')
+    op.drop_table('ctireversedirectories')
     op.drop_table('directories')
     op.drop_table('ldapfilter')
     op.drop_table('ldapserver')
@@ -91,6 +92,11 @@ def downgrade():
         sa.Column('description', sa.String(255)),
         sa.Column('deletable', sa.Integer),
         sa.Column('directory_id', sa.Integer, sa.ForeignKey('directories.id', ondelete='CASCADE')),
+    )
+    op.create_table(
+        'ctireversedirectories',
+        sa.Column('id', sa.Integer, primary_key=True),
+        sa.Column('directories', sa.Text),
     )
     op.create_table(
         'cticontexts',

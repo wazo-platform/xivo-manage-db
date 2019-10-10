@@ -4,5 +4,5 @@ ENV POSTGRES_USER asterisk
 ENV POSTGRES_PASSWORD proformatique
 ENV POSTGRES_DB asterisk
 
-VOLUME /var/run/postgresql/
+VOLUME /run/postgresql/
 EXPOSE 5432

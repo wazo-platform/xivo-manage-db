@@ -17,8 +17,8 @@ RUN true \
     && apt-get -y install $PG_PACKAGES \
     && echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/11/main/pg_hba.conf \
     && echo "listen_addresses='*'" >> /etc/postgresql/11/main/postgresql.conf \
-    && mkdir -p /var/run/postgresql/11-main.pg_stat_tmp \
-    && chown -R postgres:postgres /var/run/postgresql \
+    && mkdir -p /run/postgresql/11-main.pg_stat_tmp \
+    && chown -R postgres:postgres /run/postgresql \
     && apt-get -y install $BUILD_PACKAGES \
     && pip3 install $PYTHON_PACKAGES \
     && true

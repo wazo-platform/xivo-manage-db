@@ -1,7 +1,7 @@
 """remove phonebook enums
 
 Revision ID: 8691b32cf44e
-Revises: c3ecaf2f9e78
+Revises: 66453e75a1fd
 
 """
 
@@ -11,7 +11,7 @@ import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 revision = '8691b32cf44e'
-down_revision = 'c3ecaf2f9e78'
+down_revision = '66453e75a1fd'
 
 phonebook_title = sa.Enum('mr', 'mrs', 'ms', name='phonebook_title')
 phonebookaddress_type = sa.Enum('home', 'office', 'other', name='phonebookaddress_type')

@@ -22,7 +22,7 @@ old_options = (
     'auto_force_rport',
     'auto_comedia',
 )
-new_options = sorted(old_options + ('auto_force_rport,auto_comedia',))
+new_options = old_options + ('auto_force_rport,auto_comedia',)
 
 new_type = sa.Enum(*new_options, name='usersip_nat')
 old_type = sa.Enum(*old_options, name='usersip_nat')

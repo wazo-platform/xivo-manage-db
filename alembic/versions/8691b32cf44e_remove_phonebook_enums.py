@@ -19,9 +19,9 @@ phonebooknumber_type = sa.Enum('home', 'office', 'mobile', 'fax', 'other', name=
 
 
 def upgrade():
-    phonebook_title.drop(op.get_bind())
-    phonebookaddress_type.drop(op.get_bind())
-    phonebooknumber_type.drop(op.get_bind())
+    phonebook_title.drop(op.get_bind(), checkfirst=True)
+    phonebookaddress_type.drop(op.get_bind(), checkfirst=True)
+    phonebooknumber_type.drop(op.get_bind(), checkfirst=True)
 
 
 def downgrade():

@@ -349,7 +349,7 @@ INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','t1min',500);
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','relaxdtmf','no');
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','rfc2833compensate','no');
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','compactheaders','no');
-INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','rtptimeout',0);
+INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','rtptimeout',7200);
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','rtpholdtimeout',0);
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','rtpkeepalive',0);
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','directrtpsetup','no');

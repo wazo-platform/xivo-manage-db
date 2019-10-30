@@ -1,5 +1,5 @@
 
-# Copyright 2018 The Wazo Authors  (see the AUTHORS file)
+# Copyright 2018-2019 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import os
@@ -14,7 +14,8 @@ config = context.config
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
-fileConfig(config.config_file_name)
+if config.get_main_option('configure_logging', 'true') == 'true':
+    fileConfig(config.config_file_name)
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:

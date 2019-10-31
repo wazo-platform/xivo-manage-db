@@ -56,6 +56,9 @@ case "$1" in
             if [[ -z "${previous_version}" ]]; then
                 $psql_cmd -c 'create extension if not exists "uuid-ossp";' asterisk > /dev/null 2>&1
             fi
+            if dpkg --compare-versions "$previous_version" lt "19.17"; then
+                $psql_cmd -c 'create extension if not exists "unaccent";' asterisk > /dev/null 2>&1
+            fi
 
             xivo-update-db
         fi

@@ -1,4 +1,4 @@
-# Copyright 2014-2018 The Wazo Authors  (see the AUTHORS file)
+# Copyright 2014-2019 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import argparse
@@ -20,7 +20,7 @@ def _create_tables():
 
 def _enable_extensions(app_db_uri):
     logger.info('Enabling extensions...')
-    extensions = ['pgcrypto', 'uuid-ossp']
+    extensions = ['pgcrypto', 'uuid-ossp', 'unaccent']
     for extension in extensions:
         postgres.enable_extension(extension, app_db_uri)
 

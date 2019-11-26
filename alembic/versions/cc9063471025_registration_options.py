@@ -23,7 +23,7 @@ staticsip_table = sa.sql.table(
 )
 
 DEFAULTS = {
-    'auth_rejection_permanent': 'off',
+    'auth_rejection_permanent': 'no',
     'forbidden_retry_interval': 30,
     'fatal_retry_interval': 30,
 }

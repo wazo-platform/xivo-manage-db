@@ -360,7 +360,6 @@ INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','minexpiry',6
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','maxexpiry',3600);
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','defaultexpiry',120);
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','registertimeout',20);
-INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','registerattempts',0);
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','notifyringing','yes');
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','notifyhold','no');
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','allowtransfer','yes');
@@ -379,6 +378,10 @@ INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','qualify','no
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','useclientcode','no');
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','progressinband','never');
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','language','fr_FR');
+INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','auth_rejection_permanent','no');
+INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','forbidden_retry_interval',30);
+INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','fatal_retry_interval',30);
+INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','max_retries',10000);
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','mohinterpret','default');
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,1,'sip.conf','general','mohsuggest',NULL);
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','vmexten','*98');

@@ -3,6 +3,6 @@ https://github.com/wazo-platform/xivo-dao/archive/master.zip
 https://github.com/wazo-platform/wazo-uuid/archive/master.zip
 alembic==1.0.0
 psycopg2-binary
-pyyaml==3.13  # from xivo-lib-python
+pyyaml==5.1  # from xivo-lib-python
 sqlalchemy==1.2.18  # from xivo-dao
 unidecode==1.0.23

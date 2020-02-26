@@ -1,2 +1,7 @@
 *.pyc
 .tox
+.coverage
+coverage.xml
+nosetests.xml
+pycodestyle.txt
+pylint.txt

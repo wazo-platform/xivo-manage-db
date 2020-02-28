@@ -308,7 +308,9 @@ INSERT INTO "asterisk_file_variable" (key, value, asterisk_file_section_id) VALU
                                                                                                           AND asterisk_file_id = (SELECT id FROM asterisk_file WHERE name = 'hep.conf')));
 
 INSERT INTO "asterisk_file" (name) VALUES ('pjsip.conf');
-INSERT INTO "asterisk_file_section" (name, priority, asterisk_file_id) VALUES ('global', 0, (SELECT id FROM asterisk_file WHERE name = 'pjsip.conf'));
+INSERT INTO "asterisk_file_section" (name, priority, asterisk_file_id) VALUES
+  ('global', 0, (SELECT id FROM asterisk_file WHERE name = 'pjsip.conf')),
+  ('system', 0, (SELECT id FROM asterisk_file WHERE name = 'pjsip.conf'));
 INSERT INTO "asterisk_file_variable" (key, value, asterisk_file_section_id) VALUES
   ('user_agent', 'Wazo PBX', (SELECT id FROM asterisk_file_section WHERE name = 'global' AND asterisk_file_id = (SELECT id FROM asterisk_file WHERE name = 'pjsip.conf'))),
   ('endpoint_identifier_order', 'auth_username,username,ip', (SELECT id FROM asterisk_file_section WHERE name = 'global' AND asterisk_file_id = (SELECT id FROM asterisk_file WHERE name = 'pjsip.conf')));

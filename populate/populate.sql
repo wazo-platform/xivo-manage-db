@@ -206,6 +206,16 @@ INSERT INTO "moh" (uuid, name, mode, tenant_uuid) VALUES (
     (SELECT "uuid" FROM "tenant" LIMIT 1)
 );
 
+INSERT INTO "pjsip_transport" (name) VALUES
+  ('transport-udp'),
+  ('transport-wss');
+INSERT INTO "pjsip_transport_options" (key, value, pjsip_transport_uuid) VALUES
+  ('protocol', 'udp', (SELECT uuid FROM pjsip_transport WHERE name = 'transport-udp')),
+  ('bind', '0.0.0.0:5060', (SELECT uuid FROM pjsip_transport WHERE name = 'transport-udp'));
+INSERT INTO "pjsip_transport_options" (key, value, pjsip_transport_uuid) VALUES
+  ('protocol', 'wss', (SELECT uuid FROM pjsip_transport WHERE name = 'transport-wss')),
+  ('bind', '0.0.0.0:5060', (SELECT uuid FROM pjsip_transport WHERE name = 'transport-wss'));
+
 INSERT INTO "staticiax" VALUES (DEFAULT,0,0,0,'iax.conf','general','bindport',4569);
 INSERT INTO "staticiax" VALUES (DEFAULT,0,0,0,'iax.conf','general','bindaddr','0.0.0.0');
 INSERT INTO "staticiax" VALUES (DEFAULT,0,0,0,'iax.conf','general','iaxthreadcount',10);
@@ -450,7 +460,7 @@ INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','domainsasrea
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','textsupport',NULL);
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','videosupport',NULL);
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','auth_options_requests','no');
-INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','transport','udp');
+INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','transport','transport-udp');
 INSERT INTO "staticsip" VALUES (DEFAULT,0,0,0,'sip.conf','general','prematuremedia','no');
 
 

@@ -209,10 +209,10 @@ INSERT INTO "moh" (uuid, name, mode, tenant_uuid) VALUES (
 INSERT INTO "pjsip_transport" (name) VALUES
   ('transport-udp'),
   ('transport-wss');
-INSERT INTO "pjsip_transport_options" (key, value, pjsip_transport_uuid) VALUES
+INSERT INTO "pjsip_transport_option" (key, value, pjsip_transport_uuid) VALUES
   ('protocol', 'udp', (SELECT uuid FROM pjsip_transport WHERE name = 'transport-udp')),
   ('bind', '0.0.0.0:5060', (SELECT uuid FROM pjsip_transport WHERE name = 'transport-udp'));
-INSERT INTO "pjsip_transport_options" (key, value, pjsip_transport_uuid) VALUES
+INSERT INTO "pjsip_transport_option" (key, value, pjsip_transport_uuid) VALUES
   ('protocol', 'wss', (SELECT uuid FROM pjsip_transport WHERE name = 'transport-wss')),
   ('bind', '0.0.0.0:5060', (SELECT uuid FROM pjsip_transport WHERE name = 'transport-wss'));
 

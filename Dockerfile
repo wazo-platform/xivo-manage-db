@@ -5,8 +5,8 @@ ADD . /usr/src/xivo-manage-db
 WORKDIR /usr/src/xivo-manage-db
 
 RUN true \
-    && apt-get update \
-    && apt-get install -yq python3-yaml \
+    && apt-get -q update \
+    && apt-get -yq install python3-yaml \
     && pip3 install -r requirements.txt \
     && python3 setup.py install \
     && xivo-configure-uuid \
@@ -20,7 +20,7 @@ RUN true \
     && alembic -c alembic.ini branches \
     && alembic -c alembic.ini show head \
     && pg_stop \
-    && apt-get autoremove -y \
+    && apt-get -y autoremove \
     && apt-get clean \
     && rm -rf /usr/src/xivo-manage-db /var/lib/apt/lists/*
 USER postgres

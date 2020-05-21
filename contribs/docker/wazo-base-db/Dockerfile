@@ -9,17 +9,17 @@ ENV PG_PACKAGES="postgresql-11 postgresql-contrib-11 postgresql-client"
 
 #Locales must be configured before installing postgres, otherwise the database encoding defaults to SQL_ASCII
 RUN true \
-    && apt-get update \
-    && apt-get install -y sudo locales \
+    && apt-get -q update \
+    && apt-get -yq install sudo locales \
     && dpkg-reconfigure locales \
     && locale-gen C.UTF-8  \
     && /usr/sbin/update-locale LANG=C.UTF-8 \
-    && apt-get -y install $PG_PACKAGES \
+    && apt-get -yq install $PG_PACKAGES \
     && echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/11/main/pg_hba.conf \
     && echo "listen_addresses='*'" >> /etc/postgresql/11/main/postgresql.conf \
     && mkdir -p /run/postgresql/11-main.pg_stat_tmp \
     && chown -R postgres:postgres /run/postgresql \
-    && apt-get -y install $BUILD_PACKAGES \
+    && apt-get -yq install $BUILD_PACKAGES \
     && pip3 install $PYTHON_PACKAGES \
     && true
 

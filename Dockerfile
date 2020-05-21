@@ -6,7 +6,7 @@ WORKDIR /usr/src/xivo-manage-db
 
 RUN true \
     && apt-get update \
-    && apt-get install -yq python3-yaml git \
+    && apt-get install -yq python3-yaml \
     && pip3 install -r requirements.txt \
     && python3 setup.py install \
     && xivo-configure-uuid \

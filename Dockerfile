@@ -5,10 +5,8 @@ COPY . /usr/src/xivo-manage-db
 WORKDIR /usr/src/xivo-manage-db
 
 RUN true \
-    && apt-get -q update \
-    && apt-get -yq install python3-yaml \
-    && pip3 install -r requirements.txt \
-    && python3 setup.py install \
+    && pip install -r requirements.txt \
+    && python setup.py install \
     && xivo-configure-uuid \
     && mkdir /usr/share/xivo-manage-db /usr/lib/xivo-manage-db \
     && cp -a alembic alembic.ini populate /usr/share/xivo-manage-db \

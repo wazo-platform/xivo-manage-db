@@ -269,6 +269,7 @@ linefeatures_tbl = sa.sql.table(
 )
 static_sip_tbl = sa.sql.table(
     'staticsip',
+    sa.sql.column('id'),
     sa.sql.column('var_metric'),
     sa.sql.column('commented'),
     sa.sql.column('filename'),
@@ -292,6 +293,8 @@ trunkfeatures_tbl = sa.sql.table(
     'trunkfeatures',
     sa.sql.column('endpoint_sip_id'),
     sa.sql.column('endpoint_sip_uuid'),
+    sa.sql.column('twilio_incoming'),
+    sa.sql.column('register_sip_id'),
 )
 user_sip_tbl = sa.sql.table(
     'usersip',
@@ -380,12 +383,164 @@ user_sip_tbl = sa.sql.table(
 )
 
 
-class UserSIPLine(object):
-    def __init__(self, id, name, tenant_uuid, options):
-        self.id = id
-        self.name = name
-        self.tenant_uuid = tenant_uuid
-        self.options = options
+# class heavily inspired from the sip_to_pjsip.py in the Asterisk repository
+# https://raw.githubusercontent.com/asterisk/asterisk/master/contrib/scripts/sip_to_pjsip/sip_to_pjsip.py
+
+
+class Registration(object):
+    """
+    Class for parsing and storing information in a register line in sip.conf.
+    """
+    def __init__(self, line, configured_transports):
+        self._transport_names = list(configured_transports.keys())
+
+        # Find a "default" transport as a fallback
+        for transport_name in self._transport_names:
+            # Start with a udp transport
+            if 'udp' in transport_name:
+                self._transport = transport_name
+                break
+        else:
+            # The first transport as a fallback :(
+            self._transport = self._transport_names[0].name
+
+        self.parse(line)
+
+        self.section = 'reg_' + self.user + '@' + self.host
+        self.registration_fields = []
+
+        self.auth_section = 'auth_reg_' + self.user + '@' + self.host
+        self.auth_fields = []
+
+        self._generate()
+
+    def parse(self, line):
+        """
+        Initial parsing routine for register lines in sip.conf.
+
+        This splits the line into the part before the host, and the part
+        after the '@' symbol. These two parts are then passed to their
+        own parsing routines
+        """
+
+        # register =>
+        # [peer?][transport://]user[@domain][:secret[:authuser]]@host[:port][/extension][~expiry]
+
+        prehost, at, host_part = line.rpartition('@')
+        if not prehost:
+            raise
+
+        self.parse_host_part(host_part)
+        self.parse_user_part(prehost)
+
+    def parse_host_part(self, host_part):
+        """
+        Parsing routine for the part after the final '@' in a register line.
+        The strategy is to use partition calls to peel away the data starting
+        from the right and working to the left.
+        """
+        pre_expiry, sep, expiry = host_part.partition('~')
+        pre_extension, sep, self.extension = pre_expiry.partition('/')
+        self.host, sep, self.port = pre_extension.partition(':')
+
+        self.expiry = expiry if expiry else '120'
+
+    def parse_user_part(self, user_part):
+        """
+        Parsing routine for the part before the final '@' in a register line.
+        The only mandatory part of this line is the user portion. The strategy
+        here is to start by using partition calls to remove everything to
+        the right of the user, then finish by using rpartition calls to remove
+        everything to the left of the user.
+        """
+        self.peer = ''
+        for transport in self._transport_names:
+            begin, _, end = user_part.partition('://')
+            self.peer, _, transport = begin.rpartition('?')
+            if not transport:
+                continue
+            if transport not in self._transport_names:
+                continue
+
+            self._transport = transport
+            user_part = end
+            break
+
+        colons = user_part.count(':')
+        if (colons == 3):
+            # :domainport:secret:authuser
+            pre_auth, _, port_auth = user_part.partition(':')
+            self.domainport, _, auth = port_auth.partition(':')
+            self.secret, _, self.authuser = auth.partition(':')
+        elif (colons == 2):
+            # :secret:authuser
+            pre_auth, _, auth = user_part.partition(':')
+            self.secret, _, self.authuser = auth.partition(':')
+        elif (colons == 1):
+            # :secret
+            pre_auth, _, self.secret = user_part.partition(':')
+        elif (colons == 0):
+            # No port, secret, or authuser
+            pre_auth = user_part
+        else:
+            # Invalid setting
+            raise Exception('Invalid SIP register')
+
+        self.user, _, self.domain = pre_auth.partition('@')
+
+    def _generate(self):
+        """
+        Write parsed registration data into a section in pjsip.conf
+
+        Most of the data in self will get written to a registration section.
+        However, there will also need to be an auth section created if a
+        secret or authuser is present.
+
+        General mapping of values:
+        A combination of self.host and self.port is server_uri
+        A combination of self.user, self.domain, and self.domainport is
+          client_uri
+        self.expiry is expiration
+        self.extension is contact_user
+        self._transport will map to one of the mapped transports
+        self.secret and self.authuser will result in a new auth section, and
+          outbound_auth will point to that section.
+        XXX self.peer really doesn't map to anything :(
+        """
+
+        if self.extension:
+            self.registration_fields.append(('contact_user', self.extension))
+
+        self.registration_fields.append(('expiration', self.expiry))
+        self.registration_fields.append(('transport', self._transport))
+
+        if hasattr(self, 'secret') and self.secret:
+            self.auth_fields.append(('password', self.secret))
+            self.auth_fields.append(('username', getattr(self, 'authuser', None) or self.user))
+            self.registration_fields.append(('outbound_auth', self.auth_section))
+
+        client_uri = "sip:%s@" % self.user
+        if self.domain:
+            client_uri += self.domain
+        else:
+            client_uri += self.host
+
+        if hasattr(self, 'domainport') and self.domainport:
+            client_uri += ":" + self.domainport
+        elif self.port:
+            client_uri += ":" + self.port
+        self.registration_fields.append(('client_uri', client_uri))
+
+        server_uri = "sip:%s" % self.host
+        if self.port:
+            server_uri += ":" + self.port
+        self.registration_fields.append(('server_uri', server_uri))
+
+
+class UserSIP(object):
+
+    twilio_incoming = False
+    registration = None
 
     def __repr__(self):
         return '{}({}, {}, {}, {})'.format(
@@ -397,7 +552,7 @@ class UserSIPLine(object):
         )
 
     @classmethod
-    def from_row(cls, row):
+    def extract_options(cls, row):
         options = [KV(key, value) for (key, value) in row.options]
         fields = [
             'type',
@@ -483,6 +638,42 @@ class UserSIPLine(object):
             if value:
                 options.append(KV(field, value))
 
+        return options
+
+
+class UserSIPTrunk(UserSIP):
+    def __init__(self, id, name, tenant_uuid, options, registration, twilio_incoming):
+        self.id = id
+        self.name = name
+        self.tenant_uuid = tenant_uuid
+        self.options = options
+        self.registration = registration
+        self.twilio_incoming = twilio_incoming
+
+    @classmethod
+    def from_row(cls, row, registers, transports):
+        options = cls.extract_options(row)
+        registration = None
+        twilio_incoming = False
+        if row.register_sip_id:
+            register_url = registers.get(row.register_sip_id)
+            if register_url:
+                registration = Registration(register_url, transports)
+        if row.twilio_incoming:
+            twilio_incoming = True
+        return cls(row.id, row.name, row.tenant_uuid, options, registration, twilio_incoming)
+
+
+class UserSIPLine(UserSIP):
+    def __init__(self, id, name, tenant_uuid, options):
+        self.id = id
+        self.name = name
+        self.tenant_uuid = tenant_uuid
+        self.options = options
+
+    @classmethod
+    def from_row(cls, row):
+        options = cls.extract_options(row)
         return cls(row.id, row.name, row.tenant_uuid, options)
 
 
@@ -537,6 +728,19 @@ def get_transports():
     query = sa.sql.select([transport_tbl.c.uuid, transport_tbl.c.name])
     rows = op.get_bind().execute(query)
     return {row.name: row.uuid for row in rows}
+
+
+def get_sip_registers():
+    query = sa.sql.select([
+        static_sip_tbl.c.id,
+        static_sip_tbl.c.var_val,
+    ]).where(sa.sql.and_(
+        static_sip_tbl.c.filename == 'sip.conf',
+        static_sip_tbl.c.category == 'general',
+        static_sip_tbl.c.var_name == 'register',
+        static_sip_tbl.c.commented == 0,
+    ))
+    return {row.id: row.var_val for row in op.get_bind().execute(query)}
 
 
 def find_wss_transport():
@@ -619,9 +823,9 @@ def create_trunk_config_body(static_sip):
     return body
 
 
-def create_twillio_config_body():
+def create_twilio_config_body():
     body = {
-        'display_name': 'Twillio Trunk',
+        'display_name': 'twilio Trunk',
         'template': True,
         'identify_section_options': [
             KV('match', '54.172.60.0'),
@@ -684,8 +888,6 @@ def insert_endpoint_config(
     tenant_uuid,
     body,
     parents=None,
-    # context=None,
-    # transport=None,
 ):
     aor_section_options = body.get('aor_section_options')
     auth_section_options = body.get('auth_section_options')
@@ -740,9 +942,17 @@ def insert_webrtc_config(tenant_uuid, parents, body):
     return insert_endpoint_config(tenant_uuid, body, parents)
 
 
-def insert_twillio_config(tenant_uuid, parents, body):
+def insert_trunk_config(tenant_uuid, parents, body):
     body.update({
-        'display_name': 'twillio_trunk',
+        'display_name': 'global_trunk',
+        'template': True,
+    })
+    return insert_endpoint_config(tenant_uuid, body, parents)
+
+
+def insert_twilio_config(tenant_uuid, parents, body):
+    body.update({
+        'display_name': 'twilio_trunk',
         'template': True,
     })
     return insert_endpoint_config(tenant_uuid, body, parents)
@@ -762,8 +972,21 @@ def list_existing_line_config(tenant_uuid):
     return result
 
 
-def list_existing_trunk_config(tenant_uuid):
-    return []
+def list_existing_trunk_config(tenant_uuid, registers, transports):
+    query = sa.sql.select([
+        user_sip_tbl,
+        trunkfeatures_tbl.c.twilio_incoming,
+        trunkfeatures_tbl.c.register_sip_id,
+    ]).where(sa.sql.and_(
+        user_sip_tbl.c.category == 'trunk',
+        user_sip_tbl.c.commented == 0,
+        user_sip_tbl.c.tenant_uuid == tenant_uuid,
+        user_sip_tbl.c.id == trunkfeatures_tbl.c.endpoint_sip_id,
+    ))
+    result = []
+    for row in op.get_bind().execute(query):
+        result.append(UserSIPTrunk.from_row(row, registers, transports))
+    return result
 
 
 def sip_to_pjsip(sip_config, transports, contexts):
@@ -795,6 +1018,11 @@ def sip_to_pjsip(sip_config, transports, contexts):
         elif kv.key == 'context':
             config['context_id'] = contexts.get(kv.value)
 
+    if sip_config.registration:
+        register_section_options = sip_config.registration.registration_fields
+        config['register_section_options'] = register_section_options
+        config['outbound_auth_section_options'] = sip_config.registration.auth_fields
+
     config.update({
         'aor_section_options': aor_option_accumulator.get_options(),
         'auth_section_options': auth_option_accumulator.get_options(),
@@ -810,6 +1038,10 @@ def is_webrtc(pjsip_config):
         if key == 'webrtc' and value == 'yes':
             return True
     return False
+
+
+def is_twilio(pjsip_config):
+    return pjsip_config.twilio_incoming is not None
 
 
 def parent_has_option(parents, section_name, key, value):
@@ -858,10 +1090,6 @@ def prune_pjsip_config(pjsip_config, parent_configs):
     return pjsip_config
 
 
-def insert_line_endpoint(tenant_uuid, parent_configs, pjsip_config):
-    return insert_endpoint_config(tenant_uuid, pjsip_config, parent_configs)
-
-
 def update_line_associations(tenant_uuid, endpoint_uuid, old_sip_id):
     op.execute(
         linefeatures_tbl.update().values(
@@ -884,20 +1112,28 @@ def configure_line(tenant_uuid, global_config, webrtc_config, sip_config, transp
     if is_webrtc(pjsip_config):
         parent_configs.append(webrtc_config)
     pruned_pjsip_config = prune_pjsip_config(pjsip_config, parent_configs)
-    endpoint = insert_line_endpoint(tenant_uuid, parent_configs, pruned_pjsip_config)
+    endpoint = insert_endpoint_config(tenant_uuid, pruned_pjsip_config, parent_configs)
     update_line_associations(tenant_uuid, endpoint['uuid'], sip_config.id)
 
 
-def configure_trunk(tenant_uuid, global_config, trunk_config):
-    pass
+def configure_trunk(tenant_uuid, base_trunk_config, twilio_config, trunk_config, transports, contexts):
+    pjsip_config = sip_to_pjsip(trunk_config, transports, contexts)
+    parent_configs = [base_trunk_config]
+    if is_twilio(trunk_config):
+        parent_configs.append(twilio_config)
+    pruned_pjsip_config = prune_pjsip_config(pjsip_config, parent_configs)
+    endpoint = insert_endpoint_config(tenant_uuid, pruned_pjsip_config, parent_configs)
+    update_trunk_associations(tenant_uuid, endpoint['uuid'], trunk_config.id)
 
 
 def configure_tenant(
     tenant_uuid,
     global_config_body,
     webrtc_config_body,
-    twillio_config_body,
+    twilio_config_body,
+    trunk_config_body,
     transports,
+    registers,
 ):
     contexts = get_contexts(tenant_uuid)
     global_config = insert_global_config(tenant_uuid, global_config_body)
@@ -906,19 +1142,24 @@ def configure_tenant(
         parents=[global_config],
         body=webrtc_config_body,
     )
-    twillio_config = insert_twillio_config(
+    base_trunk_config = insert_trunk_config(
         tenant_uuid,
         parents=[global_config],
-        body=twillio_config_body,
+        body=trunk_config_body,
+    )
+    twilio_config = insert_twilio_config(
+        tenant_uuid,
+        parents=[base_trunk_config],
+        body=twilio_config_body,
     )
 
     line_configs = list_existing_line_config(tenant_uuid)
     for line_config in line_configs:
         configure_line(tenant_uuid, global_config, webrtc_config, line_config, transports, contexts)
 
-    trunk_configs = list_existing_trunk_config(tenant_uuid)
+    trunk_configs = list_existing_trunk_config(tenant_uuid, registers, transports)
     for trunk_config in trunk_configs:
-        configure_trunk(tenant_uuid, global_config, twillio_config, trunk_config)
+        configure_trunk(tenant_uuid, base_trunk_config, twilio_config, trunk_config, transports, contexts)
 
 
 def remove_all_sip_endpoints():
@@ -929,10 +1170,11 @@ def upgrade():
     tenant_uuids = list_tenant_uuid()
     transports = get_transports()
     static_sip = get_static_sip()
+    registers = get_sip_registers()
 
     global_config_body = create_global_config_body(static_sip, transports)
     webrtc_config_body = create_webrtc_config_body()
-    twillio_config_body = create_twillio_config_body()
+    twilio_config_body = create_twilio_config_body()
     trunk_config_body = create_trunk_config_body(static_sip)
 
     for tenant_uuid in tenant_uuids:
@@ -940,8 +1182,10 @@ def upgrade():
             tenant_uuid,
             global_config_body,
             webrtc_config_body,
-            twillio_config_body,
+            twilio_config_body,
+            trunk_config_body,
             transports,
+            registers,
         )
 
 

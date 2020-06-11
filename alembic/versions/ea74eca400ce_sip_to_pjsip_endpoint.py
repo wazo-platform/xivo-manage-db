@@ -642,6 +642,9 @@ class UserSIP(object):
 
 
 class UserSIPTrunk(UserSIP):
+
+    category = 'trunk'
+
     def __init__(self, id, name, tenant_uuid, options, registration, twilio_incoming):
         self.id = id
         self.name = name
@@ -665,6 +668,9 @@ class UserSIPTrunk(UserSIP):
 
 
 class UserSIPLine(UserSIP):
+
+    category = 'line'
+
     def __init__(self, id, name, tenant_uuid, options):
         self.id = id
         self.name = name
@@ -684,7 +690,11 @@ class OptionAccumulator(object):
         self._accumulated = []
 
     def add_option(self, kv):
-        if kv.key in self._valid_options:
+        conversion_function_name = '_convert_{}'.format(kv.key)
+        if hasattr(self, conversion_function_name):
+            for name, value in getattr(self, conversion_function_name)(kv.value):
+                self._add_option_no_duplicate(KV(name, value))
+        elif kv.key in self._valid_options:
             self._add_option_no_duplicate(kv)
         elif kv.key in self._sip_to_pjsip:
             new_name = self._sip_to_pjsip[kv.key]
@@ -697,6 +707,91 @@ class OptionAccumulator(object):
 
     def get_options(self):
         return self._accumulated
+
+    @staticmethod
+    def _convert_directmedia(val):
+        if 'yes' in val:
+            yield 'direct_media', 'yes'
+        if 'update' in val:
+            yield 'direct_media_method', 'update'
+        if 'outgoing' in val:
+            yield 'direct_media_glare_mitigation', 'outgoing'
+        if 'nonat' in val:
+            yield 'disable_directed_media_on_nat', 'yes'
+        if val == 'no':
+            yield 'direct_media', 'no'
+
+    @staticmethod
+    def _convert_dtlsenable(val):
+        if val == 'yes':
+            yield 'media_encryption', 'dtls'
+
+    @staticmethod
+    def _convert_dtmfmode(val):
+        key = 'dtmf_mode'
+        if val == 'rfc2833':
+            yield key, 'rfc4733'
+        elif val in ('inband', 'info'):
+            yield key, val
+
+    @staticmethod
+    def _convert_encryption(val):
+        if val == 'yes':
+            yield 'media_encryption', 'sdes'
+
+    @staticmethod
+    def _convert_encryption_taglen(val):
+        if val == 32:
+            return 'srtp_tag_32', 'yes'
+
+    @staticmethod
+    def _convert_nat(val):
+        if val == 'yes':
+            yield 'rtp_symmetric', 'yes'
+            yield 'rewrite_contact', 'yes'
+        elif val == 'comedia':
+            yield 'rtp_symmetric', 'yes'
+        elif val == 'force_rport':
+            yield 'force_rport', 'yes'
+            yield 'rewrite_contact', 'yes'
+
+    @staticmethod
+    def _convert_progressinband(val):
+        if val in ('no', 'never'):
+            yield 'inband_progress', 'no'
+        elif val == 'yes':
+            yield 'inband_progress', 'yes'
+
+    @staticmethod
+    def _convert_recordonfeature(val):
+        if val == 'automixmon':
+            yield 'one_touch_recording', 'yes'
+        yield 'record_on_feature', val
+
+    @staticmethod
+    def _convert_recordofffeature(val):
+        if val == 'automixmon':
+            yield 'one_touch_recording', 'yes'
+        yield 'record_off_feature', val
+
+    @staticmethod
+    def _convert_sendrpid(val):
+        if val in ('yes', 'rpid'):
+            yield 'send_rpid', 'yes'
+        elif val == 'pai':
+            yield 'send_pai', 'yes'
+
+    @staticmethod
+    def _convert_session_timers(val):
+        new_val = 'yes'
+        if val == 'originate':
+            new_val = 'always'
+        elif val == 'accept':
+            new_val = 'required'
+        elif val == 'never':
+            new_val = 'no'
+
+        return 'timers', new_val
 
 
 def get_static_sip():
@@ -989,6 +1084,57 @@ def list_existing_trunk_config(tenant_uuid, registers, transports):
     return result
 
 
+def convert_host(sip):
+    for name, value in sip.options:
+        if name == 'host':
+            val = value
+    else:
+        return
+
+    if val == 'dynamic':
+        max_contacts = 1
+        max_contacts_defined = False
+
+        for key, value in sip.options:
+            if key == 'max_contacts':
+                max_contacts_defined = True
+                max_contacts = value
+                break
+
+        if ['webrtc', 'yes'] in sip.options:
+            if not max_contacts_defined:
+                max_contacts = 10
+
+        if max_contacts == 1:
+            yield ('remove_existing', 'yes')
+
+        yield ('max_contacts', max_contacts)
+        return
+
+    result = 'sip:'
+    # More difficult case. The host will be either a hostname or
+    # IP address and may or may not have a port specified. pjsip.conf
+    # expects the contact to be a SIP URI.
+
+    if sip.category == 'line':
+        user = sip.name
+        yield ('qualify_frequency', 0)
+    else:
+        user = sip.username
+
+    if user:
+        result += user + '@'
+
+    port = 5060
+    for name, value in sip.options:
+        if name == 'port':
+            port = value
+    host_port = '{}:{}'.format(val, port)
+    result += host_port
+
+    yield ('contact', result)
+
+
 def sip_to_pjsip(sip_config, transports, contexts):
     config = {
         'display_name': sip_config.name,
@@ -1008,6 +1154,9 @@ def sip_to_pjsip(sip_config, transports, contexts):
         ENDPOINT_SECTION_MAPPING,
         VALID_ENDPOINT_OPTIONS,
     )
+
+    for kv in convert_host(sip_config):
+        endpoint_option_accumulator.add_option(kv)
 
     for kv in sip_config.options:
         aor_option_accumulator.add_option(kv)

@@ -806,6 +806,7 @@ def get_static_sip():
         static_sip_tbl.c.filename == 'sip.conf',
         static_sip_tbl.c.category == 'general',
         static_sip_tbl.c.commented == '0',
+        static_sip_tbl.c.var_val.isnot(None),
     )).order_by(
         static_sip_tbl.c.var_metric,
     )

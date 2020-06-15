@@ -38,7 +38,7 @@ def upgrade():
     op.create_table(
         'endpoint_sip',
         Column('uuid', UUID, server_default=text(UUID_GEN), primary_key=True),
-        Column('display_name', Text),
+        Column('label', Text),
         Column('name', Text, server_default=text(RANDOM_NAME), nullable=False),
         Column('asterisk_id', Text),
         Column('tenant_uuid', String(36), FK('tenant.uuid', ondelete='CASCADE'), nullable=False),

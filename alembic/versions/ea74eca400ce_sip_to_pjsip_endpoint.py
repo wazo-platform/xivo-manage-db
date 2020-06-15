@@ -231,7 +231,7 @@ context_tbl = sa.sql.table(
 endpoint_sip_tbl = sa.sql.table(
     'endpoint_sip',
     sa.sql.column('uuid'),
-    sa.sql.column('display_name'),
+    sa.sql.column('label'),
     sa.sql.column('name'),
     sa.sql.column('asterisk_id'),
     sa.sql.column('tenant_uuid'),
@@ -876,7 +876,7 @@ def create_global_config_body(static_sip, transports):
             transport = transports.get(kv.value)
 
     body = {
-        'display_name': 'General',
+        'label': 'General',
         'aor_section_options': aor_option_accumulator.get_options(),
         'endpoint_section_options': endpoint_option_accumulator.get_options(),
         'template': True,
@@ -888,7 +888,7 @@ def create_global_config_body(static_sip, transports):
 
 def create_webrtc_config_body():
     body = {
-        'display_name': 'WebRTC line',
+        'label': 'WebRTC line',
         'endpoint_section_options': [
             KV('allow', '!all,opus,g722,alaw,ulaw,vp9,vp8,h264'),
             KV('dtls_auto_generate_cert', 'yes'),
@@ -911,7 +911,7 @@ def create_trunk_config_body(static_sip):
         registration_option_accumulator.add_option(kv)
 
     body = {
-        'display_name': 'Trunk',
+        'label': 'Trunk',
         'template': True,
         'registration_section_options': registration_option_accumulator.get_options(),
     }
@@ -921,7 +921,7 @@ def create_trunk_config_body(static_sip):
 
 def create_twilio_config_body():
     body = {
-        'display_name': 'twilio Trunk',
+        'label': 'twilio Trunk',
         'template': True,
         'identify_section_options': [
             KV('match', '54.172.60.0'),
@@ -996,7 +996,7 @@ def insert_endpoint_config(
     )
 
     query = endpoint_sip_tbl.insert().returning(endpoint_sip_tbl.c.uuid).values(
-        display_name=body['display_name'],
+        label=body['label'],
         tenant_uuid=tenant_uuid,
         aor_section_uuid=insert_section(aor_section_options),
         auth_section_uuid=insert_section(auth_section_options),
@@ -1024,7 +1024,7 @@ def insert_endpoint_config(
 
 def insert_global_config(tenant_uuid, body):
     body.update({
-        'display_name': 'global',
+        'label': 'global',
         'template': True,
     })
     return insert_endpoint_config(tenant_uuid, body)
@@ -1032,7 +1032,7 @@ def insert_global_config(tenant_uuid, body):
 
 def insert_webrtc_config(tenant_uuid, parents, body):
     body.update({
-        'display_name': 'webrtc',
+        'label': 'webrtc',
         'template': True,
     })
     return insert_endpoint_config(tenant_uuid, body, parents)
@@ -1040,7 +1040,7 @@ def insert_webrtc_config(tenant_uuid, parents, body):
 
 def insert_trunk_config(tenant_uuid, parents, body):
     body.update({
-        'display_name': 'global_trunk',
+        'label': 'global_trunk',
         'template': True,
     })
     return insert_endpoint_config(tenant_uuid, body, parents)
@@ -1048,7 +1048,7 @@ def insert_trunk_config(tenant_uuid, parents, body):
 
 def insert_twilio_config(tenant_uuid, parents, body):
     body.update({
-        'display_name': 'twilio_trunk',
+        'label': 'twilio_trunk',
         'template': True,
     })
     return insert_endpoint_config(tenant_uuid, body, parents)
@@ -1138,7 +1138,7 @@ def convert_host(sip):
 
 def sip_to_pjsip(sip_config, transports, contexts):
     config = {
-        'display_name': sip_config.name,
+        'label': sip_config.name,
         'name': sip_config.name,
         'template': False,
     }

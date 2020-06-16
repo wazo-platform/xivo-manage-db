@@ -9,8 +9,6 @@ from collections import namedtuple
 
 from alembic import op
 import sqlalchemy as sa
-from sqlalchemy.dialects.postgresql import UUID
-
 
 # revision identifiers, used by Alembic.
 revision = 'ea74eca400ce'
@@ -44,7 +42,6 @@ ENDPOINT_SECTION_MAPPING = {
     'dtlssetup': 'dtls_setup',
     'dtlsverify': 'dtls_verify',
     'fromdomain': 'from_domain',
-    'fromdomain': 'from_domain',
     'fromuser': 'from_user',
     'icesupport': 'ice_support',
     'mohsuggest': 'moh_suggest',
@@ -53,8 +50,6 @@ ENDPOINT_SECTION_MAPPING = {
     'rtptimeout': 'rtp_timeout',
     'rtpholdtimeout': 'rtp_timeout_hold',
     'sdpowner': 'sdp_owner',
-    'sdpowner': 'sdp_owner',
-    'sdpsession': 'sdp_session',
     'sdpsession': 'sdp_session',
     'session-expires': 'timers_sess_expires',
     'session-minse': 'timers_min_se',

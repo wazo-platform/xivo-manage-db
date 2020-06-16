@@ -6,7 +6,7 @@ Revises: d47f295009dd
 """
 
 from alembic import op
-from sqlalchemy import Boolean, Column, Text, ForeignKey as FK, Integer, String, text
+from sqlalchemy import Boolean, Column, Enum, Text, ForeignKey as FK, Integer, String, text
 from sqlalchemy.dialects.postgresql import UUID
 
 
@@ -17,11 +17,40 @@ down_revision = 'd47f295009dd'
 UUID_GEN = 'uuid_generate_v4()'
 RANDOM_NAME = 'substring(md5(random()::text), 0, 9)'
 
+endpoint_sip_section_type = Enum(
+    'aor',
+    'auth',
+    'endpoint',
+    'identify',
+    'outbound_auth',
+    'registration_outbound_auth',
+    'registration',
+    name='endpoint_sip_section_type',
+)
+
 
 def upgrade():
     op.create_table(
+        'endpoint_sip',
+        Column('uuid', UUID, server_default=text(UUID_GEN), primary_key=True),
+        Column('label', Text),
+        Column('name', Text, server_default=text(RANDOM_NAME), nullable=False),
+        Column('asterisk_id', Text),
+        Column('tenant_uuid', String(36), FK('tenant.uuid', ondelete='CASCADE'), nullable=False),
+        Column('transport_uuid', UUID, FK('pjsip_transport.uuid')),
+        Column('context_id', Integer, FK('context.id')),
+        Column('template', Boolean, server_default=text('false')),
+    )
+    op.create_table(
         'endpoint_sip_section',
         Column('uuid', UUID, server_default=text(UUID_GEN), primary_key=True),
+        Column('endpoint_sip_uuid', UUID, FK('endpoint_sip.uuid', ondelete='CASCADE'), nullable=False),
+        Column('type', endpoint_sip_section_type, nullable=False)
+    )
+    op.create_unique_constraint(
+        'endpoint_sip_section_endpoint_type',
+        'endpoint_sip_section',
+        ['endpoint_sip_uuid', 'type'],
     )
     op.create_table(
         'endpoint_sip_section_option',
@@ -34,24 +63,6 @@ def upgrade():
             FK('endpoint_sip_section.uuid', ondelete='CASCADE'),
             nullable=False
         ),
-    )
-    op.create_table(
-        'endpoint_sip',
-        Column('uuid', UUID, server_default=text(UUID_GEN), primary_key=True),
-        Column('label', Text),
-        Column('name', Text, server_default=text(RANDOM_NAME), nullable=False),
-        Column('asterisk_id', Text),
-        Column('tenant_uuid', String(36), FK('tenant.uuid', ondelete='CASCADE'), nullable=False),
-        Column('aor_section_uuid', UUID, FK('endpoint_sip_section.uuid')),
-        Column('auth_section_uuid', UUID, FK('endpoint_sip_section.uuid')),
-        Column('endpoint_section_uuid', UUID, FK('endpoint_sip_section.uuid')),
-        Column('identify_section_uuid', UUID, FK('endpoint_sip_section.uuid')),
-        Column('registration_section_uuid', UUID, FK('endpoint_sip_section.uuid')),
-        Column('registration_outbound_auth_section_uuid', UUID, FK('endpoint_sip_section.uuid')),
-        Column('outbound_auth_section_uuid', UUID, FK('endpoint_sip_section.uuid')),
-        Column('transport_uuid', UUID, FK('pjsip_transport.uuid')),
-        Column('context_id', Integer, FK('context.id')),
-        Column('template', Boolean, server_default=text('false')),
     )
     op.create_table(
         'endpoint_sip_parent',
@@ -69,9 +80,11 @@ def upgrade():
 
 
 def downgrade():
+    # op.drop_constraint('endpoint_sip_section_endpoint_type', 'endpoint_sip_section')
     op.drop_column('trunkfeatures', 'endpoint_sip_uuid')
     op.drop_column('linefeatures', 'endpoint_sip_uuid')
     op.drop_table('endpoint_sip_parent')
-    op.drop_table('endpoint_sip')
     op.drop_table('endpoint_sip_section_option')
     op.drop_table('endpoint_sip_section')
+    op.drop_table('endpoint_sip')
+    endpoint_sip_section_type.drop(op.get_bind())

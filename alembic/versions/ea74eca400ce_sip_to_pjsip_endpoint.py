@@ -230,13 +230,6 @@ endpoint_sip_tbl = sa.sql.table(
     sa.sql.column('name'),
     sa.sql.column('asterisk_id'),
     sa.sql.column('tenant_uuid'),
-    sa.sql.column('aor_section_uuid'),
-    sa.sql.column('auth_section_uuid'),
-    sa.sql.column('endpoint_section_uuid'),
-    sa.sql.column('identify_section_uuid'),
-    sa.sql.column('registration_section_uuid'),
-    sa.sql.column('registration_outbound_auth_section_uuid'),
-    sa.sql.column('outbound_auth_section_uuid'),
     sa.sql.column('transport_uuid'),
     sa.sql.column('context_id'),
     sa.sql.column('template'),
@@ -244,6 +237,8 @@ endpoint_sip_tbl = sa.sql.table(
 endpoint_sip_section_tbl = sa.sql.table(
     'endpoint_sip_section',
     sa.sql.column('uuid'),
+    sa.sql.column('type'),
+    sa.sql.column('endpoint_sip_uuid'),
 )
 endpoint_sip_section_option_tbl = sa.sql.table(
     'endpoint_sip_section_option',
@@ -957,11 +952,14 @@ def create_twilio_config_body():
     return body
 
 
-def insert_section(options):
+def insert_section(endpoint_sip_uuid, type, options):
     if not options:
         return
 
-    query = endpoint_sip_section_tbl.insert().returning(endpoint_sip_section_tbl.c.uuid).values()
+    query = endpoint_sip_section_tbl.insert().returning(endpoint_sip_section_tbl.c.uuid).values(
+        endpoint_sip_uuid=endpoint_sip_uuid,
+        type=type,
+    )
     section_uuid = op.get_bind().execute(query).scalar()
 
     for key, value in options:
@@ -993,19 +991,21 @@ def insert_endpoint_config(
     query = endpoint_sip_tbl.insert().returning(endpoint_sip_tbl.c.uuid).values(
         label=body['label'],
         tenant_uuid=tenant_uuid,
-        aor_section_uuid=insert_section(aor_section_options),
-        auth_section_uuid=insert_section(auth_section_options),
-        endpoint_section_uuid=insert_section(endpoint_section_options),
-        identify_section_uuid=insert_section(identify_section_options),
-        registration_section_uuid=insert_section(registration_section_options),
-        registration_outbound_auth_section_uuid=insert_section(
-            registration_outbound_auth_section_options,
-        ),
-        outbound_auth_section_uuid=insert_section(outbound_auth_section_options),
         template=body.get('template', False),
         transport_uuid=body.get('transport_uuid'),
     )
     body['uuid'] = op.get_bind().execute(query).scalar()
+    insert_section(body['uuid'], 'aor', aor_section_options)
+    insert_section(body['uuid'], 'auth', auth_section_options)
+    insert_section(body['uuid'], 'endpoint', endpoint_section_options)
+    insert_section(body['uuid'], 'identify', identify_section_options)
+    insert_section(body['uuid'], 'registration', registration_section_options)
+    insert_section(
+        body['uuid'],
+        'registration_outbound_auth',
+        registration_outbound_auth_section_options,
+    )
+    insert_section(body['uuid'], 'outbound_auth', outbound_auth_section_options)
 
     for parent in parents or []:
         query = endpoint_sip_parent_tbl.insert().values(

@@ -683,7 +683,8 @@ class OptionAccumulator(object):
         conversion_function_name = '_convert_{}'.format(kv.key)
         if hasattr(self, conversion_function_name):
             for name, value in getattr(self, conversion_function_name)(kv.value):
-                self._add_option_no_duplicate(KV(name, value))
+                if name in self._valid_options:
+                    self._add_option_no_duplicate(KV(name, value))
         elif kv.key in self._valid_options:
             self._add_option_no_duplicate(kv)
         elif kv.key in self._sip_to_pjsip:

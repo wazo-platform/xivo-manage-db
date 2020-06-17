@@ -48,7 +48,7 @@ def upgrade():
         Column('type', endpoint_sip_section_type, nullable=False)
     )
     op.create_unique_constraint(
-        'endpoint_sip_section_endpoint_type',
+        'endpoint_sip_section_type_endpoint_sip_uuid_key',
         'endpoint_sip_section',
         ['endpoint_sip_uuid', 'type'],
     )
@@ -80,7 +80,6 @@ def upgrade():
 
 
 def downgrade():
-    # op.drop_constraint('endpoint_sip_section_endpoint_type', 'endpoint_sip_section')
     op.drop_column('trunkfeatures', 'endpoint_sip_uuid')
     op.drop_column('linefeatures', 'endpoint_sip_uuid')
     op.drop_table('endpoint_sip_parent')

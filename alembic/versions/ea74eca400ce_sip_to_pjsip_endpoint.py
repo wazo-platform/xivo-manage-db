@@ -635,10 +635,11 @@ class UserSIPTrunk(UserSIP):
 
     category = 'trunk'
 
-    def __init__(self, id, name, tenant_uuid, options, registration, twilio_incoming):
+    def __init__(self, id, name, tenant_uuid, context, options, registration, twilio_incoming):
         self.id = id
         self.name = name
         self.tenant_uuid = tenant_uuid
+        self.context = context
         self.options = options
         self.registration = registration
         self.twilio_incoming = twilio_incoming
@@ -654,23 +655,24 @@ class UserSIPTrunk(UserSIP):
                 registration = Registration(register_url, transports)
         if row.twilio_incoming:
             twilio_incoming = True
-        return cls(row.id, row.name, row.tenant_uuid, options, registration, twilio_incoming)
+        return cls(row.id, row.name, row.tenant_uuid, row.context, options, registration, twilio_incoming)
 
 
 class UserSIPLine(UserSIP):
 
     category = 'line'
 
-    def __init__(self, id, name, tenant_uuid, options):
+    def __init__(self, id, name, tenant_uuid, context, options):
         self.id = id
         self.name = name
         self.tenant_uuid = tenant_uuid
+        self.context = context
         self.options = options
 
     @classmethod
     def from_row(cls, row):
         options = cls.extract_options(row)
-        return cls(row.id, row.name, row.tenant_uuid, options)
+        return cls(row.id, row.name, row.tenant_uuid, row.context, options)
 
 
 class OptionAccumulator(object):
@@ -992,6 +994,7 @@ def insert_endpoint_config(
     query = endpoint_sip_tbl.insert().returning(endpoint_sip_tbl.c.uuid).values(
         label=body['label'],
         tenant_uuid=tenant_uuid,
+        context_id=body.get('context_id'),
         template=body.get('template', False),
         transport_uuid=body.get('transport_uuid'),
     )
@@ -1161,13 +1164,15 @@ def sip_to_pjsip(sip_config, transports, contexts):
         endpoint_option_accumulator.add_option(kv)
         if kv.key == 'transport':
             config['transport_uuid'] = transports.get(kv.value)
-        elif kv.key == 'context':
-            config['context_id'] = contexts.get(kv.value)
 
     if sip_config.registration:
         register_section_options = sip_config.registration.registration_fields
         config['register_section_options'] = register_section_options
         config['outbound_auth_section_options'] = sip_config.registration.auth_fields
+
+    if sip_config.context:
+        context_id = contexts[sip_config.context]
+        config['context_id'] = context_id
 
     config.update({
         'aor_section_options': aor_option_accumulator.get_options(),

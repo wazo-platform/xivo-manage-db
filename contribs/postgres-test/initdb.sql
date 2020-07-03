@@ -18,6 +18,4 @@ VALUES
 
 INSERT INTO "netiface" (ifname, networktype, type, family, options) VALUES ('eth0', 'voip', 'iface', 'inet', '');
 
-UPDATE provisioning set net4_ip_rest='provd';
-
 ALTER ROLE asterisk WITH SUPERUSER;

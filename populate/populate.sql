@@ -2,8 +2,6 @@ BEGIN;
 
 INSERT INTO "tenant" (uuid) VALUES (DEFAULT);
 
-INSERT INTO "agentgroup" VALUES (DEFAULT,1,'default','',0,0,'');
-
 
 INSERT INTO "contexttype" VALUES(DEFAULT, 'internal', 0, 0, '');
 INSERT INTO "contexttype" VALUES(DEFAULT, 'incall', 0, 0, '');
@@ -13,12 +11,6 @@ INSERT INTO "contexttype" VALUES(DEFAULT, 'others', 0, 0, '');
 
 
 INSERT INTO "ctimain" VALUES(DEFAULT, 1, '', '', 0, 1);
-
-
-INSERT INTO "ctisheetactions" VALUES(DEFAULT,'Wazo','Modèle de fiche de base.','dest','{"10": [ "Nom","title","","{xivo-calleridname}",0 ],"20": [ "Numéro","text","","{xivo-calleridnum}",0 ],"30": [ "Origine","text","","{xivo-origin}",0 ]}','{"10": [ "Nom","title","","{xivo-calledidname}" ],"20": [ "Numéro","body","","{xivo-calleridnum}" ],"30": [ "Origine","body","","{xivo-origin}" ]}','','{}',0,1,1);
-
-
-INSERT INTO "ctisheetevents" VALUES(DEFAULT,'','','Wazo','','');
 
 
 INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*31.','extenfeatures','agentstaticlogin');

@@ -1,4 +1,4 @@
-FROM wazopbx/postgres
+FROM wazopbx/wazo-confd-db
 MAINTAINER Wazo Maintainers <dev@wazo.community>
 USER root
 ENV PG_CONF="/etc/postgresql/11/main/postgresql.conf"

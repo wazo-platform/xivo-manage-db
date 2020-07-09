@@ -6,10 +6,10 @@ preconfigured as if the Wazo wizard has already been run, with default values al
 
 ## Building the image
 
-This image depends on wazopbx/postgres. Build this image first from the root directory of
+This image depends on wazopbx/wazo-confd-db. Build this image first from the root directory of
 xivo-manage-db:
 
-    docker build -t wazopbx/postgres .
+    docker build -t wazopbx/wazo-confd-db .
 
 Then you can build wazo-confd-db-test:
 

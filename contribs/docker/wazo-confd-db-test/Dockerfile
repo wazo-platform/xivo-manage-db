@@ -1,17 +1,18 @@
-FROM wazopbx/postgres
-MAINTAINER Wazo Maintainers <dev@wazo.community>
+FROM wazopbx/wazo-confd-db
+LABEL maintainer="Wazo Maintainers <dev@wazo.community>"
+
 USER root
 ENV PG_CONF="/etc/postgresql/11/main/postgresql.conf"
 
 #Insert data required for running integration tests
-COPY contribs/postgres-test/initdb.sql /usr/src/initdb.sql
+COPY contribs/docker/wazo-confd-db-test/initdb.sql /usr/src/initdb.sql
 COPY alembic /usr/share/xivo-manage-db/alembic
-COPY contribs/postgres-test/bootstrap-pg.sh /bootstrap-pg.sh
+COPY contribs/docker/wazo-confd-db-test/bootstrap-pg.sh /bootstrap-pg.sh
 
 ADD https://github.com/tianon/gosu/releases/download/1.7/gosu-amd64 /usr/local/bin/gosu
 
-RUN \
-    mkdir -p /pg-init-db \
+RUN true \
+    && mkdir -p /pg-init-db \
     && sed -i 's/#fsync.*/fsync = off/g' $PG_CONF \
     && pg_start \
     && sudo -u postgres psql asterisk < /usr/src/initdb.sql \

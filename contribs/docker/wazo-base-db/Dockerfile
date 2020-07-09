@@ -23,8 +23,7 @@ RUN true \
     && pip3 install $PYTHON_PACKAGES \
     && true
 
-ADD ./bin/pg_start /usr/local/bin/pg_start
-ADD ./bin/pg_stop /usr/local/bin/pg_stop
+COPY ./pg_start ./pg_stop /usr/local/bin/
 
 EXPOSE 5432
 CMD ["/usr/lib/postgresql/11/bin/postgres", "-D", "/var/lib/postgresql/11/main", "--config-file=/etc/postgresql/11/main/postgresql.conf"]

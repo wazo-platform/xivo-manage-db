@@ -1,5 +1,6 @@
 FROM wazopbx/wazo-confd-db
-MAINTAINER Wazo Maintainers <dev@wazo.community>
+LABEL maintainer="Wazo Maintainers <dev@wazo.community>"
+
 USER root
 ENV PG_CONF="/etc/postgresql/11/main/postgresql.conf"
 
@@ -10,8 +11,8 @@ COPY contribs/wazo-confd-db-test/bootstrap-pg.sh /bootstrap-pg.sh
 
 ADD https://github.com/tianon/gosu/releases/download/1.7/gosu-amd64 /usr/local/bin/gosu
 
-RUN \
-    mkdir -p /pg-init-db \
+RUN true \
+    && mkdir -p /pg-init-db \
     && sed -i 's/#fsync.*/fsync = off/g' $PG_CONF \
     && pg_start \
     && sudo -u postgres psql asterisk < /usr/src/initdb.sql \

@@ -1,11 +1,11 @@
 FROM debian:buster
-MAINTAINER Wazo Maintainers <dev@wazo.community>
+LABEL maintainer="Wazo Maintainers <dev@wazo.community>"
 
-ENV DEBIAN_FRONTEND=noninteractive \
-    LC_ALL=C.UTF-8 \
-    BUILD_PACKAGES="python3-pip python3-dev libpq-dev alembic python3-alembic python3-psycopg2 python3-sqlalchemy python3-sqlalchemy-utils" \
-    PYTHON_PACKAGES="https://github.com/wazo-platform/xivo-lib-python/archive/master.zip" \
-    PG_PACKAGES="postgresql-11 postgresql-contrib-11 postgresql-client"
+ENV DEBIAN_FRONTEND=noninteractive
+ENV LC_ALL=C.UTF-8
+ENV BUILD_PACKAGES="python3-pip python3-dev libpq-dev alembic python3-alembic python3-psycopg2 python3-sqlalchemy python3-sqlalchemy-utils"
+ENV PYTHON_PACKAGES="https://github.com/wazo-platform/xivo-lib-python/archive/master.zip"
+ENV PG_PACKAGES="postgresql-11 postgresql-contrib-11 postgresql-client"
 
 #Locales must be configured before installing postgres, otherwise the database encoding defaults to SQL_ASCII
 RUN true \

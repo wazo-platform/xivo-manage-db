@@ -10,9 +10,6 @@ INSERT INTO "contexttype" VALUES(DEFAULT, 'services', 0, 0, '');
 INSERT INTO "contexttype" VALUES(DEFAULT, 'others', 0, 0, '');
 
 
-INSERT INTO "ctimain" VALUES(DEFAULT, 1, '', '', 0, 1);
-
-
 INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*31.','extenfeatures','agentstaticlogin');
 INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*32.','extenfeatures','agentstaticlogoff');
 INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*30.','extenfeatures','agentstaticlogtoggle');
@@ -542,9 +539,6 @@ INSERT INTO "staticvoicemail" VALUES (DEFAULT,0,0,1,'voicemail.conf','general','
 INSERT INTO "staticvoicemail" VALUES (DEFAULT,0,0,1,'voicemail.conf','general','backupdeleted',NULL);
 
 
-INSERT INTO "general" VALUES (DEFAULT, 'Europe/Paris');
-
-
 INSERT INTO "agentglobalparams" VALUES (DEFAULT,'general','multiplelogin','no');
 INSERT INTO "agentglobalparams" VALUES (DEFAULT,'general','persistentagents','yes');
 INSERT INTO "agentglobalparams" VALUES (DEFAULT,'agents','autologoffunavail','no');
@@ -693,6 +687,6 @@ INSERT INTO "provisioning" VALUES(DEFAULT, '', 0, 8667);
 
 /* The UUID "populate-uuid" will be replaced by pg-populate-db */
 /* The version is bumped automatically during the release process */
-INSERT INTO "infos" VALUES ('populate-uuid', '20.10');
+INSERT INTO "infos" (uuid, wazo_version, live_reload_enabled, timezone, configured) VALUES ('populate-uuid', '20.10', 'True', 'Europe/Paris', 'False');
 
 COMMIT;

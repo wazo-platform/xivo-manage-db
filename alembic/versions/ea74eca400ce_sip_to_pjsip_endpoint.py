@@ -110,7 +110,7 @@ VALID_ENDPOINT_OPTIONS = [
     'contact_deny',
     'contact_permit',
     'contact_user',
-    # 'context',  # The context is a relation
+    # 'context',  # The context of an endpoint uses the trunk or line context
     'cos_audio',
     'cos_video',
     'deny',
@@ -218,11 +218,6 @@ VALID_REGISTRATION_OPTIONS = [
     'outbound_proxy',
 ]
 
-context_tbl = sa.sql.table(
-    'context',
-    sa.sql.column('id'),
-    sa.sql.column('name'),
-)
 endpoint_sip_tbl = sa.sql.table(
     'endpoint_sip',
     sa.sql.column('uuid'),
@@ -231,7 +226,6 @@ endpoint_sip_tbl = sa.sql.table(
     sa.sql.column('asterisk_id'),
     sa.sql.column('tenant_uuid'),
     sa.sql.column('transport_uuid'),
-    sa.sql.column('context_id'),
     sa.sql.column('template'),
 )
 endpoint_sip_section_tbl = sa.sql.table(
@@ -293,7 +287,6 @@ user_sip_tbl = sa.sql.table(
     sa.sql.column('type'),
     sa.sql.column('username'),
     sa.sql.column('secret'),
-    sa.sql.column('context'),
     sa.sql.column('language'),
     sa.sql.column('accountcode'),
     sa.sql.column('amaflags'),
@@ -548,7 +541,6 @@ class UserSIP(object):
             'type',
             'username',
             'secret',
-            'context',
             'language',
             'accountcode',
             'amaflags',
@@ -803,12 +795,6 @@ def get_static_sip():
     )
     rows = op.get_bind().execute(query)
     return [KV(row.var_name, row.var_val) for row in rows]
-
-
-def get_contexts(tenant_uuid):
-    query = sa.sql.select([context_tbl.c.id, context_tbl.c.name])
-    rows = op.get_bind().execute(query)
-    return {row.name: row.id for row in rows}
 
 
 def get_transports():
@@ -1132,7 +1118,7 @@ def convert_host(sip):
     yield ('contact', result)
 
 
-def sip_to_pjsip(sip_config, transports, contexts):
+def sip_to_pjsip(sip_config, transports):
     config = {
         'label': sip_config.name,
         'name': sip_config.name,
@@ -1161,8 +1147,6 @@ def sip_to_pjsip(sip_config, transports, contexts):
         endpoint_option_accumulator.add_option(kv)
         if kv.key == 'transport':
             config['transport_uuid'] = transports.get(kv.value)
-        elif kv.key == 'context':
-            config['context_id'] = contexts.get(kv.value)
 
     if sip_config.registration:
         register_section_options = sip_config.registration.registration_fields
@@ -1252,8 +1236,8 @@ def update_trunk_associations(tenant_uuid, endpoint_uuid, old_sip_id):
     )
 
 
-def configure_line(tenant_uuid, global_config, webrtc_config, sip_config, transports, contexts):
-    pjsip_config = sip_to_pjsip(sip_config, transports, contexts)
+def configure_line(tenant_uuid, global_config, webrtc_config, sip_config, transports):
+    pjsip_config = sip_to_pjsip(sip_config, transports)
     parent_configs = [global_config]
     if is_webrtc(pjsip_config):
         parent_configs.append(webrtc_config)
@@ -1262,8 +1246,8 @@ def configure_line(tenant_uuid, global_config, webrtc_config, sip_config, transp
     update_line_associations(tenant_uuid, endpoint['uuid'], sip_config.id)
 
 
-def configure_trunk(tenant_uuid, base_trunk_config, twilio_config, trunk_config, transports, contexts):
-    pjsip_config = sip_to_pjsip(trunk_config, transports, contexts)
+def configure_trunk(tenant_uuid, base_trunk_config, twilio_config, trunk_config, transports):
+    pjsip_config = sip_to_pjsip(trunk_config, transports)
     parent_configs = [base_trunk_config]
     if is_twilio(trunk_config):
         parent_configs.append(twilio_config)
@@ -1281,7 +1265,6 @@ def configure_tenant(
     transports,
     registers,
 ):
-    contexts = get_contexts(tenant_uuid)
     global_config = insert_global_config(tenant_uuid, global_config_body)
     webrtc_config = insert_webrtc_config(
         tenant_uuid,
@@ -1301,11 +1284,11 @@ def configure_tenant(
 
     line_configs = list_existing_line_config(tenant_uuid)
     for line_config in line_configs:
-        configure_line(tenant_uuid, global_config, webrtc_config, line_config, transports, contexts)
+        configure_line(tenant_uuid, global_config, webrtc_config, line_config, transports)
 
     trunk_configs = list_existing_trunk_config(tenant_uuid, registers, transports)
     for trunk_config in trunk_configs:
-        configure_trunk(tenant_uuid, base_trunk_config, twilio_config, trunk_config, transports, contexts)
+        configure_trunk(tenant_uuid, base_trunk_config, twilio_config, trunk_config, transports)
 
 
 def remove_all_sip_endpoints():

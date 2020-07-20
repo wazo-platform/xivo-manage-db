@@ -955,7 +955,7 @@ def insert_section(endpoint_sip_uuid, type, options):
             value=value,
             endpoint_sip_section_uuid=section_uuid,
         )
-        op.get_bind().execute(query)
+        op.execute(query)
 
     return section_uuid
 
@@ -999,7 +999,7 @@ def insert_endpoint_config(
             child_uuid=body['uuid'],
             parent_uuid=parent['uuid'],
         )
-        op.get_bind().execute(query)
+        op.execute(query)
 
     return body
 

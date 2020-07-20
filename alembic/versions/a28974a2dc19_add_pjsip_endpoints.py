@@ -15,7 +15,6 @@ revision = 'a28974a2dc19'
 down_revision = '5c9f286599b6'
 
 UUID_GEN = 'uuid_generate_v4()'
-RANDOM_NAME = 'substring(md5(random()::text), 0, 9)'
 
 endpoint_sip_section_type = Enum(
     'aor',
@@ -34,7 +33,7 @@ def upgrade():
         'endpoint_sip',
         Column('uuid', UUID, server_default=text(UUID_GEN), primary_key=True),
         Column('label', Text),
-        Column('name', Text, server_default=text(RANDOM_NAME), nullable=False),
+        Column('name', Text, nullable=False),
         Column('asterisk_id', Text),
         Column('tenant_uuid', String(36), FK('tenant.uuid', ondelete='CASCADE'), nullable=False),
         Column('transport_uuid', UUID, FK('pjsip_transport.uuid')),

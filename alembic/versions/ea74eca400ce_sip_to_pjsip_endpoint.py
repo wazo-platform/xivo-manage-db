@@ -5,6 +5,9 @@ Revises: a28974a2dc19
 
 """
 
+import string
+import random
+
 from collections import namedtuple
 
 from alembic import op
@@ -13,6 +16,8 @@ import sqlalchemy as sa
 # revision identifiers, used by Alembic.
 revision = 'ea74eca400ce'
 down_revision = 'a28974a2dc19'
+
+ALPHANUMERIC_POOL = string.ascii_lowercase + string.digits
 
 KV = namedtuple('KV', ['key', 'value'])
 
@@ -977,6 +982,7 @@ def insert_endpoint_config(
 
     query = endpoint_sip_tbl.insert().returning(endpoint_sip_tbl.c.uuid).values(
         label=body['label'],
+        name=generate_unused_name(),
         tenant_uuid=tenant_uuid,
         template=body.get('template', False),
         transport_uuid=body.get('transport_uuid'),
@@ -1002,6 +1008,21 @@ def insert_endpoint_config(
         op.execute(query)
 
     return body
+
+
+def name_already_exists(name):
+    query = (
+        sa.sql.select([endpoint_sip_tbl.c.name])
+        .where(endpoint_sip_tbl.c.name == name)
+    )
+    return op.get_bind().execute(query).scalar() is not None
+
+
+def generate_unused_name():
+    while True:
+        data = ''.join(random.choice(ALPHANUMERIC_POOL) for _ in range(8))
+        if not name_already_exists(data):
+            return data
 
 
 def insert_global_config(tenant_uuid, body):

@@ -1,7 +1,7 @@
 """add pjsip endpoints
 
 Revision ID: a28974a2dc19
-Revises: f055e37e6196
+Revises: 5c9f286599b6
 
 """
 
@@ -12,7 +12,7 @@ from sqlalchemy.dialects.postgresql import UUID
 
 # revision identifiers, used by Alembic.
 revision = 'a28974a2dc19'
-down_revision = 'f055e37e6196'
+down_revision = '5c9f286599b6'
 
 UUID_GEN = 'uuid_generate_v4()'
 RANDOM_NAME = 'substring(md5(random()::text), 0, 9)'

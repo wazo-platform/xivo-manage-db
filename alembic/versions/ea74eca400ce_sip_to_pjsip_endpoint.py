@@ -982,7 +982,7 @@ def insert_endpoint_config(
 
     query = endpoint_sip_tbl.insert().returning(endpoint_sip_tbl.c.uuid).values(
         label=body['label'],
-        name=generate_unused_name(),
+        name=body.get('name') or generate_unused_name(),
         tenant_uuid=tenant_uuid,
         template=body.get('template', False),
         transport_uuid=body.get('transport_uuid'),

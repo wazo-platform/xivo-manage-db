@@ -851,6 +851,9 @@ def create_global_config_body(static_sip, transports):
     )
     transport = None
 
+    aor_option_accumulator.add_option(KV('max_contacts', '1'))
+    aor_option_accumulator.add_option(KV('remove_existing', 'true'))
+
     for kv in static_sip:
         aor_option_accumulator.add_option(kv)
         endpoint_option_accumulator.add_option(kv)
@@ -871,6 +874,10 @@ def create_global_config_body(static_sip, transports):
 def create_webrtc_config_body():
     body = {
         'label': 'WebRTC line',
+        'aor_section_options': [
+            KV('max_contacts', '10'),
+            KV('remove_existing', 'no'),
+        ],
         'endpoint_section_options': [
             KV('allow', '!all,opus,g722,alaw,ulaw,vp9,vp8,h264'),
             KV('dtls_auto_generate_cert', 'yes'),

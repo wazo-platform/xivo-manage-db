@@ -597,7 +597,6 @@ class UserSIP(object):
             'protocol',
             'category',
             'outboundproxy',
-            'transport',
             'remotesecret',
             'directmedia',
             'callcounter',

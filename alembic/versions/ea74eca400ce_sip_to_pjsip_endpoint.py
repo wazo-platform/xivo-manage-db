@@ -98,6 +98,7 @@ VALID_ENDPOINT_OPTIONS = [
     'accountcode',
     'acl',
     'aggregate_mwi',
+    'allow',
     'allow_overlap',
     'allow_subscribe',
     'allow_transfer',
@@ -675,6 +676,7 @@ class OptionAccumulator(object):
         self._sip_to_pjsip = sip_to_pjsip_mapping
         self._valid_options = valid_options
         self._accumulated = []
+        self._codecs = []
 
     def add_option(self, kv):
         conversion_function_name = '_convert_{}'.format(kv.key)
@@ -694,7 +696,32 @@ class OptionAccumulator(object):
         self._accumulated.append(kv)
 
     def get_options(self):
-        return self._accumulated
+        options = self._accumulated
+        if 'allow' in self._valid_options:
+            if not self._codecs:
+                options.append(('allow', '!all,ulaw'))
+            else:
+                options.append(('allow', ','.join(self._codecs)))
+        return options
+
+    def _convert_allow(self, val):
+        for codec in val.split(','):
+            if codec == '!all':
+                self._codecs = ['!all']
+            else:
+                self._codecs.append(codec)
+        return
+        yield
+
+    def _convert_deny(self, val):
+        for codec in val.split(','):
+            if codec == 'all':
+                self._codecs = ['!all']
+            else:
+                while codec in self._codecs:
+                    self._codecs.remove(codec)
+        return
+        yield
 
     @staticmethod
     def _convert_directmedia(val):

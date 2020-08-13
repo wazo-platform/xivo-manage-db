@@ -1,7 +1,7 @@
 """sip-to-pjsip-endpoint
 
 Revision ID: ea74eca400ce
-Revises: a28974a2dc19
+Revises: 56a9fce34ae9
 
 """
 
@@ -15,7 +15,7 @@ import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 revision = 'ea74eca400ce'
-down_revision = 'a28974a2dc19'
+down_revision = '56a9fce34ae9'
 
 ALPHANUMERIC_POOL = string.ascii_lowercase + string.digits
 

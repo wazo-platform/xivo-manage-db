@@ -1,7 +1,7 @@
 """sip-to-pjsip-endpoint
 
 Revision ID: ea74eca400ce
-Revises: a28974a2dc19
+Revises: 56a9fce34ae9
 
 """
 
@@ -15,7 +15,7 @@ import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 revision = 'ea74eca400ce'
-down_revision = 'a28974a2dc19'
+down_revision = '56a9fce34ae9'
 
 ALPHANUMERIC_POOL = string.ascii_lowercase + string.digits
 
@@ -267,7 +267,15 @@ static_sip_tbl = sa.sql.table(
     sa.sql.column('var_name'),
     sa.sql.column('var_val'),
 )
-tenant_tbl = sa.sql.table('tenant', sa.sql.column('uuid'))
+tenant_tbl = sa.sql.table(
+    'tenant',
+    sa.sql.column('uuid'),
+    sa.sql.column('sip_templates_generated'),
+    sa.sql.column('global_sip_template_uuid'),
+    sa.sql.column('webrtc_sip_template_uuid'),
+    sa.sql.column('global_trunk_sip_template_uuid'),
+    sa.sql.column('twilio_trunk_sip_template_uuid'),
+)
 transport_tbl = sa.sql.table(
     'pjsip_transport',
     sa.sql.column('uuid'),
@@ -1336,6 +1344,16 @@ def configure_tenant(
         body=twilio_config_body,
     )
 
+    op.execute(
+        tenant_tbl.update().values(
+            sip_templates_generated=True,
+            global_sip_template_uuid=global_config['uuid'],
+            webrtc_sip_template_uuid=webrtc_config['uuid'],
+            global_trunk_sip_template_uuid=base_trunk_config['uuid'],
+            twilio_trunk_sip_template_uuid=twilio_config['uuid'],
+        ).where(tenant_tbl.c.uuid == tenant_uuid)
+    )
+
     line_configs = list_existing_line_config(tenant_uuid)
     for line_config in line_configs:
         configure_line(tenant_uuid, global_config, webrtc_config, line_config, transports)
@@ -1373,4 +1391,13 @@ def upgrade():
 
 
 def downgrade():
+    op.execute(
+        tenant_tbl.update().values(
+            sip_templates_generated=False,
+            global_sip_template_uuid=None,
+            webrtc_sip_template_uuid=None,
+            global_trunk_sip_template_uuid=None,
+            twilio_trunk_sip_template_uuid=None,
+        )
+    )
     remove_all_sip_endpoints()

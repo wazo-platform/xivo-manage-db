@@ -1,7 +1,7 @@
 """link_default_template_to_tenant
 
 Revision ID: 56a9fce34ae9
-Revises: ee773d263d87
+Revises: a28974a2dc19
 
 """
 
@@ -13,7 +13,7 @@ from sqlalchemy.dialects.postgresql import UUID
 
 # revision identifiers, used by Alembic.
 revision = '56a9fce34ae9'
-down_revision = 'ee773d263d87'
+down_revision = 'a28974a2dc19'
 
 
 def upgrade():

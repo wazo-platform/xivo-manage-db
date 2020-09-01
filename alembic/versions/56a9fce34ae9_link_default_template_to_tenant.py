@@ -26,7 +26,11 @@ def upgrade():
         sa.Column(
             'global_sip_template_uuid',
             UUID,
-            sa.ForeignKey('endpoint_sip.uuid', ondelete='SET NULL'),
+            sa.ForeignKey(
+                'endpoint_sip.uuid',
+                ondelete='SET NULL',
+                name='tenant_global_sip_template_uuid_fkey',
+            ),
         ),
     )
     op.add_column(
@@ -34,7 +38,11 @@ def upgrade():
         sa.Column(
             'webrtc_sip_template_uuid',
             UUID,
-            sa.ForeignKey('endpoint_sip.uuid', ondelete='SET NULL'),
+            sa.ForeignKey(
+                'endpoint_sip.uuid',
+                ondelete='SET NULL',
+                name='tenant_webrtc_sip_template_uuid_fkey',
+            ),
         ),
     )
     op.add_column(
@@ -42,7 +50,11 @@ def upgrade():
         sa.Column(
             'global_trunk_sip_template_uuid',
             UUID,
-            sa.ForeignKey('endpoint_sip.uuid', ondelete='SET NULL'),
+            sa.ForeignKey(
+                'endpoint_sip.uuid',
+                ondelete='SET NULL',
+                name='tenant_global_trunk_sip_template_uuid_fkey',
+            ),
         ),
     )
     op.add_column(
@@ -50,7 +62,11 @@ def upgrade():
         sa.Column(
             'twilio_trunk_sip_template_uuid',
             UUID,
-            sa.ForeignKey('endpoint_sip.uuid', ondelete='SET NULL'),
+            sa.ForeignKey(
+                'endpoint_sip.uuid',
+                ondelete='SET NULL',
+                name='tenant_twilio_trunk_sip_template_uuid_fkey',
+            ),
         ),
     )
 

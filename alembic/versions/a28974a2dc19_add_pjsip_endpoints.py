@@ -33,7 +33,7 @@ def upgrade():
         'endpoint_sip',
         Column('uuid', UUID, server_default=text(UUID_GEN), primary_key=True),
         Column('label', Text),
-        Column('name', Text, nullable=False),
+        Column('name', Text, nullable=False, unique=True),
         Column('asterisk_id', Text),
         Column('tenant_uuid', String(36), FK('tenant.uuid', ondelete='CASCADE'), nullable=False),
         Column('transport_uuid', UUID, FK('pjsip_transport.uuid')),
@@ -49,7 +49,7 @@ def upgrade():
     op.create_unique_constraint(
         'endpoint_sip_section_type_endpoint_sip_uuid_key',
         'endpoint_sip_section',
-        ['endpoint_sip_uuid', 'type'],
+        ['type', 'endpoint_sip_uuid'],
     )
     op.create_table(
         'endpoint_sip_section_option',

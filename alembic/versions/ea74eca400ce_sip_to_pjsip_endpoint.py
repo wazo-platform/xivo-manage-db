@@ -247,8 +247,8 @@ endpoint_sip_section_option_tbl = sa.sql.table(
     sa.sql.column('value'),
     sa.sql.column('endpoint_sip_section_uuid'),
 )
-endpoint_sip_parent_tbl = sa.sql.table(
-    'endpoint_sip_parent',
+endpoint_sip_template_tbl = sa.sql.table(
+    'endpoint_sip_template',
     sa.sql.column('child_uuid'),
     sa.sql.column('parent_uuid'),
 )
@@ -1042,7 +1042,7 @@ def insert_endpoint_config(
     insert_section(body['uuid'], 'outbound_auth', outbound_auth_section_options)
 
     for parent in parents or []:
-        query = endpoint_sip_parent_tbl.insert().values(
+        query = endpoint_sip_template_tbl.insert().values(
             child_uuid=body['uuid'],
             parent_uuid=parent['uuid'],
         )

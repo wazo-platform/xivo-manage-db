@@ -64,7 +64,7 @@ def upgrade():
         ),
     )
     op.create_table(
-        'endpoint_sip_parent',
+        'endpoint_sip_template',
         Column('child_uuid', UUID, FK('endpoint_sip.uuid', ondelete='CASCADE'), primary_key=True),
         Column('parent_uuid', UUID, FK('endpoint_sip.uuid', ondelete='CASCADE'), primary_key=True),
     )
@@ -81,7 +81,7 @@ def upgrade():
 def downgrade():
     op.drop_column('trunkfeatures', 'endpoint_sip_uuid')
     op.drop_column('linefeatures', 'endpoint_sip_uuid')
-    op.drop_table('endpoint_sip_parent')
+    op.drop_table('endpoint_sip_template')
     op.drop_table('endpoint_sip_section_option')
     op.drop_table('endpoint_sip_section')
     op.drop_table('endpoint_sip')

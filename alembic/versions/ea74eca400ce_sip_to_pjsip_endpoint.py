@@ -1211,15 +1211,18 @@ def sip_to_pjsip(sip_config, transports):
             config['transport_uuid'] = transports.get(kv.value)
 
     if sip_config.registration:
-        register_section_options = sip_config.registration.registration_fields
-        config['register_section_options'] = register_section_options
-        config['outbound_auth_section_options'] = sip_config.registration.auth_fields
+        registration_section_options = sip_config.registration.registration_fields
+        config['registration_section_options'] = registration_section_options
+        config['registration_outbound_auth_section_options'] = sip_config.registration.auth_fields
 
     config.update({
         'aor_section_options': aor_option_accumulator.get_options(),
         'auth_section_options': auth_option_accumulator.get_options(),
         'endpoint_section_options': endpoint_option_accumulator.get_options(),
     })
+
+    if sip_config.category == 'trunk':
+        config['outbound_auth_section_options'] = auth_option_accumulator.get_options()
 
     return config
 

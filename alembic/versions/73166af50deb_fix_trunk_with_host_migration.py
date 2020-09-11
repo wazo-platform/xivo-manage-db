@@ -71,7 +71,7 @@ def convert_host_to_contact(trunk):
 
     result += trunk['host']
     port = trunk.get('port') or '5060'
-    result += ':' + port
+    result += ':' + str(port)
     return result
 
 

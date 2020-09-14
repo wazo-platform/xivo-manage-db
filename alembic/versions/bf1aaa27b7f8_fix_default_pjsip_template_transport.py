@@ -33,50 +33,50 @@ tenant_tbl = sql.table(
 
 def upgrade():
     query = sql.select([transport_tbl.c.uuid]).where(transport_tbl.c.name == 'transport-udp')
-    transport_udp_uuid = op.get_bind().execute(query).first().uuid
+    transport_udp = op.get_bind().execute(query).first()
+    if transport_udp:
+        query = (
+            sip_tbl
+            .update()
+            .values(transport_uuid=transport_udp.uuid)
+            .where(
+                sip_tbl.c.uuid.in_(
+                    sql.select([sip_tbl.c.uuid])
+                    .select_from(
+                        sip_tbl
+                        .join(
+                            tenant_tbl,
+                            tenant_tbl.c.global_sip_template_uuid == sip_tbl.c.uuid,
+                        )
+                    )
+                    .where(sip_tbl.c.transport_uuid.is_(None))
+                )
+            )
+        )
+        op.execute(query)
 
     query = sql.select([transport_tbl.c.uuid]).where(transport_tbl.c.name == 'transport-wss')
-    transport_wss_uuid = op.get_bind().execute(query).first().uuid
-
-    query = (
-        sip_tbl
-        .update()
-        .values(transport_uuid=transport_udp_uuid)
-        .where(
-            sip_tbl.c.uuid.in_(
-                sql.select([sip_tbl.c.uuid])
-                .select_from(
-                    sip_tbl
-                    .join(
-                        tenant_tbl,
-                        tenant_tbl.c.global_sip_template_uuid == sip_tbl.c.uuid,
+    transport_wss = op.get_bind().execute(query).first()
+    if transport_wss:
+        query = (
+            sip_tbl
+            .update()
+            .values(transport_uuid=transport_wss.uuid)
+            .where(
+                sip_tbl.c.uuid.in_(
+                    sql.select([sip_tbl.c.uuid])
+                    .select_from(
+                        sip_tbl
+                        .join(
+                            tenant_tbl,
+                            tenant_tbl.c.webrtc_sip_template_uuid == sip_tbl.c.uuid,
+                        )
                     )
+                    .where(sip_tbl.c.transport_uuid.is_(None))
                 )
-                .where(sip_tbl.c.transport_uuid.is_(None))
             )
         )
-    )
-    op.execute(query)
-
-    query = (
-        sip_tbl
-        .update()
-        .values(transport_uuid=transport_wss_uuid)
-        .where(
-            sip_tbl.c.uuid.in_(
-                sql.select([sip_tbl.c.uuid])
-                .select_from(
-                    sip_tbl
-                    .join(
-                        tenant_tbl,
-                        tenant_tbl.c.webrtc_sip_template_uuid == sip_tbl.c.uuid,
-                    )
-                )
-                .where(sip_tbl.c.transport_uuid.is_(None))
-            )
-        )
-    )
-    op.execute(query)
+        op.execute(query)
 
 
 def downgrade():

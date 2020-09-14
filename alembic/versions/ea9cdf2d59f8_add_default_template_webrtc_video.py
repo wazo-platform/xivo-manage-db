@@ -63,90 +63,6 @@ transport_tbl = sa.sql.table(
     sa.sql.column("uuid"),
     sa.sql.column("name"),
 )
-user_sip_tbl = sa.sql.table(
-    'usersip',
-    sa.sql.column('id'),
-    sa.sql.column('name'),
-    sa.sql.column('type'),
-    sa.sql.column('username'),
-    sa.sql.column('secret'),
-    sa.sql.column('language'),
-    sa.sql.column('accountcode'),
-    sa.sql.column('amaflags'),
-    sa.sql.column('allowtransfer'),
-    sa.sql.column('fromuser'),
-    sa.sql.column('fromdomain'),
-    sa.sql.column('subscribemwi'),
-    sa.sql.column('buggymwi'),
-    sa.sql.column('call-limit'),
-    sa.sql.column('callerid'),
-    sa.sql.column('fullname'),
-    sa.sql.column('cid_number'),
-    sa.sql.column('maxcallbitrate'),
-    sa.sql.column('insecure'),
-    sa.sql.column('nat'),
-    sa.sql.column('promiscredir'),
-    sa.sql.column('usereqphone'),
-    sa.sql.column('videosupport'),
-    sa.sql.column('trustrpid'),
-    sa.sql.column('sendrpid'),
-    sa.sql.column('allowsubscribe'),
-    sa.sql.column('allowoverlap'),
-    sa.sql.column('dtmfmode'),
-    sa.sql.column('rfc2833compensate'),
-    sa.sql.column('qualify'),
-    sa.sql.column('g726nonstandard'),
-    sa.sql.column('disallow'),
-    sa.sql.column('allow'),
-    sa.sql.column('autoframing'),
-    sa.sql.column('mohinterpret'),
-    sa.sql.column('useclientcode'),
-    sa.sql.column('progressinband'),
-    sa.sql.column('t38pt_udptl'),
-    sa.sql.column('t38pt_usertpsource'),
-    sa.sql.column('rtptimeout'),
-    sa.sql.column('rtpholdtimeout'),
-    sa.sql.column('rtpkeepalive'),
-    sa.sql.column('deny'),
-    sa.sql.column('permit'),
-    sa.sql.column('defaultip'),
-    sa.sql.column('host'),
-    sa.sql.column('port'),
-    sa.sql.column('regexten'),
-    sa.sql.column('subscribecontext'),
-    sa.sql.column('vmexten'),
-    sa.sql.column('callingpres'),
-    sa.sql.column('parkinglot'),
-    sa.sql.column('protocol'),
-    sa.sql.column('category'),
-    sa.sql.column('outboundproxy'),
-    sa.sql.column('transport'),
-    sa.sql.column('remotesecret'),
-    sa.sql.column('directmedia'),
-    sa.sql.column('callcounter'),
-    sa.sql.column('busylevel'),
-    sa.sql.column('ignoresdpversion'),
-    sa.sql.column('session-timers'),
-    sa.sql.column('session-expires'),
-    sa.sql.column('session-minse'),
-    sa.sql.column('session-refresher'),
-    sa.sql.column('callbackextension'),
-    sa.sql.column('timert1'),
-    sa.sql.column('timerb'),
-    sa.sql.column('qualifyfreq'),
-    sa.sql.column('contactpermit'),
-    sa.sql.column('contactdeny'),
-    sa.sql.column('unsolicited_mailbox'),
-    sa.sql.column('use_q850_reason'),
-    sa.sql.column('encryption'),
-    sa.sql.column('snom_aoc_enabled'),
-    sa.sql.column('maxforwards'),
-    sa.sql.column('disallowed_methods'),
-    sa.sql.column('textsupport'),
-    sa.sql.column('commented'),
-    sa.sql.column('options'),
-    sa.sql.column('tenant_uuid'),
-)
 
 
 def name_already_exists(name):
@@ -273,20 +189,6 @@ def insert_webrtc_video_config(tenant_uuid, parents, body):
         }
     )
     return insert_endpoint_config(tenant_uuid, body, parents)
-
-
-def list_existing_line_config(tenant_uuid):
-    query = sa.sql.select([user_sip_tbl]).where(sa.sql.and_(
-        user_sip_tbl.c.category == 'user',
-        user_sip_tbl.c.commented == 0,
-        user_sip_tbl.c.tenant_uuid == tenant_uuid,
-    ))
-    result = []
-
-    for row in op.get_bind().execute(query):
-        result.append(UserSIPLine.from_row(row))
-
-    return result
 
 
 def configure_tenant(

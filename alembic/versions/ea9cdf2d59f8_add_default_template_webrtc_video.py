@@ -20,11 +20,9 @@ from sqlalchemy.dialects.postgresql import UUID
 revision = "ea9cdf2d59f8"
 down_revision = "bf1aaa27b7f8"
 
-WEBRTC_VIDEO_COLUMN_NAME = "webrtc_video_sip_template_uuid"
-
-KV = namedtuple("KV", ["key", "value"])
-
 ALPHANUMERIC_POOL = string.ascii_lowercase + string.digits
+KV = namedtuple("KV", ["key", "value"])
+WEBRTC_VIDEO_COLUMN_NAME = "webrtc_video_sip_template_uuid"
 
 transport_option_tbl = sa.sql.table(
     "pjsip_transport_option",
@@ -166,7 +164,7 @@ def generate_unused_name():
 
 
 def find_wss_transport():
-    query = sa.sql.select([transport_option_tbl.c.pjsip_transport_uuid,]).where(
+    query = sa.sql.select([transport_option_tbl.c.pjsip_transport_uuid]).where(
         sa.sql.and_(
             transport_option_tbl.c.key == "protocol",
             transport_option_tbl.c.value == "wss",
@@ -216,11 +214,7 @@ def insert_section(endpoint_sip_uuid, type, options):
     return section_uuid
 
 
-def insert_endpoint_config(
-    tenant_uuid,
-    body,
-    parents=None,
-):
+def insert_endpoint_config(tenant_uuid, body, parents=None):
     aor_section_options = body.get("aor_section_options")
     auth_section_options = body.get("auth_section_options")
     endpoint_section_options = body.get("endpoint_section_options")
@@ -320,43 +314,48 @@ def configure_tenant(
 
     # 2. Find sip endpoint with matching params
     endpoint_uuids = []
-    endpoints = (sa.sql.select([endpoint_sip_tbl.c.uuid])
-                       .where(endpoint_sip_tbl.c.template == False)
-                       .where(endpoint_sip_tbl.c.tenant_uuid == tenant_uuid))
+    endpoints = (
+        sa.sql.select([endpoint_sip_tbl.c.uuid])
+        .where(endpoint_sip_tbl.c.template.is_(False))
+        .where(endpoint_sip_tbl.c.tenant_uuid == tenant_uuid)
+    )
 
     for endpoint in op.get_bind().execute(endpoints):
         endpoint_uuid = endpoint[0]
 
         # 2.1 Fetch endpoint_section
-        sections = (sa.sql.select([endpoint_sip_section_tbl.c.uuid])
-                           .where(endpoint_sip_section_tbl.c.type == 'endpoint')
-                           .where(endpoint_sip_section_tbl.c.endpoint_sip_uuid == endpoint_uuid))
+        sections = (
+            sa.sql.select([endpoint_sip_section_tbl.c.uuid])
+            .where(endpoint_sip_section_tbl.c.type == 'endpoint')
+            .where(endpoint_sip_section_tbl.c.endpoint_sip_uuid == endpoint_uuid)
+        )
 
         for section in op.get_bind().execute(sections):
             section_uuid = section[0]
 
             # 2.2 Fetch options
-            sections = (sa.sql.select([sa.func.count(endpoint_sip_section_option_tbl.c.key)])
-                                .where(
-                                    sql.or_(
-                                        sql.and_(
-                                            endpoint_sip_section_option_tbl.c.key == 'max_video_streams',
-                                            endpoint_sip_section_option_tbl.c.value == '25',
-                                        ),
-                                        sql.and_(
-                                            endpoint_sip_section_option_tbl.c.key == 'max_audio_streams',
-                                            endpoint_sip_section_option_tbl.c.value == '1',
-                                        ),
-                                    )
-                                )
-                                .where(endpoint_sip_section_option_tbl.c.endpoint_sip_section_uuid == section_uuid)
-                                .group_by(endpoint_sip_section_option_tbl.c.endpoint_sip_section_uuid))
+            sections = (
+                sa.sql.select([sa.func.count(endpoint_sip_section_option_tbl.c.key)])
+                .where(
+                    sql.or_(
+                        sql.and_(
+                            endpoint_sip_section_option_tbl.c.key == 'max_video_streams',
+                            endpoint_sip_section_option_tbl.c.value == '25',
+                        ),
+                        sql.and_(
+                            endpoint_sip_section_option_tbl.c.key == 'max_audio_streams',
+                            endpoint_sip_section_option_tbl.c.value == '1',
+                        ),
+                    )
+                )
+                .where(endpoint_sip_section_option_tbl.c.endpoint_sip_section_uuid == section_uuid)
+                .group_by(endpoint_sip_section_option_tbl.c.endpoint_sip_section_uuid)
+            )
 
             options_count = op.get_bind().execute(sections).scalar()
             # 2.3 Store endpoint uuid
             if options_count == 2:
                 endpoint_uuids.append(endpoint_uuid)
-
 
     # 3. Assign webrtc_video template to endpoints
     for endpoint_uuid in endpoint_uuids:
@@ -365,7 +364,6 @@ def configure_tenant(
             parent_uuid=webrtc_video_config["uuid"],
         )
         op.execute(query)
-
 
 
 def list_tenants(tenant_tbl):
@@ -427,7 +425,8 @@ def upgrade():
         )
 
     # 5. Delete options matching default params
-    delete_query = (endpoint_sip_section_option_tbl.delete()
+    delete_query = (
+        endpoint_sip_section_option_tbl.delete()
         .where(
             sql.or_(
                 sql.and_(
@@ -439,10 +438,10 @@ def upgrade():
                     endpoint_sip_section_option_tbl.c.value == '1',
                 ),
             )
-        ))
+        )
+    )
 
     op.get_bind().execute(delete_query)
-
 
 
 def downgrade():

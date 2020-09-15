@@ -211,6 +211,21 @@ def upgrade():
     query = (
         endpoint_sip_section_option_tbl
         .delete()
+        .where(endpoint_sip_section_option_tbl.c.uuid.in_(
+            sql.select([endpoint_sip_section_option_tbl.c.uuid])
+            .select_from(
+                endpoint_sip_section_option_tbl
+                .join(
+                    endpoint_sip_section_tbl,
+                    endpoint_sip_section_tbl.c.uuid == endpoint_sip_section_option_tbl.c.endpoint_sip_section_uuid,
+                )
+                .join(
+                    endpoint_sip_tbl,
+                    endpoint_sip_tbl.c.uuid == endpoint_sip_section_tbl.c.endpoint_sip_uuid,
+                )
+            )
+            .where(endpoint_sip_tbl.c.template.is_(False))
+        ))
         .where(
             sql.or_(
                 sql.and_(

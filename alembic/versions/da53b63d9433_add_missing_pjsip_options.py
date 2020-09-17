@@ -126,6 +126,8 @@ def insert_missing_options(name, options):
         return
 
     endpoint_uuid = find_endpoint_uuid(name)
+    if not endpoint_uuid:
+        return
 
     if options[IDENTIFY]:
         identify_section_uuid = find_or_create_section(endpoint_uuid, IDENTIFY)

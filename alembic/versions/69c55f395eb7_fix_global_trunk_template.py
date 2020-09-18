@@ -86,16 +86,7 @@ def rename_tenant_fk(old_name, new_name):
     old_fk_name = 'tenant_{}_fkey'.format(old_name)
     new_fk_name = 'tenant_{}_fkey'.format(new_name)
     table = 'tenant'
-    op.alter_column(
-        table,
-        old_name,
-        sa.ForeignKey(
-            'endpoint_sip.uuid',
-            ondelete='SET NULL',
-            name=old_fk_name,
-        ),
-        new_column_name=new_name,
-    )
+    op.alter_column(table, old_name, new_column_name=new_name)
     op.drop_constraint(
         constraint_name=old_fk_name,
         table_name=table,

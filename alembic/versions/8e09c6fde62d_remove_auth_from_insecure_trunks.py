@@ -33,27 +33,30 @@ endpoint_sip_section_tbl = sa.sql.table(
 
 
 def find_insecure_trunks():
-    query = sa.sql.select([
-        user_sip_tbl.c.name,
-    ]).where(sa.and_(
-        user_sip_tbl.c.category == 'trunk',
-        ~user_sip_tbl.c.insecure.is_(None)
-    ))
+    query = (
+        sa.sql.select([user_sip_tbl.c.name])
+        .where(
+            sa.and_(
+                user_sip_tbl.c.category == 'trunk',
+                ~user_sip_tbl.c.insecure.is_(None)
+            )
+        )
+    )
     rows = op.get_bind().execute(query)
     return [row.name for row in rows]
 
 
-def find_trunk_uuid(names):
-    query = sa.sql.select([
-        endpoint_sip_tbl.c.uuid,
-    ]).where(endpoint_sip_tbl.c.name.in_(names))
-    rows = op.get_bind().execute(query)
-    return [row.uuid for row in rows]
-
-
-def delete_auth_sections(endpoint_uuids):
-    query = endpoint_sip_section_tbl.delete().where(
-        endpoint_sip_section_tbl.c.endpoint_sip_uuid.in_(endpoint_uuids)
+def delete_auth_sections(endpoint_names):
+    query = (
+        endpoint_sip_section_tbl
+        .delete()
+        .where(endpoint_sip_section_tbl.c.type == 'auth')
+        .where(
+            endpoint_sip_section_tbl.c.endpoint_sip_uuid.in_(
+                sa.sql.select([endpoint_sip_tbl.c.uuid])
+                .where(endpoint_sip_tbl.c.name.in_(endpoint_names))
+            )
+        )
     )
     op.execute(query)
 
@@ -63,11 +66,7 @@ def upgrade():
     if not endpoint_names:
         return
 
-    endpoint_uuids = find_trunk_uuid(endpoint_names)
-    if not endpoint_uuids:
-        return
-
-    delete_auth_sections(endpoint_uuids)
+    delete_auth_sections(endpoint_names)
 
 
 def downgrade():

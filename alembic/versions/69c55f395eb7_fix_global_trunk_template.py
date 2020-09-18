@@ -99,6 +99,7 @@ def rename_tenant_fk(old_name, new_name):
         referent_table='endpoint_sip',
         local_cols=[new_name],
         remote_cols=['uuid'],
+        ondelete='SET NULL',
     )
 
 

@@ -75,7 +75,7 @@ def find_trunk_tenants(trunks):
 
 def rename_templates(template_uuids):
     query = endpoint_sip_tbl.update().values(
-        label='trunk_with_registration',
+        label='registration_trunk',
     ).where(
         endpoint_sip_tbl.c.uuid.in_(template_uuids),
     )
@@ -194,7 +194,7 @@ def upgrade():
     rename_templates(template_uuids)
     rename_tenant_fk(
         old_name='global_trunk_sip_template_uuid',
-        new_name='trunk_with_registration_sip_template_uuid',
+        new_name='registration_trunk_sip_template_uuid',
     )
     unassociated_trunks = remove_template_from_endpoint_without_registrations(template_uuids)
     associate_trunks_to_global_template(unassociated_trunks)
@@ -202,6 +202,6 @@ def upgrade():
 
 def downgrade():
     rename_tenant_fk(
-        old_name='trunk_with_registration_sip_template_uuid',
+        old_name='registration_trunk_sip_template_uuid',
         new_name='global_trunk_sip_template_uuid',
     )

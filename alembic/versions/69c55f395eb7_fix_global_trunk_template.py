@@ -24,6 +24,7 @@ endpoint_sip_tbl = sa.sql.table(
     'endpoint_sip',
     sa.sql.column('uuid'),
     sa.sql.column('label'),
+    sa.sql.column('template'),
     sa.sql.column('tenant_uuid'),
 )
 endpoint_sip_section_tbl = sa.sql.table(
@@ -101,39 +102,6 @@ def rename_tenant_fk(old_name, new_name):
     )
 
 
-def list_registration_sections():
-    query = sa.sql.select(
-
-        [endpoint_sip_section_tbl.c.uuid]
-    ).where(
-        sa.and_(
-            endpoint_sip_section_tbl.c.type == 'registration',
-        )
-    )
-    rows = op.get_bind().execute(query)
-    return [row.uuid for row in rows]
-
-
-def list_endpoints_with_registration_section(all_registration_sections):
-    query = sa.sql.select(
-        [endpoint_sip_section_option_tbl.c.endpoint_sip_section_uuid]
-    ).where(
-        endpoint_sip_section_option_tbl.c.endpoint_sip_section_uuid.in_(
-            all_registration_sections
-        )
-    ).distinct()
-    rows = op.get_bind().execute(query)
-    registration_sections_with_options = [row.endpoint_sip_section_uuid for row in rows]
-
-    query = sa.sql.select(
-        [endpoint_sip_section_tbl.c.endpoint_sip_uuid]
-    ).where(
-        endpoint_sip_section_tbl.c.uuid.in_(registration_sections_with_options)
-    ).distinct()
-    rows = op.get_bind().execute(query)
-    return [row.endpoint_sip_uuid for row in rows]
-
-
 def dissociate_endpoints_with_no_sections(to_dissociate, templates):
     query = endpoint_sip_template_tbl.delete().where(sa.and_(
         endpoint_sip_template_tbl.c.parent_uuid.in_(templates),
@@ -154,12 +122,27 @@ def find_trunks_to_dissociate(endpoints_with_registrations, template_uuids):
 
 
 def remove_template_from_endpoint_without_registrations(template_uuids):
-    registration_sections = list_registration_sections()
-    endpoints_with_registrations = list_endpoints_with_registration_section(registration_sections)
-    trunks_to_dissociate = find_trunks_to_dissociate(
-        endpoints_with_registrations,
-        template_uuids,
+    query = (
+        sa.sql.select([endpoint_sip_tbl.c.uuid])
+        .select_from(
+            endpoint_sip_tbl
+            .join(
+                endpoint_sip_section_tbl,
+                endpoint_sip_section_tbl.c.endpoint_sip_uuid == endpoint_sip_tbl.c.uuid,
+            )
+            .join(
+                endpoint_sip_section_option_tbl,
+                endpoint_sip_section_option_tbl.c.endpoint_sip_section_uuid == endpoint_sip_section_tbl.c.uuid,
+            )
+        )
+        .where(endpoint_sip_tbl.c.template.is_(False))
+        .where(endpoint_sip_section_tbl.c.type == 'registration')
+        .group_by(endpoint_sip_tbl.c.uuid)
     )
+    endpoints_with_registration = op.get_bind().execute(query)
+    endpoint_uuids = [endpoint.uuid for endpoint in endpoints_with_registration]
+
+    trunks_to_dissociate = find_trunks_to_dissociate(endpoint_uuids, template_uuids)
     dissociate_endpoints_with_no_sections(trunks_to_dissociate, template_uuids)
     return trunks_to_dissociate
 

@@ -99,6 +99,52 @@ def upgrade():
     rename_column_fk('stat_call_on_queue', 'queue_id', 'stat_queue_id', 'stat_queue')
     rename_column_fk('stat_agent_periodic', 'agent_id', 'stat_agent_id', 'stat_agent')
     rename_column_fk('stat_call_on_queue', 'agent_id', 'stat_agent_id', 'stat_agent')
+    op.execute('DROP FUNCTION IF EXISTS "fill_simple_calls" (text, text);')
+    op.execute("""
+CREATE FUNCTION "fill_simple_calls"(period_start text, period_end text)
+  RETURNS void AS
+$$
+  INSERT INTO "stat_call_on_queue" (callid, "time", stat_queue_id, status)
+    SELECT
+      callid,
+      CAST ("time" AS TIMESTAMP) as "time",
+      (SELECT id FROM stat_queue WHERE name=queuename) as stat_queue_id,
+      CASE WHEN event = 'FULL' THEN 'full'::call_exit_type
+           WHEN event = 'DIVERT_CA_RATIO' THEN 'divert_ca_ratio'
+           WHEN event = 'DIVERT_HOLDTIME' THEN 'divert_waittime'
+           WHEN event = 'CLOSED' THEN 'closed'
+           WHEN event = 'JOINEMPTY' THEN 'joinempty'
+      END as status
+    FROM queue_log
+    WHERE event IN ('FULL', 'DIVERT_CA_RATIO', 'DIVERT_HOLDTIME', 'CLOSED', 'JOINEMPTY') AND
+          "time" BETWEEN $1 AND $2;
+$$
+LANGUAGE SQL;
+               """)
+    op.execute('DROP FUNCTION IF EXISTS "fill_leaveempty_calls" (text, text);')
+    op.execute("""
+CREATE OR REPLACE FUNCTION "fill_leaveempty_calls" (period_start text, period_end text)
+  RETURNS void AS
+$$
+INSERT INTO stat_call_on_queue (callid, time, waittime, stat_queue_id, status)
+SELECT
+  callid,
+  enter_time as time,
+  EXTRACT(EPOCH FROM (leave_time - enter_time))::INTEGER as waittime,
+  stat_queue_id,
+  'leaveempty' AS status
+FROM (SELECT
+        CAST (time AS TIMESTAMP) AS enter_time,
+        (select CAST (time AS TIMESTAMP) from queue_log where callid=main.callid AND event='LEAVEEMPTY' LIMIT 1) AS leave_time,
+        callid,
+        (SELECT id FROM stat_queue WHERE name=queuename) AS stat_queue_id
+      FROM queue_log AS main
+      WHERE callid IN (SELECT callid FROM queue_log WHERE event = 'LEAVEEMPTY')
+            AND event = 'ENTERQUEUE'
+            AND time BETWEEN $1 AND $2) AS first;
+$$
+LANGUAGE SQL;
+               """)
 
 
 def downgrade():

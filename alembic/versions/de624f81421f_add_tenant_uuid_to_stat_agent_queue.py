@@ -145,6 +145,16 @@ def upgrade():
     _add_tenant_to_agents()
     _delete_agents_without_tenant()
     op.alter_column('stat_agent', 'tenant_uuid', nullable=False)
+    op.create_index(
+        index_name='stat_queue__idx_tenant_uuid',
+        table_name='stat_queue',
+        columns=['tenant_uuid'],
+    )
+    op.create_index(
+        index_name='stat_agent__idx_tenant_uuid',
+        table_name='stat_agent',
+        columns=['tenant_uuid'],
+    )
 
 
 def downgrade():

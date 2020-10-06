@@ -145,6 +145,15 @@ FROM (SELECT
 $$
 LANGUAGE SQL;
                """)
+    op.drop_index(
+        index_name='stat_agent_periodic__idx__agent_id',
+        table_name='stat_agent_periodic',
+    )
+    op.create_index(
+        index_name='stat_agent_periodic__idx__stat_agent_id',
+        table_name='stat_agent_periodic',
+        columns=['stat_agent_id'],
+    )
 
 
 def downgrade():

@@ -429,14 +429,14 @@ CREATE TYPE "queue_statistics" AS (
 ALTER TYPE "queue_statistics" OWNER TO asterisk;
 
 
-DROP FUNCTION IF EXISTS "fill_simple_calls" (text, text);
-CREATE FUNCTION "fill_simple_calls"(period_start text, period_end text)
+DROP FUNCTION IF EXISTS "fill_simple_calls" (timestamptz, timestamptz);
+CREATE FUNCTION "fill_simple_calls"(period_start timestamptz, period_end timestamptz)
   RETURNS void AS
 $$
   INSERT INTO "stat_call_on_queue" (callid, "time", stat_queue_id, status)
     SELECT
       callid,
-      CAST ("time" AS TIMESTAMP) as "time",
+      time,
       (SELECT id FROM stat_queue WHERE name=queuename) as stat_queue_id,
       CASE WHEN event = 'FULL' THEN 'full'::call_exit_type
            WHEN event = 'DIVERT_CA_RATIO' THEN 'divert_ca_ratio'
@@ -449,11 +449,11 @@ $$
           "time" BETWEEN $1 AND $2;
 $$
 LANGUAGE SQL;
-ALTER FUNCTION "fill_simple_calls" (period_start text, period_end text) OWNER TO asterisk;
+ALTER FUNCTION "fill_simple_calls" (period_start timestamptz, period_end timestamptz) OWNER TO asterisk;
 
 
-DROP FUNCTION IF EXISTS "fill_leaveempty_calls" (text, text);
-CREATE OR REPLACE FUNCTION "fill_leaveempty_calls" (period_start text, period_end text)
+DROP FUNCTION IF EXISTS "fill_leaveempty_calls" (timestamptz, timestamptz);
+CREATE OR REPLACE FUNCTION "fill_leaveempty_calls" (period_start timestamptz, period_end timestamptz)
   RETURNS void AS
 $$
 INSERT INTO stat_call_on_queue (callid, time, waittime, stat_queue_id, status)
@@ -464,8 +464,8 @@ SELECT
   stat_queue_id,
   'leaveempty' AS status
 FROM (SELECT
-        CAST (time AS TIMESTAMP) AS enter_time,
-        (select CAST (time AS TIMESTAMP) from queue_log where callid=main.callid AND event='LEAVEEMPTY' LIMIT 1) AS leave_time,
+        time AS enter_time,
+        (select time from queue_log where callid=main.callid AND event='LEAVEEMPTY' LIMIT 1) AS leave_time,
         callid,
         (SELECT id FROM stat_queue WHERE name=queuename) AS stat_queue_id
       FROM queue_log AS main
@@ -474,7 +474,7 @@ FROM (SELECT
             AND time BETWEEN $1 AND $2) AS first;
 $$
 LANGUAGE SQL;
-ALTER FUNCTION "fill_leaveempty_calls" (period_start text, period_end text) OWNER TO asterisk;
+ALTER FUNCTION "fill_leaveempty_calls" (period_start timestamptz, period_end timestamptz) OWNER TO asterisk;
 
 
 DROP FUNCTION IF EXISTS "get_queue_statistics" (text, int, int);

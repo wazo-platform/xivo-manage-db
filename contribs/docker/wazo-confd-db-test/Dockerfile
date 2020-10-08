@@ -1,4 +1,4 @@
-FROM wazopbx/wazo-confd-db
+FROM wazoplatform/wazo-confd-db
 LABEL maintainer="Wazo Maintainers <dev@wazo.community>"
 
 USER root

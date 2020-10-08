@@ -1,4 +1,4 @@
-FROM wazopbx/wazo-base-db
+FROM wazoplatform/wazo-base-db
 LABEL maintainer="Wazo Maintainers <dev@wazo.community>"
 
 COPY . /usr/src/xivo-manage-db

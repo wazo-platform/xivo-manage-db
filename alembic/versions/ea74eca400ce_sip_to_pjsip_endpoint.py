@@ -722,7 +722,7 @@ class OptionAccumulator(object):
         return
         yield
 
-    def _convert_deny(self, val):
+    def _convert_disallow(self, val):
         for codec in val.split(','):
             if not codec:
                 continue

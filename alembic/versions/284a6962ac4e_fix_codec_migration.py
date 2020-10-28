@@ -36,6 +36,7 @@ user_sip_tbl = sa.sql.table(
     sa.sql.column('options'),
 )
 
+
 class NoSuchEndpoint(Exception):
     pass
 
@@ -133,6 +134,7 @@ def upgrade():
             continue
 
         update_codecs(endpoint_name, original_codecs)
+
 
 def downgrade():
     pass

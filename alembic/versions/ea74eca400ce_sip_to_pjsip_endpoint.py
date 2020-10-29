@@ -514,7 +514,6 @@ class Registration(object):
         if hasattr(self, 'secret') and self.secret:
             self.auth_fields.append(('password', self.secret))
             self.auth_fields.append(('username', getattr(self, 'authuser', None) or self.user))
-            self.registration_fields.append(('outbound_auth', self.auth_section))
 
         client_uri = "sip:%s@" % self.user
         if self.domain:

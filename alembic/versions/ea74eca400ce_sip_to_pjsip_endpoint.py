@@ -713,6 +713,8 @@ class OptionAccumulator(object):
 
     def _convert_allow(self, val):
         for codec in val.split(','):
+            if not codec:
+                continue
             if codec == '!all':
                 self._codecs = ['!all']
             else:
@@ -720,8 +722,10 @@ class OptionAccumulator(object):
         return
         yield
 
-    def _convert_deny(self, val):
+    def _convert_disallow(self, val):
         for codec in val.split(','):
+            if not codec:
+                continue
             if codec == 'all':
                 self._codecs = ['!all']
             else:

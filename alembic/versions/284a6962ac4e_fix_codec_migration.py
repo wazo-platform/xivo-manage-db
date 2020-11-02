@@ -1,7 +1,7 @@
 """fix-codec-migration
 
 Revision ID: 284a6962ac4e
-Revises: f207de52e7d0
+Revises: 6fc79e30e8bf
 
 """
 
@@ -11,7 +11,7 @@ import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 revision = '284a6962ac4e'
-down_revision = 'f207de52e7d0'
+down_revision = '6fc79e30e8bf'
 
 endpoint_sip_tbl = sa.sql.table(
     'endpoint_sip',

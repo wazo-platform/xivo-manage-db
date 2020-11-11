@@ -38,8 +38,9 @@ user_sip_tbl = sa.sql.table(
 )
 
 def list_endpoints_with_no_codecs():
-    query = sa.sql.select([user_sip_tbl.c.name]).where(sa.sql.and_(
-        user_sip_tbl.c.allow != None,
+    query = sa.sql.select([user_sip_tbl.c.name]).where(sa.sql.or_(
+        user_sip_tbl.c.allow == None,
+        user_sip_tbl.c.allow == '',
     ))
     return [row.name for row in op.get_bind().execute(query)]
 

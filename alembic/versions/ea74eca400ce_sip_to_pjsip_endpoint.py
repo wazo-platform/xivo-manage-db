@@ -703,11 +703,8 @@ class OptionAccumulator(object):
 
     def get_options(self):
         options = self._accumulated
-        if 'allow' in self._valid_options:
-            if not self._codecs:
-                options.append(('allow', '!all,ulaw'))
-            else:
-                options.append(('allow', ','.join(self._codecs)))
+        if 'allow' in self._valid_options and self._codecs:
+            options.append(('allow', ','.join(self._codecs)))
         return options
 
     def _convert_allow(self, val):

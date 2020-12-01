@@ -1,5 +1,11 @@
 INSERT INTO "tenant" (uuid) VALUES ('eeeeeeee-eeee-eeee-eeee-eeeeeeeeeee1');
 
+INSERT INTO "endpoint_sip" (label, name, tenant_uuid, template) VALUES ('global', 'ewkxmwye', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeee1', true);
+INSERT INTO "endpoint_sip" (label, name, tenant_uuid, template) VALUES ('webrtc', 'foobar', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeee1', true);
+UPDATE "tenant" SET sip_templates_generated = true WHERE "uuid" = 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeee1';
+UPDATE "tenant" SET global_sip_template_uuid = (SELECT "uuid" FROM "endpoint_sip" WHERE "tenant_uuid" = 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeee1' AND "label" = 'global') WHERE "uuid" = 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeee1';
+UPDATE "tenant" SET webrtc_sip_template_uuid = (SELECT "uuid" FROM "endpoint_sip" WHERE "tenant_uuid" = 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeee1' AND "label" = 'webrtc') WHERE "uuid" = 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeee1';
+
 INSERT INTO "context" (name, displayname, contexttype, description, tenant_uuid)
 VALUES
 ('default', 'Default', 'internal', '', 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeee1'),

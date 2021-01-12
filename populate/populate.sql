@@ -16,7 +16,7 @@ INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*30.','extenfeature
 INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*37.','extenfeatures','bsfilter');
 INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*664.','extenfeatures','callgroup');
 INSERT INTO "extensions" VALUES (DEFAULT,1,'xivo-features','*34','extenfeatures','calllistening');
-INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*667.','extenfeatures','callmeetme');
+INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*667.','extenfeatures','callconference');
 INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*665.','extenfeatures','callqueue');
 INSERT INTO "extensions" VALUES (DEFAULT,1,'xivo-features','*26','extenfeatures','callrecord');
 INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*666.','extenfeatures','calluser');
@@ -256,14 +256,6 @@ INSERT INTO "staticiax" VALUES (DEFAULT,0,0,0,'iax.conf','general','parkinglot',
 INSERT INTO "staticiax" VALUES (DEFAULT,0,0,0,'iax.conf','general','maxcallnumbers',NULL);
 INSERT INTO "staticiax" VALUES (DEFAULT,0,0,0,'iax.conf','general','maxcallnumbers_nonvalidated',NULL);
 INSERT INTO "staticiax" VALUES (DEFAULT,0,0,0,'iax.conf','general','shrinkcallerid',NULL);
-
-
-INSERT INTO "staticmeetme" VALUES (DEFAULT,0,0,0,'meetme.conf','general','audiobuffers',32);
-INSERT INTO "staticmeetme" VALUES (DEFAULT,0,0,0,'meetme.conf','general','schedule','yes');
-INSERT INTO "staticmeetme" VALUES (DEFAULT,0,0,0,'meetme.conf','general','logmembercount','yes');
-INSERT INTO "staticmeetme" VALUES (DEFAULT,0,0,0,'meetme.conf','general','fuzzystart',300);
-INSERT INTO "staticmeetme" VALUES (DEFAULT,0,0,0,'meetme.conf','general','earlyalert',3600);
-INSERT INTO "staticmeetme" VALUES (DEFAULT,0,0,0,'meetme.conf','general','endalert',120);
 
 
 INSERT INTO "staticqueue" VALUES (DEFAULT,0,0,0,'queues.conf','general','persistentmembers','yes');

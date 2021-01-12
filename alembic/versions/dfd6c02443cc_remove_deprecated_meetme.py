@@ -137,6 +137,8 @@ def upgrade():
     op.execute('DROP TYPE meetmefeatures_mode;')
     op.execute('DROP TYPE meetmefeatures_announcejoinleave;')
     op.drop_table('phonefunckey')
+    op.execute('DROP TYPE phonefunckey_typeextenumbers;')
+    op.execute('DROP TYPE phonefunckey_typeextenumbersright;')
 
     # Remove meetme from enums
     query = dialaction_tbl.delete().where(dialaction_tbl.c.action == 'meetme')

@@ -14,12 +14,8 @@ INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*31.','extenfeature
 INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*32.','extenfeatures','agentstaticlogoff');
 INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*30.','extenfeatures','agentstaticlogtoggle');
 INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*37.','extenfeatures','bsfilter');
-INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*664.','extenfeatures','callgroup');
 INSERT INTO "extensions" VALUES (DEFAULT,1,'xivo-features','*34','extenfeatures','calllistening');
-INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*667.','extenfeatures','callconference');
-INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*665.','extenfeatures','callqueue');
 INSERT INTO "extensions" VALUES (DEFAULT,1,'xivo-features','*26','extenfeatures','callrecord');
-INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*666.','extenfeatures','calluser');
 INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','*36','extenfeatures','directoryaccess');
 INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','*25','extenfeatures','enablednd');
 INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','*90','extenfeatures','enablevm');

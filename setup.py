@@ -16,9 +16,9 @@ setup(
     packages=find_packages('.'),
     entry_points={
         'console_scripts': [
-            'xivo-check-db=xivo_db.bin.check_db:main',
-            'xivo-init-db=xivo_db.bin.init_db:main',
-            'xivo-update-db=xivo_db.bin.update_db:main',
+            'xivo-check-db=xivo_db.check_db:main',
+            'xivo-init-db=xivo_db.init_db:main',
+            'xivo-update-db=xivo_db.update_db:main',
         ],
     },
     scripts=[

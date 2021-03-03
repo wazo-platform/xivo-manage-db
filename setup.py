@@ -1,7 +1,6 @@
 #!/usr/bin/env python
-# Copyright 2014-2018 The Wazo Authors  (see the AUTHORS file)
+# Copyright 2014-2021 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0-or-later
-
 
 from setuptools import setup, find_packages
 
@@ -15,9 +14,15 @@ setup(
     url='http://wazo.community',
     license='GPLv3',
     packages=find_packages('.'),
-    scripts=['bin/pg-drop-db',
-             'bin/pg-populate-db',
-             'bin/xivo-check-db',
-             'bin/xivo-init-db',
-             'bin/xivo-update-db'],
+    entry_points={
+        'console_scripts': [
+            'xivo-check-db=xivo_db.bin.check_db:main',
+            'xivo-init-db=xivo_db.bin.init_db:main',
+            'xivo-update-db=xivo_db.bin.update_db:main',
+        ],
+    },
+    scripts=[
+        'bin/pg-drop-db',
+        'bin/pg-populate-db',
+    ],
 )

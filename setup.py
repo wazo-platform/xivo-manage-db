@@ -10,7 +10,7 @@ setup(
     version='0.1',
     description='Wazo DB LIB',
     author='Wazo Authors',
-    author_email='dev.wazo@gmail.com',
+    author_email='dev@wazo.community',
     url='http://wazo.community',
     license='GPLv3',
     packages=find_packages('.'),

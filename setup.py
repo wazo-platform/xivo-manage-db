@@ -22,7 +22,7 @@ setup(
         ],
     },
     scripts=[
-        'bin/pg-drop-db',
-        'bin/pg-populate-db',
+        'bin/pg-drop-db',  # TODO move to xivo-dbms
+        'bin/pg-populate-db',  # TODO find a pythonic way to do
     ],
 )

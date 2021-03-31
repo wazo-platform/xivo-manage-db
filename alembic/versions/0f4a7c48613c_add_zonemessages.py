@@ -5,24 +5,23 @@ Revises: e6c5e0410e89
 
 """
 
-import sqlalchemy as sa
-
 from alembic import op
 from pytz import country_timezones
+from sqlalchemy import sql
 
 
 # revision identifiers, used by Alembic.
 revision = '0f4a7c48613c'
 down_revision = 'e6c5e0410e89'
 
-staticvoicemail_tbl = sa.table(
+staticvoicemail_tbl = sql.table(
     'staticvoicemail',
-    sa.column('cat_metric'),
-    sa.column('commented'),
-    sa.column('filename'),
-    sa.column('category'),
-    sa.column('var_name'),
-    sa.column('var_val'),
+    sql.column('cat_metric'),
+    sql.column('commented'),
+    sql.column('filename'),
+    sql.column('category'),
+    sql.column('var_name'),
+    sql.column('var_val'),
 )
 
 SUPPORTED_COUNTRIES = (
@@ -60,16 +59,16 @@ def get_zones():
             yield {'name': zone_name, 'format': zone_format}
 
 
-def _zonemessage_exists(zonemessage):
-    query = staticvoicemail_tbl.select(sa.func.count(staticvoicemail_tbl.c.var_val)).where(
-        staticvoicemail_tbl.c.var_val == zonemessage['format']
+def _zonemessage_exists(zone_format):
+    query = sql.select([sql.func.count(staticvoicemail_tbl.c.var_val)]).where(
+        staticvoicemail_tbl.c.var_val == zone_format
     )
     return op.get_bind().execute(query).scalar() > 0
 
 
 def upgrade():
     for zone in get_zones():
-        if not _zonemessage_exists(zone):
+        if not _zonemessage_exists(zone['format']):
             query = staticvoicemail_tbl.insert().values(
                 cat_metric=1,
                 commented=0,

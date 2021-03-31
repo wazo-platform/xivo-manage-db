@@ -59,16 +59,24 @@ def get_zones():
             yield {'name': zone_name, 'format': zone_format}
 
 
+def _zonemessage_exists(zonemessage):
+    query = staticvoicemail_tbl.select(sa.func.count(staticvoicemail_tbl.c.var_val)).where(
+        staticvoicemail_tbl.c.var_val == zonemessage['format']
+    )
+    return op.get_bind().execute(query).scalar() > 0
+
+
 def upgrade():
     for zone in get_zones():
-        query = staticvoicemail_tbl.insert().values(
-            commented=0,
-            filename='voicemail.conf',
-            category='zonemessages',
-            var_name=zone['name'],
-            var_val=zone['format'],
-        )
-        op.get_bind().execute(query)
+        if not _zonemessage_exists(zone):
+            query = staticvoicemail_tbl.insert().values(
+                commented=0,
+                filename='voicemail.conf',
+                category='zonemessages',
+                var_name=zone['name'],
+                var_val=zone['format'],
+            )
+            op.get_bind().execute(query)
 
 
 def downgrade():

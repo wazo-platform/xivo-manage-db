@@ -55,7 +55,7 @@ def get_zones():
         for timezone in timezones:
             zone_name = f'{country_code}-{_timezone_name(timezone)}'.lower()
             # IMp is the AM/PM time format. We set it by default by choice.
-            zone_format = f"{timezone}|''vm-received'' q ''digits/at'' IMp"
+            zone_format = f"{timezone}|'vm-received' q 'digits/at' IMp"
             yield {'name': zone_name, 'format': zone_format}
 
 

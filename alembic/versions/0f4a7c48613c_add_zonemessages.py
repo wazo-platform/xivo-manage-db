@@ -17,6 +17,7 @@ down_revision = 'e6c5e0410e89'
 
 staticvoicemail_tbl = sa.table(
     'staticvoicemail',
+    sa.column('cat_metric'),
     sa.column('commented'),
     sa.column('filename'),
     sa.column('category'),
@@ -70,6 +71,7 @@ def upgrade():
     for zone in get_zones():
         if not _zonemessage_exists(zone):
             query = staticvoicemail_tbl.insert().values(
+                cat_metric=1,
                 commented=0,
                 filename='voicemail.conf',
                 category='zonemessages',

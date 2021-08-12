@@ -8,10 +8,12 @@ Revises: 06e9e3483fec
 from alembic import op
 import sqlalchemy as sa
 
+from sqlalchemy.types import Integer
+from sqlalchemy.schema import Column
 
 # revision identifiers, used by Alembic.
 revision = 'ba7c6bb897b3'
-down_revision = '06e9e3483fec'
+down_revision = 'ed40a90222f0'
 
 old_categories = (
     'callfilter',
@@ -33,6 +35,7 @@ dialaction_table = sa.sql.table('dialaction',
 
 
 def upgrade():
+    _add_timeout()
     _add_dialaction()
 
 
@@ -45,8 +48,13 @@ def _add_dialaction():
     tmp_type.drop(op.get_bind(), checkfirst=False)
 
 
+def _add_timeout():
+    op.add_column('switchboard', Column('timeout', Integer))
+
+
 def downgrade():
     _remove_dialaction()
+    _remove_timeout()
 
 
 def _remove_dialaction():
@@ -60,3 +68,7 @@ def _remove_dialaction():
     op.execute('ALTER TABLE dialaction ALTER COLUMN category TYPE dialaction_category USING category::text::dialaction_category')
 
     tmp_type.drop(op.get_bind(), checkfirst=False)
+
+
+def _remove_timeout():
+    op.drop_column('switchboard', 'timeout')

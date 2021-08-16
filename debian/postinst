@@ -40,7 +40,7 @@ case "$1" in
                 export ALEMBIC_DB_URI="postgresql://$db_app_username:$db_app_password@$db_host:$db_port/$db_app_name"
             fi
 
-            if ! $psql_cmd -tA asterisk --quiet -c "SELECT count(*) from userfeatures" > /dev/null; then
+            if ! $psql_cmd -tA asterisk --quiet -c "SELECT count(*) from infos" > /dev/null; then
                 xivo-init-db --init \
                 --pg_db_uri "$pg_db_uri" \
                 --owner "$db_app_username" \

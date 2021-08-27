@@ -24,7 +24,7 @@ old_categories = (
     'ivr',
     'ivr_choice',
 )
-new_categories = sorted(old_categories + ('switchboard',))
+new_categories = old_categories + ('switchboard',)
 
 new_type = sa.Enum(*new_categories, name='dialaction_category')
 old_type = sa.Enum(*old_categories, name='dialaction_category')

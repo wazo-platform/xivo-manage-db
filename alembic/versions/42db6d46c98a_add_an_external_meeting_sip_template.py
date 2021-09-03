@@ -88,6 +88,31 @@ def insert_meeting_guest_endpoint(tenant_uuid, webrtc_video_sip_template_uuid):
     endpoint_sip_uuid = op.get_bind().execute(query).scalar()
 
     query = (
+        endpoint_sip_section_tbl.insert()
+        .returning(endpoint_sip_section_tbl.c.uuid)
+        .values(
+            endpoint_sip_uuid=endpoint_sip_uuid,
+            type='aor',
+        )
+    )
+    aor_section_uuid = op.get_bind().execute(query).scalar()
+
+    options = [
+        ("max_contacts", "50"),
+    ]
+    for key, value in options:
+        query = (
+            endpoint_sip_section_option_tbl
+            .insert()
+            .values(
+                key=key,
+                value=value,
+                endpoint_sip_section_uuid=aor_section_uuid,
+            )
+        )
+        op.execute(query)
+
+    query = (
         endpoint_sip_template_tbl
         .insert()
         .values(

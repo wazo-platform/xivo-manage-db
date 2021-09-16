@@ -112,15 +112,16 @@ def insert_meeting_guest_endpoint(tenant_uuid, webrtc_video_sip_template_uuid):
         )
         op.execute(query)
 
-    query = (
-        endpoint_sip_template_tbl
-        .insert()
-        .values(
-            child_uuid=endpoint_sip_uuid,
-            parent_uuid=webrtc_video_sip_template_uuid,
+    if webrtc_video_sip_template_uuid:
+        query = (
+            endpoint_sip_template_tbl
+            .insert()
+            .values(
+                child_uuid=endpoint_sip_uuid,
+                parent_uuid=webrtc_video_sip_template_uuid,
+            )
         )
-    )
-    op.execute(query)
+        op.execute(query)
 
     return endpoint_sip_uuid
 

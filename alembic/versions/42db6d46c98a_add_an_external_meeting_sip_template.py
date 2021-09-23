@@ -164,7 +164,7 @@ def upgrade():
 
 
 def downgrade():
-    # 1. Drop templates webrtc_video
+    # 1. Drop templates meeting_guest
     query = (
         endpoint_sip_tbl
         .delete()

@@ -25,10 +25,10 @@ def upgrade():
             'tenant_uuid',
             sa.String(36),
             sa.ForeignKey('tenant.uuid', ondelete='CASCADE'),
+            unique=True,
             nullable=False,
         ),
     )
-    op.create_unique_constraint('ingress_http_tenant_uuid', 'ingress_http', ['tenant_uuid'])
 
 
 def downgrade():

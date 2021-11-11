@@ -184,8 +184,9 @@ VALUES (
                                 AND var_name = 'togglerecord')
 );
 
-INSERT INTO "moh" (uuid, name, mode, tenant_uuid) VALUES (
+INSERT INTO "moh" (uuid, name, label, mode, tenant_uuid) VALUES (
     uuid_generate_v4(),
+    'default',
     'default',
     'files',
     (SELECT "uuid" FROM "tenant" LIMIT 1)

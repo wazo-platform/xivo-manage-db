@@ -23,7 +23,8 @@ def upgrade():
     op.execute(
         moh.update().values(label=moh.c.name).where(moh.c.label.is_(None))
     )
+    op.alter_column('moh', 'label', nullable=False)
 
 
 def downgrade():
-    pass
+    op.alter_column('moh', 'label', nullable=True)

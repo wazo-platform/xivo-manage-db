@@ -1,7 +1,7 @@
 """add endpoint_sip materialized view
 
 Revision ID: 5ffaec7e8db7
-Revises: 035e2cb65b6d
+Revises: 61e3d7c65755
 
 """
 
@@ -11,11 +11,11 @@ from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.sql.functions import array_agg, func
 from sqlalchemy.dialects.postgresql.ext import aggregate_order_by
 
-from xivo_dao.helpers.db_views import DDLCreateView, DDLDropView
+from xivo_dao.helpers.db_views import CreateView, DropView
 
 # revision identifiers, used by Alembic.
 revision = '5ffaec7e8db7'
-down_revision = 'da06cfd76289'
+down_revision = '61e3d7c65755'
 
 
 def generate_view_selectable():
@@ -103,7 +103,7 @@ def generate_view_selectable():
 
 def upgrade():
     op.execute(
-        DDLCreateView('endpoint_sip_options_view', generate_view_selectable(), True)
+        CreateView('endpoint_sip_options_view', generate_view_selectable(), True)
     )
     op.create_index(
         'endpoint_sip_options_view__idx__root',
@@ -115,4 +115,4 @@ def upgrade():
 
 def downgrade():
     op.drop_index('endpoint_sip_options_view__idx__root', 'endpoint_sip_mv')
-    op.execute(DDLDropView("endpoint_sip_options_view", True))
+    op.execute(DropView("endpoint_sip_options_view", True))

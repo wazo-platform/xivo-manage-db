@@ -7,15 +7,42 @@ Revises: 61e3d7c65755
 
 from alembic import op
 import sqlalchemy as sa
-from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy.dialects.postgresql import JSONB, aggregate_order_by
+from sqlalchemy.ext import compiler
+from sqlalchemy.schema import DDLElement
 from sqlalchemy.sql.functions import array_agg, func
-from sqlalchemy.dialects.postgresql.ext import aggregate_order_by
 
-from xivo_dao.helpers.db_views import CreateView, DropView
 
 # revision identifiers, used by Alembic.
 revision = '5ffaec7e8db7'
 down_revision = '61e3d7c65755'
+
+
+class CreateMaterializedView(DDLElement):
+    def __init__(self, name, selectable):
+        self.name = name
+        self.selectable = selectable
+
+
+@compiler.compiles(CreateMaterializedView)
+def _compile_create_view(element, compiler, **kw):
+    name = compiler.dialect.identifier_preparer.quote(element.name)
+    selectable = compiler.sql_compiler.process(element.selectable, literal_binds=True)
+    return 'CREATE MATERIALIZED VIEW {} AS {}'.format(name, selectable)
+
+
+# Todo: Replace by SQLAlchemy-Utils when possible
+class DropMaterializedView(DDLElement):
+    def __init__(self, name, cascade=True):
+        self.name = name
+        self.cascade = cascade
+
+
+@compiler.compiles(DropMaterializedView)
+def _compile_drop_view(element, compiler, **kw):
+    name = compiler.dialect.identifier_preparer.quote(element.name)
+    cascade = 'CASCADE ' if element.cascade else ''
+    return 'DROP MATERIALIZED VIEW IF EXISTS {} {}'.format(name, cascade)
 
 
 def generate_view_selectable():
@@ -103,10 +130,10 @@ def generate_view_selectable():
 
 def upgrade():
     op.execute(
-        CreateView('endpoint_sip_options_view', generate_view_selectable(), True)
+        CreateMaterializedView('endpoint_sip_options_view', generate_view_selectable())
     )
     op.create_index(
-        'endpoint_sip_options_view__idx__root',
+        'endpoint_sip_options_view__idx_root',
         'endpoint_sip_options_view',
         ['root'],
         unique=True,
@@ -114,5 +141,5 @@ def upgrade():
 
 
 def downgrade():
-    op.drop_index('endpoint_sip_options_view__idx__root', 'endpoint_sip_mv')
-    op.execute(DropView("endpoint_sip_options_view", True))
+    op.drop_index('endpoint_sip_options_view__idx_root', 'endpoint_sip_mv')
+    op.execute(DropMaterializedView('endpoint_sip_options_view'))

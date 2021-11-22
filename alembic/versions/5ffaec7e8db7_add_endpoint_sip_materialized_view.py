@@ -31,7 +31,7 @@ def _compile_create_view(element, compiler, **kw):
     return 'CREATE MATERIALIZED VIEW {} AS {}'.format(name, selectable)
 
 
-# Todo: Replace by SQLAlchemy-Utils when possible
+# TODO: Replace by SQLAlchemy-Utils when possible
 class DropMaterializedView(DDLElement):
     def __init__(self, name, cascade=True):
         self.name = name

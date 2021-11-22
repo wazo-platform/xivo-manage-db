@@ -1,7 +1,7 @@
 """add endpoint_sip materialized view
 
 Revision ID: 5ffaec7e8db7
-Revises: 61e3d7c65755
+Revises: 51ebe7954da8
 
 """
 
@@ -15,7 +15,7 @@ from sqlalchemy.sql.functions import array_agg, func
 
 # revision identifiers, used by Alembic.
 revision = '5ffaec7e8db7'
-down_revision = '61e3d7c65755'
+down_revision = '51ebe7954da8'
 
 
 class CreateMaterializedView(DDLElement):

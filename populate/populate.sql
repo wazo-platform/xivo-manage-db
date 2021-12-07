@@ -39,6 +39,7 @@ INSERT INTO "extensions" VALUES (DEFAULT,1,'xivo-features','_*92.','extenfeature
 INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*96.','extenfeatures','vmuserslt');
 INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*11.','extenfeatures','paging');
 INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','*40','extenfeatures','cctoggle');
+INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*41.','extenfeatures','meetingjoin');
 INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*50.','extenfeatures','groupmembertoggle');
 INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*51.','extenfeatures','groupmemberjoin');
 INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*52.','extenfeatures','groupmemberleave');

@@ -578,6 +578,6 @@ INSERT INTO "provisioning" VALUES(DEFAULT, '', 0, 8667);
 
 /* The UUID "populate-uuid" will be replaced by pg-populate-db */
 /* The version is bumped automatically during the release process */
-INSERT INTO "infos" (uuid, wazo_version, live_reload_enabled, timezone, configured) VALUES ('populate-uuid', '21.16', 'True', 'Europe/Paris', 'False');
+INSERT INTO "infos" (uuid, wazo_version, live_reload_enabled, timezone, configured) VALUES ('populate-uuid', '22.01', 'True', 'Europe/Paris', 'False');
 
 COMMIT;

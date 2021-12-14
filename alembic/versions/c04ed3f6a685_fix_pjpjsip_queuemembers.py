@@ -1,7 +1,7 @@
 """fix PJPJSIP queuemembers
 
 Revision ID: c04ed3f6a685
-Revises: 93ea61395eef
+Revises: 785b8cb74daa
 
 """
 
@@ -11,7 +11,7 @@ import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 revision = 'c04ed3f6a685'
-down_revision = '93ea61395eef'
+down_revision = '785b8cb74daa'
 
 queuemember_tbl = sa.sql.table(
     'queuemember',

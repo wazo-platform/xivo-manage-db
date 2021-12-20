@@ -6,7 +6,6 @@ Revises: b7d3c4701095
 """
 
 from alembic import op
-import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
@@ -18,7 +17,7 @@ def upgrade():
     op.create_unique_constraint(
         'meeting_number_tenant_uuid_key',
         'meeting',
-        ['tenant_uuid', 'number'],
+        ['number', 'tenant_uuid'],
     )
 
 

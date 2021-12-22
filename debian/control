@@ -17,8 +17,8 @@ Depends: ${python3:Depends},
          python3-unidecode,
          systemd,
          sudo,
+         wazo-dbms,
          wazo-uuid,
-         xivo-dbms (>= 19.07~20190429.122922.25c3757.deb9),
          xivo-lib-python-python3,
          xivo-libdao-python3
 Description: Wazo database tools manager

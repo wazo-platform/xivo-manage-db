@@ -13,7 +13,7 @@ xivo-manage-db:
 
 Then you can build wazo-confd-db-test:
 
-    docker build -t wazoplatform/wazo-confd-db-test -f contribs/wazo-confd-db-test/Dockerfile .
+    docker build -t wazoplatform/wazo-confd-db-test -f contribs/docker/wazo-confd-db-test/Dockerfile .
 
 ## Using the image
 

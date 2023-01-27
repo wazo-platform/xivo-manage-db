@@ -1,7 +1,7 @@
 """add notify_early_inuse_ringing option to global sip endoint templates
 
 Revision ID: 1264fdcb3e71
-Revises: 0269f5e35792
+Revises: f3e76222b5c9
 
 """
 
@@ -11,7 +11,7 @@ import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 revision = '1264fdcb3e71'
-down_revision = '0269f5e35792'
+down_revision = 'f3e76222b5c9'
 
 tenant_tbl = sa.sql.table(
     'tenant',
@@ -42,6 +42,7 @@ endpoint_sip_section_option_tbl = sa.sql.table(
 def find_sip_endoint_template_sections():
     query = sa.sql.select([endpoint_sip_section_tbl.c.uuid]).where(
         sa.and_(
+            tenant_tbl.c.global_sip_template_uuid == endpoint_sip_section_tbl.c.endpoint_sip_uuid,
             endpoint_sip_tbl.c.template.is_(True),
             endpoint_sip_section_tbl.c.endpoint_sip_uuid == endpoint_sip_tbl.c.uuid,
             endpoint_sip_section_tbl.c.type == 'endpoint',

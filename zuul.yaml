@@ -1,4 +1,4 @@
 - project:
     templates:
-      - debian-packaging-template
-      - wazo-tox-py37
+      - wazo-tox-py39
+      - debian-packaging-bullseye

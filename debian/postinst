@@ -6,10 +6,6 @@ set -e
 
 case "$1" in
     configure)
-        # In wazo 18.07 we completely remove the old migration system
-        rm -f /var/lib/xivo-manage-db
-        rm -rf /usr/share/xivo-manage-db/migration
-
         db_get xivo-manage-db/db-skip
         db_skip="$RET"
         if [ "$db_skip" = "false" ] ; then
@@ -48,18 +44,6 @@ case "$1" in
                 --db "$db_app_name" \
                 --app_db_uri "$app_db_uri"
             fi
-
-            previous_version="$2"
-            if [[ -z "${previous_version}" ]]; then
-                $psql_cmd -c 'create extension if not exists pgcrypto;' asterisk > /dev/null
-            fi
-            if [[ -z "${previous_version}" ]]; then
-                $psql_cmd -c 'create extension if not exists "uuid-ossp";' asterisk > /dev/null
-            fi
-            if dpkg --compare-versions "$previous_version" lt "19.17"; then
-                $psql_cmd -c 'create extension if not exists "unaccent";' asterisk > /dev/null
-            fi
-
             xivo-update-db
         fi
     ;;

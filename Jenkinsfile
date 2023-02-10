@@ -12,22 +12,29 @@ pipeline {
     stage('Debian build and deploy') {
       steps {
         build job: 'build-package-no-arch', parameters: [
-          string(name: 'PACKAGE', value: "${JOB_NAME}"),
+          string(name: 'PACKAGE', value: "xivo-manage-db"),
+          string(name: "BRANCH", value: "bullseye"),
+          string(name: "DISTRIBUTION", value: "wazo-dev-wip-bullseye"),
         ]
       }
     }
     stage('Docker build') {
       steps {
-        sh "docker build --no-cache -t wazoplatform/wazo-base-db:latest -f contribs/docker/wazo-base-db/Dockerfile contribs/docker/wazo-base-db"
-        sh "docker build --no-cache -t wazoplatform/wazo-confd-db:latest ."
-        sh "docker build --no-cache -t wazoplatform/wazo-confd-db-test:latest -f contribs/docker/wazo-confd-db-test/Dockerfile ."
+        sh "sed -i 's/master.zip/bullseye.zip/g' requirements.txt"
+        sh "sed -i 's/master.zip/bullseye.zip/g' contribs/docker/wazo-base-db/Dockerfile"
+        sh "sed -i 's|wazoplatform/wazo-base-db|wazoplatform/wazo-base-db:bullseye|g' Dockerfile"
+        sh "sed -i 's|wazoplatform/wazo-confd-db|wazoplatform/wazo-confd-db:bullseye|g' contribs/docker/wazo-confd-db-test/Dockerfile"
+        sh "docker build --no-cache -t wazoplatform/wazo-base-db:bullseye -f contribs/docker/wazo-base-db/Dockerfile contribs/docker/wazo-base-db"
+        sh "docker build --no-cache -t wazoplatform/wazo-confd-db:bullseye ."
+        sh "docker build --no-cache -t wazoplatform/wazo-confd-db-test:bullseye -f contribs/docker/wazo-confd-db-test/Dockerfile ."
+        sh "git reset --hard"
       }
     }
     stage('Docker publish') {
       steps {
-        sh "docker push wazoplatform/wazo-base-db:latest"
-        sh "docker push wazoplatform/wazo-confd-db:latest"
-        sh "docker push wazoplatform/wazo-confd-db-test:latest"
+        sh "docker push wazoplatform/wazo-base-db:bullseye"
+        sh "docker push wazoplatform/wazo-confd-db:bullseye"
+        sh "docker push wazoplatform/wazo-confd-db-test:bullseye"
       }
     }
   }

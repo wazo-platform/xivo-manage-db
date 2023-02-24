@@ -15,9 +15,9 @@ RUN true \
     && locale-gen C.UTF-8  \
     && /usr/sbin/update-locale LANG=C.UTF-8 \
     && apt-get -yq install --no-install-recommends $PG_PACKAGES \
-    && echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/11/main/pg_hba.conf \
-    && echo "listen_addresses='*'" >> /etc/postgresql/11/main/postgresql.conf \
-    && mkdir -p /run/postgresql/11-main.pg_stat_tmp \
+    && echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/13/main/pg_hba.conf \
+    && echo "listen_addresses='*'" >> /etc/postgresql/13/main/postgresql.conf \
+    && mkdir -p /run/postgresql/13-main.pg_stat_tmp \
     && chown -R postgres:postgres /run/postgresql \
     && apt-get -yq install --no-install-recommends $BUILD_PACKAGES \
     && pip install $PYTHON_PACKAGES \
@@ -26,4 +26,4 @@ RUN true \
 COPY ./pg_start ./pg_stop /usr/local/bin/
 
 EXPOSE 5432
-CMD ["/usr/lib/postgresql/11/bin/postgres", "-D", "/var/lib/postgresql/11/main", "--config-file=/etc/postgresql/11/main/postgresql.conf"]
+CMD ["/usr/lib/postgresql/13/bin/postgres", "-D", "/var/lib/postgresql/13/main", "--config-file=/etc/postgresql/13/main/postgresql.conf"]

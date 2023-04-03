@@ -110,7 +110,6 @@ def upgrade():
     op.create_index('usercustom__idx__tenant_uuid', 'usercustom', ['tenant_uuid'])
     op.create_index('userfeatures__idx__tenant_uuid', 'userfeatures', ['tenant_uuid'])
     op.create_index('useriax__idx__tenant_uuid', 'useriax', ['tenant_uuid'])
-    op.create_index('usersip__idx__tenant_uuid', 'usersip', ['tenant_uuid'])
 
 
 def downgrade():
@@ -209,4 +208,3 @@ def downgrade():
     op.drop_index('usercustom__idx__tenant_uuid')
     op.drop_index('userfeatures__idx__tenant_uuid')
     op.drop_index('useriax__idx__tenant_uuid')
-    op.drop_index('usersip__idx__tenant_uuid')

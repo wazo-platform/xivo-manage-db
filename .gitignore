@@ -2,6 +2,6 @@
 .tox
 .coverage
 coverage.xml
-nosetests.xml
+unit-tests.xml
 pycodestyle.txt
 pylint.txt

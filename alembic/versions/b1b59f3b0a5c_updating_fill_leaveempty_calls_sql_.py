@@ -50,7 +50,7 @@ leave_call as (
     SELECT main.id, main.callid, main.time AS leave_time, main.queuename, 
         (SELECT time FROM queue_log 
         WHERE callid = main.callid AND queuename = main.queuename 
-        AND time < main.time AND event = 'ENTERQUEUE' 
+        AND time <= main.time AND event = 'ENTERQUEUE' 
         ORDER BY time DESC LIMIT 1) AS enter_time, 
         stat_queue.id as stat_queue_id 
     FROM queue_log AS main 

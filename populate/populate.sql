@@ -513,28 +513,36 @@ ALTER FUNCTION "fill_simple_calls" (period_start timestamptz, period_end timesta
 
 DROP FUNCTION IF EXISTS "fill_leaveempty_calls" (timestamptz, timestamptz);
 CREATE OR REPLACE FUNCTION "fill_leaveempty_calls" (period_start timestamptz, period_end timestamptz)
-  RETURNS void AS
+RETURNS void AS
 $$
+WITH 
+leave_call as (
+    SELECT main.id, main.callid, main.time AS leave_time, main.queuename, 
+        (SELECT time FROM queue_log 
+        WHERE callid = main.callid AND queuename = main.queuename 
+        AND time < main.time AND event = 'ENTERQUEUE' 
+        ORDER BY time DESC LIMIT 1) AS enter_time, 
+        stat_queue.id as stat_queue_id 
+    FROM queue_log AS main 
+    LEFT JOIN stat_queue ON stat_queue.name = main.queuename
+    WHERE event='LEAVEEMPTY'
+),
+leave_call_in_range AS (
+    SELECT *
+    FROM leave_call
+    WHERE enter_time BETWEEN $1 AND $2 
+)
 INSERT INTO stat_call_on_queue (callid, time, waittime, stat_queue_id, status)
 SELECT
-  callid,
-  enter_time as time,
-  EXTRACT(EPOCH FROM (leave_time - enter_time))::INTEGER as waittime,
-  stat_queue_id,
-  'leaveempty' AS status
-FROM (SELECT
-        time AS enter_time,
-        (select time from queue_log where callid=main.callid AND event='LEAVEEMPTY' LIMIT 1) AS leave_time,
-        callid,
-        (SELECT id FROM stat_queue WHERE name=queuename) AS stat_queue_id
-      FROM queue_log AS main
-      WHERE callid IN (SELECT callid FROM queue_log WHERE event = 'LEAVEEMPTY')
-            AND event = 'ENTERQUEUE'
-            AND time BETWEEN $1 AND $2) AS first;
+    callid,
+    enter_time AS time,
+    EXTRACT(EPOCH FROM (leave_time - enter_time))::INTEGER AS waittime,
+    stat_queue_id,
+    'leaveempty' AS status
+FROM leave_call_in_range;
 $$
 LANGUAGE SQL;
 ALTER FUNCTION "fill_leaveempty_calls" (period_start timestamptz, period_end timestamptz) OWNER TO asterisk;
-
 
 DROP FUNCTION IF EXISTS "set_agent_on_pauseall" ();
 CREATE FUNCTION "set_agent_on_pauseall" ()

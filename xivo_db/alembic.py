@@ -1,48 +1,53 @@
-# Copyright 2014-2019 The Wazo Authors  (see the AUTHORS file)
+# Copyright 2014-2023 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0-or-later
+from __future__ import annotations
 
 import re
-import collections
 import subprocess
+from typing import NamedTuple, Any
+
 from xivo_db import path
 from xivo_db.exception import DBError
 
-_AlembicCurrentStatus = collections.namedtuple('_AlembicCurrentStatus', ['revision', 'is_head'])
+
+class _AlembicCurrentStatus(NamedTuple):
+    revision: str
+    is_head: bool
 
 
-def check_db():
+def check_db() -> None:
     print('Checking database...')
-    p = _new_alembic_popen(['current'], stdout=subprocess.PIPE)
+    p = _new_alembic_popen(['current'], stdout=subprocess.PIPE, text=True)
     output = p.communicate()[0]
     if p.returncode:
-        raise Exception('alembic command returned %s' % p.returncode)
+        raise Exception(f'alembic command returned {p.returncode}')
 
-    status = _parse_alembic_current_output(output.decode('utf-8'))
+    status = _parse_alembic_current_output(output)
     if status.is_head:
         status_msg = 'OK'
     else:
-        status_msg = 'NOK (current revision is %s)' % status.revision
-    print('\t%s' % status_msg)
+        status_msg = f'NOK (current revision is {status.revision})'
+    print(f'\t{status_msg}')
 
 
-def _parse_alembic_current_output(output):
-    mobj = re.match(r'^(\w+)( \(head\))?$', output)
-    if not mobj:
-        raise Exception('not a valid alembic current output: %r' % output)
+def _parse_alembic_current_output(output: str) -> _AlembicCurrentStatus:
+    match = re.match(r'^(\w+)( \(head\))?$', output)
+    if not match:
+        raise Exception(f'not a valid alembic current output: {output!r}')
 
-    return _AlembicCurrentStatus(mobj.group(1), True if mobj.group(2) else False)
+    return _AlembicCurrentStatus(match.group(1), True if match.group(2) else False)
 
 
-def update_db():
+def update_db() -> None:
     if _new_alembic_popen(['upgrade', 'head']).wait():
         raise DBError()
 
 
-def stamp_head():
+def stamp_head() -> None:
     if _new_alembic_popen(['stamp', 'head']).wait():
         raise DBError()
 
 
-def _new_alembic_popen(args, **kwargs):
+def _new_alembic_popen(args: list[str], **kwargs: Any) -> subprocess.Popen:
     args = ['alembic'] + args
     return subprocess.Popen(args, cwd=path.USR_SHARE, **kwargs)

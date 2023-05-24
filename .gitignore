@@ -1,6 +1,7 @@
 *.pyc
 .tox
 .coverage
+.mypy_cache
 coverage.xml
 unit-tests.xml
 pycodestyle.txt

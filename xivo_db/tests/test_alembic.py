@@ -1,4 +1,4 @@
-# Copyright (C) 2014 Avencall
+# Copyright 2014-2023 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import unittest
@@ -7,7 +7,6 @@ from xivo_db import alembic
 
 
 class TestAlembic(unittest.TestCase):
-
     def test_parse_alembic_current_output_no_head(self):
         output = '57cca045b7d4\n'
 

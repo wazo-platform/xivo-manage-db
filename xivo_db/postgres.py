@@ -1,5 +1,6 @@
-# Copyright 2014-2020 The Wazo Authors  (see the AUTHORS file)
+# Copyright 2014-2023 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0-or-later
+from __future__ import annotations
 
 import time
 import sys
@@ -9,6 +10,8 @@ from pwd import getpwnam
 
 import subprocess
 import getpass
+from typing import TypeVar, Callable, Any
+
 import psycopg2
 
 from wazo_uuid.uuid_ import get_wazo_uuid
@@ -16,22 +19,26 @@ from xivo import db_helper
 from xivo_db import path
 from xivo_db.exception import DBError
 
+RT = TypeVar('RT')
 
-def run_as(user_name):
-    def wrapper(f):
-        def decorator(*args, **kwargs):
+
+def run_as(user_name: str) -> Callable[[Callable[..., RT]], Callable[..., RT]]:
+    def wrapper(f: Callable[..., RT]) -> Callable[..., RT]:
+        def decorator(*args: Any, **kwargs: Any) -> RT:
             starting_uid = os.geteuid()
             user = getpwnam(user_name)
             os.seteuid(user.pw_uid)
             res = f(*args, **kwargs)
             os.seteuid(starting_uid)
             return res
+
         return decorator
+
     return wrapper
 
 
 @run_as('postgres')
-def init_db(db_name, db_user, db_user_password, pg_db_uri):
+def init_db(db_name: str, db_user: str, db_user_password: str, pg_db_uri: str) -> None:
     for _ in range(40):
         try:
             conn = psycopg2.connect(pg_db_uri)
@@ -53,21 +60,25 @@ def init_db(db_name, db_user, db_user_password, pg_db_uri):
 
 
 @run_as('postgres')
-def enable_extension(extension, app_db_uri):
+def enable_extension(extension: str, app_db_uri: str) -> None:
     with psycopg2.connect(app_db_uri) as conn:
         with conn.cursor() as cursor:
-            cursor.execute('CREATE EXTENSION IF NOT EXISTS "{}"'.format(extension))
+            cursor.execute(f'CREATE EXTENSION IF NOT EXISTS "{extension}"')
 
 
-def drop_db(pg_db_uri, app_db_name):
-    _call_as_postgres(path.PG_DROP_DB.format(pg_db_uri=pg_db_uri, app_db_name=app_db_name))
+def drop_db(pg_db_uri: str, app_db_name: str) -> None:
+    _call_as_postgres(
+        path.PG_DROP_DB.format(pg_db_uri=pg_db_uri, app_db_name=app_db_name)
+    )
 
 
-def populate_db(app_db_uri):
-    _call_as_postgres(path.PG_POPULATE_DB.format(wazo_uuid=get_wazo_uuid(), app_db_uri=app_db_uri))
+def populate_db(app_db_uri: str) -> None:
+    _call_as_postgres(
+        path.PG_POPULATE_DB.format(wazo_uuid=get_wazo_uuid(), app_db_uri=app_db_uri)
+    )
 
 
-def _call_as_postgres(pathname):
+def _call_as_postgres(pathname: str) -> None:
     user = 'postgres'
     if getpass.getuser() == user:
         args = [pathname]

@@ -28,7 +28,7 @@ class CreateMaterializedView(DDLElement):
 def _compile_create_view(element, compiler, **kw):
     name = compiler.dialect.identifier_preparer.quote(element.name)
     selectable = compiler.sql_compiler.process(element.selectable, literal_binds=True)
-    return 'CREATE MATERIALIZED VIEW {} AS {}'.format(name, selectable)
+    return f'CREATE MATERIALIZED VIEW {name} AS {selectable}'
 
 
 # TODO: Replace by SQLAlchemy-Utils when possible
@@ -42,7 +42,7 @@ class DropMaterializedView(DDLElement):
 def _compile_drop_view(element, compiler, **kw):
     name = compiler.dialect.identifier_preparer.quote(element.name)
     cascade = 'CASCADE ' if element.cascade else ''
-    return 'DROP MATERIALIZED VIEW IF EXISTS {} {}'.format(name, cascade)
+    return f'DROP MATERIALIZED VIEW IF EXISTS {name} {cascade}'
 
 
 def generate_view_selectable():

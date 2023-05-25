@@ -74,7 +74,7 @@ def _update_sources(conn, column_info):
 
         source_fields = column_info['source_fields']
         for field in fields:
-            old_field = '{%s}' % field.fieldname
+            old_field = f'{{{field.fieldname}}}'
             new_field = field.value
             source_fields = source_fields.replace(old_field, new_field)
 

@@ -75,12 +75,10 @@ def upgrade():
         if transport_name in configured_transport_names:
             continue
 
-        new_name = 'transport-{}'.format(transport_name)
+        new_name = f'transport-{transport_name}'
         if new_name not in configured_transport_names:
             raise Exception(
-                'cannot migrate the SIP register {} no matching transport {}'.format(
-                    url, configured_transport_names
-                )
+                f'cannot migrate the SIP register {url} no matching transport {configured_transport_names}'
             )
 
         new_url = url.replace(transport_name, new_name, 1)

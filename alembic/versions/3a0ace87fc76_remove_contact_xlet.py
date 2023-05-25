@@ -42,7 +42,7 @@ def find_profile_with_xlet(xlet_id):
             profile_xlet_table.c.xlet_id == xlet_id
         ))
 
-    return list(set(row.profile_id for row in rows))
+    return list({row.profile_id for row in rows})
 
 
 def substitute_xlet(profile_ids, from_id, to_id):

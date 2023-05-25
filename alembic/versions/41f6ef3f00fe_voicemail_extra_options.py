@@ -131,7 +131,7 @@ def upgrade():
     for name in OPTIONS:
         op.drop_column('voicemail', name)
     for enum in ('voicemail_hidefromdir', 'voicemail_passwordlocation'):
-        op.execute("DROP TYPE IF EXISTS {}".format(enum))
+        op.execute(f"DROP TYPE IF EXISTS {enum}")
 
 
 def convert_options(row):

@@ -39,12 +39,11 @@ def _modify_extenumbers_type():
 
 
 def _modify_type(type_, *table_and_columns):
-    op.execute('ALTER TYPE {type_name} RENAME TO tmp_{type_name}'.format(type_name=type_.name))
+    op.execute(f'ALTER TYPE {type_.name} RENAME TO tmp_{type_.name}')
     type_.create(op.get_bind())
     for table, column in table_and_columns:
-        op.execute('ALTER TABLE {table_name} ALTER COLUMN {column_name} TYPE {type_name} USING {column_name}::text::{type_name}'.format(
-            type_name=type_.name, table_name=table, column_name=column))
-    op.execute('DROP TYPE tmp_{type_name}'.format(type_name=type_.name))
+        op.execute(f'ALTER TABLE {table} ALTER COLUMN {column} TYPE {type_.name} USING {column}::text::{type_.name}')
+    op.execute(f'DROP TYPE tmp_{type_.name}')
 
 
 def downgrade():

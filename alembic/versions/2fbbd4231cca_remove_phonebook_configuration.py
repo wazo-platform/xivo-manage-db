@@ -40,7 +40,7 @@ def list_cti_directories(conn, type_):
 
 
 def remove_from_direct_directories(conn, name):
-    query = sql.select([cti_contexts]).where(cti_contexts.c.directories.ilike('%{}%'.format(name)))
+    query = sql.select([cti_contexts]).where(cti_contexts.c.directories.ilike(f'%{name}%'))
     for context in conn.execute(query):
         directories = context.directories.split(',')
         if name not in directories:
@@ -53,7 +53,7 @@ def remove_from_direct_directories(conn, name):
 
 
 def remove_from_reverse_directories(conn, name):
-    query = sql.select([cti_reverse]).where(cti_reverse.c.directories.ilike('%{}%'.format(name)))
+    query = sql.select([cti_reverse]).where(cti_reverse.c.directories.ilike(f'%{name}%'))
     for reverse in conn.execute(query):
         directories = json.loads(reverse.directories)
         if name not in directories:

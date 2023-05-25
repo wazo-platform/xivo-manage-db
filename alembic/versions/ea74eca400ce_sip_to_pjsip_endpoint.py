@@ -384,7 +384,7 @@ user_sip_tbl = sa.sql.table(
 # https://raw.githubusercontent.com/asterisk/asterisk/master/contrib/scripts/sip_to_pjsip/sip_to_pjsip.py
 
 
-class Registration(object):
+class Registration:
     """
     Class for parsing and storing information in a register line in sip.conf.
     """
@@ -515,7 +515,7 @@ class Registration(object):
             self.auth_fields.append(('password', self.secret))
             self.auth_fields.append(('username', getattr(self, 'authuser', None) or self.user))
 
-        client_uri = "sip:%s@" % self.user
+        client_uri = f"sip:{self.user}@"
         if self.domain:
             client_uri += self.domain
         else:
@@ -527,25 +527,19 @@ class Registration(object):
             client_uri += ":" + self.port
         self.registration_fields.append(('client_uri', client_uri))
 
-        server_uri = "sip:%s" % self.host
+        server_uri = f"sip:{self.host}"
         if self.port:
             server_uri += ":" + self.port
         self.registration_fields.append(('server_uri', server_uri))
 
 
-class UserSIP(object):
+class UserSIP:
 
     twilio_incoming = False
     registration = None
 
     def __repr__(self):
-        return '{}({}, {}, {}, {})'.format(
-            self.__class__.__name__,
-            self.id,
-            self.name,
-            self.tenant_uuid,
-            self.options,
-        )
+        return f'{self.__class__.__name__}({self.id}, {self.name}, {self.tenant_uuid}, {self.options})'
 
     @classmethod
     def extract_options(cls, row):
@@ -677,7 +671,7 @@ class UserSIPLine(UserSIP):
         return cls(row.id, row.name, row.tenant_uuid, options)
 
 
-class OptionAccumulator(object):
+class OptionAccumulator:
     def __init__(self, sip_to_pjsip_mapping, valid_options):
         self._sip_to_pjsip = sip_to_pjsip_mapping
         self._valid_options = valid_options
@@ -685,7 +679,7 @@ class OptionAccumulator(object):
         self._codecs = []
 
     def add_option(self, kv):
-        conversion_function_name = '_convert_{}'.format(kv.key)
+        conversion_function_name = f'_convert_{kv.key}'
         if hasattr(self, conversion_function_name):
             for name, value in getattr(self, conversion_function_name)(kv.value):
                 if name in self._valid_options:
@@ -1174,7 +1168,7 @@ def convert_host(sip):
     for name, value in sip.options:
         if name == 'port':
             port = value
-    host_port = '{}:{}'.format(val, port)
+    host_port = f'{val}:{port}'
     result += host_port
 
     yield ('contact', result)

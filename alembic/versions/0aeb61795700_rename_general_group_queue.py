@@ -34,7 +34,7 @@ def find_next_available_name(name):
     query = queue_tbl.select().where(queue_tbl.c.name == name)
     group_exists = op.get_bind().execute(query).scalar()
     if group_exists:
-        next_name = '{}_'.format(name)
+        next_name = f'{name}_'
         return find_next_available_name(next_name)
     return name
 

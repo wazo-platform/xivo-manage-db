@@ -18,7 +18,7 @@ webservice = sql.table('accesswebservice',
                        sql.column('acl'))
 
 SERVICE = 'xivo-call-logd'
-NEW_ACL = set(['confd.users.*.read'])
+NEW_ACL = {'confd.users.*.read'}
 
 
 def _get_current_acl(name):

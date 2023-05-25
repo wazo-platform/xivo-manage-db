@@ -25,7 +25,7 @@ def upgrade():
                                     fields_table.c.value]).where(~fields_table.c.value.like('{%}')))
     to_upgrade = {(row.dir_id, row.fieldname): row.value for row in rows}
     for (dir_id, fieldname), value in to_upgrade.items():
-        new_value = '{%s}' % '} {'.join(value.split(' '))
+        new_value = f'{{{"} {".join(value.split(" "))}}}'
         op.execute(fields_table
                    .update()
                    .where(and_(fields_table.c.dir_id == dir_id,

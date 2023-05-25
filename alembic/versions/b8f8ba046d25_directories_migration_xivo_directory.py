@@ -47,7 +47,7 @@ def find_ws_password(conn, username):
         password = row.passwd
 
     if not password:
-        raise Exception('failed to find a password for user {}'.format(username))
+        raise Exception(f'failed to find a password for user {username}')
 
     return password
 

@@ -78,7 +78,7 @@ def upgrade():
 DirectoryField = namedtuple('DirectoryField', ['name', 'value'])
 
 
-class LDAPFilter(object):
+class LDAPFilter:
 
     def __init__(self):
         self.id = None
@@ -96,7 +96,7 @@ class LDAPFilter(object):
         for i in count(1):
             if name not in directory_names:
                 break
-            name = '{}{}'.format(base_name, i)
+            name = f'{base_name}{i}'
 
         directory = LDAPDirectory()
         directory.name = name
@@ -116,21 +116,19 @@ class LDAPFilter(object):
     def _build_directory_fields(self):
         fields = []
         for i, display_name in enumerate(self.display_names):
-            field_name = 'display_name{}'.format(i if i else '')
-            field_value = '{{{}}}'.format(display_name)
+            field_name = f'display_name{i if i else ""}'
+            field_value = f'{{{display_name}}}'
             fields.append(DirectoryField(field_name, field_value))
 
         if self.additional_type == 'custom':
-            print('warning: LDAP filter {}: ignoring custom phone number type "{}"'.format(
-                self.name, self.additional_text
-            ))
+            print(f'warning: LDAP filter {self.name}: ignoring custom phone number type "{self.additional_text}"')
             phone_suffix = ''
         else:
-            phone_suffix = '_{}'.format(self.additional_type)
+            phone_suffix = f'_{self.additional_type}'
 
         for i, phone_number in enumerate(self.phone_numbers):
-            field_name = 'phone{}{}'.format(phone_suffix, i if i else '')
-            field_value = '{{{}}}'.format(phone_number)
+            field_name = f'phone{phone_suffix}{i if i else ""}'
+            field_value = f'{{{phone_number}}}'
             fields.append(DirectoryField(field_name, field_value))
         return fields
 
@@ -158,7 +156,7 @@ def get_active_ldap_filters():
     return [LDAPFilter.new_from_db(row) for row in rows]
 
 
-class LDAPDirectory(object):
+class LDAPDirectory:
 
     def __init__(self):
         self.id = None
@@ -178,15 +176,16 @@ class LDAPDirectory(object):
             for existing_field in self.fields:
                 if new_field.name == existing_field.name:
                     if new_field.value != existing_field.value:
-                        print('warning: directory {}: can\'t set field "{}" to "{}"; already defined as "{}"'.format(
-                            self.name, new_field.name, new_field.value, existing_field.value
-                        ))
+                        print(
+                            f'warning: directory {self.name}: can\'t set field '
+                            f'"{new_field.name}" to "{new_field.value}"; already defined as "{existing_field.value}"'
+                        )
                     break
             else:
                 self.fields.append(new_field)
 
     def insert_db(self):
-        uri = 'ldapfilter://{}'.format(self.ldap_filter_name)
+        uri = f'ldapfilter://{self.ldap_filter_name}'
         match_direct = self._convert_obj_match_direct(self.match_direct)
         query = (ctidirectories
                  .insert()
@@ -256,7 +255,7 @@ def get_ldap_directories():
     return results
 
 
-class Profile(object):
+class Profile:
 
     def __init__(self):
         self.id = None

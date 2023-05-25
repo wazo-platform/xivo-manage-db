@@ -44,7 +44,7 @@ def upgrade():
     for dhcp in op.get_bind().execute(query):
         current_ifaces = dhcp.extra_ifaces
 
-    new_ifaces = '{} {}'.format(ifname, current_ifaces)
+    new_ifaces = f'{ifname} {current_ifaces}'
     op.execute(dhcp_table.update().values(extra_ifaces=new_ifaces.strip()))
 
 

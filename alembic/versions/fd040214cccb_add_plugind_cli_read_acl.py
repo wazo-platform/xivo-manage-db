@@ -18,7 +18,7 @@ webservice = sql.table('accesswebservice',
                        sql.column('acl'))
 
 SERVICE = 'wazo-plugind-cli'
-NEW_ACL = set(['plugind.plugins.read'])
+NEW_ACL = {'plugind.plugins.read'}
 
 
 def upgrade():

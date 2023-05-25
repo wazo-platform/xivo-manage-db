@@ -41,7 +41,7 @@ def find_next_available_name(name):
     query = context_tbl.select().where(context_tbl.c.name == name)
     context_exists = op.get_bind().execute(query).scalar()
     if context_exists:
-        next_name = '{}_'.format(name)
+        next_name = f'{name}_'
         return find_next_available_name(next_name)
     return name
 

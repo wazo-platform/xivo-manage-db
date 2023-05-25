@@ -18,7 +18,7 @@ webservice = sql.table('accesswebservice',
                        sql.column('acl'))
 
 SERVICE = 'xivo-ctid-ng'
-NEW_ACL = set(['amid.action.ShowDialplan.create'])
+NEW_ACL = {'amid.action.ShowDialplan.create'}
 
 
 def upgrade():

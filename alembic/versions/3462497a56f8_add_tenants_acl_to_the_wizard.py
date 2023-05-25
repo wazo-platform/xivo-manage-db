@@ -17,7 +17,7 @@ webservice = sql.table('accesswebservice',
                        sql.column('acl'))
 
 SERVICE = 'xivo-wizard'
-NEW_ACL = set(['auth.tenants.create'])
+NEW_ACL = {'auth.tenants.create'}
 
 
 def _get_current_acl(name):

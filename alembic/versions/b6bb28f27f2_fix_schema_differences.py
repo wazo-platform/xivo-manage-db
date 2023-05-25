@@ -13,8 +13,7 @@ from alembic import op
 
 
 def drop_constraint(constraint, table):
-    sql = 'ALTER TABLE {table} DROP CONSTRAINT IF EXISTS {constraint}'
-    op.execute(sql.format(table=table, constraint=constraint))
+    op.execute(f'ALTER TABLE {table} DROP CONSTRAINT IF EXISTS {constraint}')
 
 
 def upgrade():

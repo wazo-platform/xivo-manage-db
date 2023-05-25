@@ -30,14 +30,14 @@ def upgrade():
         sa.Column('func_key_id', sa.Integer),
         sa.Column('destination_type_id',
                   sa.Integer,
-                  sa.CheckConstraint('destination_type_id = %d' % PARKING_TYPE_ID),
+                  sa.CheckConstraint(f'destination_type_id = {PARKING_TYPE_ID}'),
                   server_default=str(PARKING_TYPE_ID)),
         sa.Column('park_position',
                   sa.String(40),
                   sa.CheckConstraint("park_position ~ '^[0-9]+$'"),
                   nullable=False),
         sa.PrimaryKeyConstraint('func_key_id', 'destination_type_id'),
-        sa.ForeignKeyConstraint(['func_key_id', 'destination_type_id'],
+        sa.ForeignKeyConstraint(('func_key_id', 'destination_type_id'),
                                 ['func_key.id', 'func_key.destination_type_id'])
     )
 

@@ -45,7 +45,7 @@ def add_phonebooks(entities, phonebooks):
         for phonebook in phonebooks:
             directory = {'uri': new_dird_phonebook_uri,
                          'dirtype': 'dird_phonebook',
-                         'name': '{}-{}'.format(entity, phonebook.name),
+                         'name': f'{entity}-{phonebook.name}',
                          'description': phonebook.description,
                          'dird_tenant': entity,
                          'dird_phonebook': default_dird_phonebook}

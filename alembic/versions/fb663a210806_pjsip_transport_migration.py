@@ -207,7 +207,7 @@ def _get_base_udp_options(static_sip):
     if bind:
         migrated_options.append(KV('bind', bind))
     elif bindaddr and bindport:
-        migrated_options.append(KV('bind', '{}:{}'.format(bindaddr, bindport)))
+        migrated_options.append(KV('bind', f'{bindaddr}:{bindport}'))
     elif bindaddr:
         migrated_options.append(KV('bind', bindaddr))
     else:

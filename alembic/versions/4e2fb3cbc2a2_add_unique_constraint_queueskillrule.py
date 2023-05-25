@@ -12,7 +12,7 @@ revision = '4e2fb3cbc2a2'
 down_revision = '129646f8f81f'
 
 table_name = 'queueskillrule'
-constraint_name = '{}_name_key'.format(table_name)
+constraint_name = f'{table_name}_name_key'
 
 
 def upgrade():

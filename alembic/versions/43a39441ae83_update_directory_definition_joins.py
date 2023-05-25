@@ -53,7 +53,7 @@ def update_cti_reverse(ctireverse, definitions):
         for name in json.loads(r.directories):
             if is_phonebook(definitions, name):
                 for definition in definitions:
-                    if definition.name.endswith('-{}'.format(name)):
+                    if definition.name.endswith(f'-{name}'):
                         new_directories.append(definition.name)
             else:
                 new_directories.append(name)
@@ -85,7 +85,7 @@ def downgrade():
 
 
 def new_phonebook_name(definitions, entity, name):
-    expected_name = '{}-{}'.format(entity, name)
+    expected_name = f'{entity}-{name}'
     for definition in definitions:
         if definition.name == expected_name:
             return definition.name

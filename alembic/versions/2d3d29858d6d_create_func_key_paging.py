@@ -31,7 +31,7 @@ def upgrade():
         sa.Column('func_key_id', sa.Integer),
         sa.Column('destination_type_id',
                   sa.Integer,
-                  sa.CheckConstraint('destination_type_id = %d' % PAGING_TYPE_ID),
+                  sa.CheckConstraint(f'destination_type_id = {PAGING_TYPE_ID}'),
                   server_default=str(PAGING_TYPE_ID)),
         sa.Column('paging_id', sa.Integer),
         sa.PrimaryKeyConstraint('func_key_id', 'destination_type_id', 'paging_id'),

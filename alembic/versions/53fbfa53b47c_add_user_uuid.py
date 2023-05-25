@@ -14,7 +14,7 @@ import sqlalchemy as sa
 
 table_name = 'user'
 column_name = 'uuid'
-constraint_name = '{}_{}_key'.format(table_name, column_name)
+constraint_name = f'{table_name}_{column_name}_key'
 
 
 def upgrade():

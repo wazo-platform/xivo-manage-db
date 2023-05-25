@@ -30,7 +30,7 @@ def upgrade():
         sa.Column('func_key_id', sa.Integer),
         sa.Column('destination_type_id',
                   sa.Integer,
-                  sa.CheckConstraint('destination_type_id = %d' % CUSTOM_TYPE_ID),
+                  sa.CheckConstraint(f'destination_type_id = {CUSTOM_TYPE_ID}'),
                   server_default=str(CUSTOM_TYPE_ID)),
         sa.Column('exten', sa.String(40), nullable=False),
         sa.PrimaryKeyConstraint('func_key_id', 'destination_type_id'),

@@ -107,7 +107,7 @@ def get_bsfilters_without_bosses():
 
 
 def delete_bsfilter(bsfilter_id):
-    print('[MIGRATE_FK] : Deleting invalid bsfilter with id %s' % bsfilter_id)
+    print(f'[MIGRATE_FK] : Deleting invalid bsfilter with id {bsfilter_id}')
     query = (callfiltermember_table
              .delete()
              .where(callfiltermember_table.c.callfilterid == bsfilter_id))

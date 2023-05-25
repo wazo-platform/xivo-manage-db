@@ -36,7 +36,7 @@ directory_fields = sql.table('ctidirectoryfields',
                              sql.column('value'))
 
 
-class DefinitionGenerator(object):
+class DefinitionGenerator:
 
     def __init__(self, entities, current_definitions, directories):
         self.entities = entities
@@ -50,7 +50,7 @@ class DefinitionGenerator(object):
                 new_directory_id = self._find_directory_id(entity, definition.directory_id)
                 if not new_directory_id:
                     continue
-                new.append({'name': '{}-{}'.format(entity, definition.name),
+                new.append({'name': f'{entity}-{definition.name}',
                             'match_direct': format_fieldname(definition.match_direct),
                             'match_reverse': format_fieldname(definition.match_reverse),
                             'deletable': definition.deletable,
@@ -61,13 +61,13 @@ class DefinitionGenerator(object):
     def _find_directory_id(self, entity, directory_id):
         for directory in self.directories:
             if directory.id == directory_id:
-                expected_name = '{}-{}'.format(entity, directory.name)
+                expected_name = f'{entity}-{directory.name}'
                 for directory in self.directories:
                     if directory.name == expected_name:
                         return directory.id
 
 
-class FieldGenerator(object):
+class FieldGenerator:
 
     def __init__(self, entities, phonebook_definitions, dird_definitions, directories, fields):
         self.entities = entities
@@ -80,7 +80,7 @@ class FieldGenerator(object):
         new = []
         for phonebook in self.phonebook_definitions:
             for dird in self.dird_definitions:
-                if not dird.name.endswith('-{}'.format(phonebook.name)):
+                if not dird.name.endswith(f'-{phonebook.name}'):
                     continue
                 for field in self.fields:
                     if field.dir_id != phonebook.id:
@@ -105,8 +105,8 @@ def format_fieldname(fieldname):
     # {phonebookaddress.office.*} => {address_office_*}
     fieldname = fieldname.replace('phonebookaddress.', 'address_')
     for type_ in ['office', 'home', 'other']:
-        fieldname = fieldname.replace('address_{}.'.format(type_),
-                                      'address_{}_'.format(type_))
+        fieldname = fieldname.replace(f'address_{type_}.',
+                                      f'address_{type_}_')
 
     return fieldname
 

@@ -107,7 +107,7 @@ def insert_english_presences(group_id, presences):
 
 
 def delete_orphaned_statuses():
-    presence_ids = set([row['id'] for row in op.get_bind().execute(ctipresences_table.select())])
+    presence_ids = {row['id'] for row in op.get_bind().execute(ctipresences_table.select())}
     op.execute(ctistatus_table.delete().where(~ctistatus_table.c.presence_id.in_(presence_ids)))
 
 

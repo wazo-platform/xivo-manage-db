@@ -30,7 +30,7 @@ def upgrade():
         sa.Column('func_key_id', sa.Integer),
         sa.Column('destination_type_id',
                   sa.Integer,
-                  sa.CheckConstraint('destination_type_id = %d' % FORWARD_TYPE_ID),
+                  sa.CheckConstraint(f'destination_type_id = {FORWARD_TYPE_ID}'),
                   server_default=str(FORWARD_TYPE_ID)),
         sa.Column('extension_id', sa.Integer),
         sa.Column('number', sa.String(40)),

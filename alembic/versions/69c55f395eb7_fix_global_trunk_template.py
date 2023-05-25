@@ -84,8 +84,8 @@ def rename_templates(template_uuids):
 
 
 def rename_tenant_fk(old_name, new_name):
-    old_fk_name = 'tenant_{}_fkey'.format(old_name)
-    new_fk_name = 'tenant_{}_fkey'.format(new_name)
+    old_fk_name = f'tenant_{old_name}_fkey'
+    new_fk_name = f'tenant_{new_name}_fkey'
     table = 'tenant'
     op.alter_column(table, old_name, new_column_name=new_name)
     op.drop_constraint(

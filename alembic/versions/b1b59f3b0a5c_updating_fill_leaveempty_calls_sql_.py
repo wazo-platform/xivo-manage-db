@@ -11,7 +11,7 @@ import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 revision = 'b1b59f3b0a5c'
-down_revision = 'e507e100aa92'
+down_revision = 'df6812f66958'
 
 
 old_fill_leaveempty_calls_fn = """

@@ -1,7 +1,7 @@
 """bump_version_23_06
 
 Revision ID: e507e100aa92
-Revises: aaf16eeecf7f
+Revises: None
 
 """
 
@@ -11,7 +11,7 @@ import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 revision = 'e507e100aa92'
-down_revision = 'aaf16eeecf7f'
+down_revision = None
 
 
 def upgrade():

@@ -1,7 +1,7 @@
 """updating fill_leaveempty_calls sql function to fix misreporting
 
 Revision ID: b1b59f3b0a5c
-Revises: e507e100aa92
+Revises: df6812f66958
 
 """
 

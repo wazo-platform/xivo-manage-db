@@ -22,12 +22,27 @@ def upgrade():
         ["context"],
         ["name"],
         ondelete="CASCADE",
+        update="CASCADE",
+    )
+    op.create_foreign_key(
+        None,
+        "contextinclude",
+        "context",
+        ["include"],
+        ["name"],
+        ondelete="CASCADE",
+        update="CASCADE",
     )
 
 
 def downgrade():
     op.drop_constraint(
         "contextinclude_context_fkey",
+        "context",
+        type_="foreignkey"
+    )
+    op.drop_constraint(
+        "contextinclude_include_fkey",
         "context",
         type_="foreignkey"
     )

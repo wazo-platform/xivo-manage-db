@@ -22,7 +22,7 @@ def upgrade():
         ["context"],
         ["name"],
         ondelete="CASCADE",
-        update="CASCADE",
+        onupdate="CASCADE",
     )
     op.create_foreign_key(
         None,
@@ -31,7 +31,7 @@ def upgrade():
         ["include"],
         ["name"],
         ondelete="CASCADE",
-        update="CASCADE",
+        onupdate="CASCADE",
     )
 
 

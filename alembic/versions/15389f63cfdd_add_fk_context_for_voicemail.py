@@ -14,6 +14,7 @@ down_revision = '91d6933efd3e'
 
 
 def upgrade():
+    op.execute('DELETE FROM voicemail WHERE context NOT IN (SELECT DISTINCT name FROM context)')
     op.create_foreign_key(
         None,
         "voicemail",

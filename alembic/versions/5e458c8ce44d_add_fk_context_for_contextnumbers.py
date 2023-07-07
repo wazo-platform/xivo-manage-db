@@ -21,8 +21,7 @@ def upgrade():
         "context",
         ["context"],
         ["name"],
-        ondelete="CASCADE",
-        onupdate="CASCADE",
+        ondelete="CASCADE"
     )
 
 

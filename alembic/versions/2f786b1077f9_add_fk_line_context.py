@@ -14,7 +14,6 @@ down_revision = '52d8c306e35f'
 
 
 def upgrade():
-    op.drop_constraint("linefeatures_context_fkey", "linefeatures", type_="foreignkey")
     op.create_foreign_key(
         None,
         "linefeatures",

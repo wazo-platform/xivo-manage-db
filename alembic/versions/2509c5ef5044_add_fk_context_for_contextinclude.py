@@ -28,6 +28,6 @@ def upgrade():
 def downgrade():
     op.drop_constraint(
         "contextinclude_context_fkey",
-        "context",
+        "contextinclude",
         type_="foreignkey"
     )

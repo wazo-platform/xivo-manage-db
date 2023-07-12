@@ -14,6 +14,7 @@ down_revision = '52d8c306e35f'
 
 
 def upgrade():
+    op.execute('DELETE FROM linefeatures WHERE context NOT IN (SELECT DISTINCT name FROM context)')
     op.create_foreign_key(
         None,
         "linefeatures",

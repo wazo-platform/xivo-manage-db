@@ -14,12 +14,6 @@ down_revision = '2f786b1077f9'
 
 
 def upgrade():
-    op.execute(
-        'DELETE FROM switchboard_member_user WHERE user_uuid NOT IN (SELECT DISTINCT uuid FROM userfeatures)'
-    )
-    op.execute(
-        'DELETE FROM switchboard WHERE uuid NOT IN (SELECT DISTINCT switchboard_uuid FROM switchboard_member_user)'
-    )
     op.drop_constraint(
         "switchboard_member_user_switchboard_uuid_fkey",
         "switchboard_member_user",

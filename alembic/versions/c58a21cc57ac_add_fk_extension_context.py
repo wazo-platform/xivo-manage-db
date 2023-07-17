@@ -10,7 +10,7 @@ from alembic import op
 
 # revision identifiers, used by Alembic.
 revision = 'c58a21cc57ac'
-down_revision = '15389f63cfdd'
+down_revision = 'b4fb4eb3cf8e'
 
 
 def upgrade():

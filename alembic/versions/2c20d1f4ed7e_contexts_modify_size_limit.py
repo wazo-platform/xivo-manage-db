@@ -19,7 +19,6 @@ TBL_CONTEXTINCLUDE = 'contextinclude'
 tables = (
     'agent_login_status',
     'agentfeatures',
-    'cel',
     'contextinclude',
     'contextmember',
     'contextnumbers',
@@ -32,7 +31,6 @@ tables = (
     'trunkfeatures',
     'usercustom',
     'voicemail',
-    'usersip',
     'useriax',
 )
 

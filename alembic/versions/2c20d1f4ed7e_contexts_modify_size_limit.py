@@ -34,6 +34,16 @@ tables = (
     'useriax',
 )
 
+tables_preprocess = (
+    'agentfeatures',
+    'conference',
+    'groupfeatures',
+    'incall',
+    'outcall',
+    'queuefeatures',
+    'userfeatures',
+)
+
 
 def upgrade():
     op.alter_column(TBL_CONTEXT, 'name', type_=sa.String(length=79))
@@ -42,6 +52,9 @@ def upgrade():
     for table in tables:
         op.alter_column(table, 'context', type_=sa.String(length=79))
 
+    for table in tables_preprocess:
+        op.alter_column(table, 'preprocess_subroutine', type_=sa.String(length=79))
+
 
 def downgrade():
     op.alter_column(TBL_CONTEXT, 'name', type_=sa.String(length=39))
@@ -49,3 +62,6 @@ def downgrade():
 
     for table in tables:
         op.alter_column(table, 'context', type_=sa.String(length=39))
+
+    for table in tables_preprocess:
+        op.alter_column(table, 'preprocess_subroutine', type_=sa.String(length=39))

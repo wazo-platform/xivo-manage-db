@@ -61,7 +61,12 @@ def downgrade():
     op.alter_column(TBL_CONTEXTINCLUDE, 'include', type_=sa.String(length=39))
 
     for table in tables:
-        op.alter_column(table, 'context', type_=sa.String(length=39))
+        new_length = 39
+        if table == 'sccpline':
+            new_length = 80
+        if table == 'agentfeatures':
+            new_length = 40
+        op.alter_column(table, 'context', type_=sa.String(length=new_length))
 
     for table in tables_preprocess:
         op.alter_column(table, 'preprocess_subroutine', type_=sa.String(length=39))

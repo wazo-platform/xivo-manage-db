@@ -98,52 +98,52 @@ INSERT INTO "func_key_destination_type" (id, name) VALUES (1, 'user'),
 
 
 INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);
-INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, extension_id)
-VALUES (currval('func_key_id_seq'), 5, (SELECT "id" from extensions WHERE "typeval" = 'enablevm'));
+INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, feature_extension_uuid)
+VALUES (currval('func_key_id_seq'), 5, (SELECT "uuid" from feature_extension WHERE "feature" = 'enablevm'));
 
 INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);
-INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, extension_id)
-VALUES (currval('func_key_id_seq'), 5, (SELECT "id" from extensions WHERE "typeval" = 'vmusermsg'));
+INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, feature_extension_uuid)
+VALUES (currval('func_key_id_seq'), 5, (SELECT "uuid" from feature_extension WHERE "feature" = 'vmusermsg'));
 
 INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);
-INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, extension_id)
-VALUES (currval('func_key_id_seq'), 5, (SELECT "id" from extensions WHERE "typeval" = 'vmuserpurge'));
+INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, feature_extension_uuid)
+VALUES (currval('func_key_id_seq'), 5, (SELECT "uuid" from feature_extension WHERE "feature" = 'vmuserpurge'));
 
 INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);
-INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, extension_id)
-VALUES (currval('func_key_id_seq'), 5, (SELECT "id" from extensions WHERE "typeval" = 'phonestatus'));
+INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, feature_extension_uuid)
+VALUES (currval('func_key_id_seq'), 5, (SELECT "uuid" from feature_extension WHERE "feature" = 'phonestatus'));
 
 INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);
-INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, extension_id)
-VALUES (currval('func_key_id_seq'), 5, (SELECT "id" from extensions WHERE "typeval" = 'recsnd'));
+INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, feature_extension_uuid)
+VALUES (currval('func_key_id_seq'), 5, (SELECT "uuid" from feature_extension WHERE "feature" = 'recsnd'));
 
 INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);
-INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, extension_id)
-VALUES (currval('func_key_id_seq'), 5, (SELECT "id" from extensions WHERE "typeval" = 'calllistening'));
+INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, feature_extension_uuid)
+VALUES (currval('func_key_id_seq'), 5, (SELECT "uuid" from extensions WHERE "feature" = 'calllistening'));
 
 INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);
-INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, extension_id)
-VALUES (currval('func_key_id_seq'), 5, (SELECT "id" from extensions WHERE "typeval" = 'directoryaccess'));
+INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, feature_extension_uuid)
+VALUES (currval('func_key_id_seq'), 5, (SELECT "uuid" from feature_extension WHERE "feature" = 'directoryaccess'));
 
 INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);
-INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, extension_id)
-VALUES (currval('func_key_id_seq'), 5, (SELECT "id" from extensions WHERE "typeval" = 'fwdundoall'));
+INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, feature_extension_uuid)
+VALUES (currval('func_key_id_seq'), 5, (SELECT "uuid" from feature_extension WHERE "feature" = 'fwdundoall'));
 
 INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);
-INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, extension_id)
-VALUES (currval('func_key_id_seq'), 5, (SELECT "id" from extensions WHERE "typeval" = 'pickup'));
+INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, feature_extension_uuid)
+VALUES (currval('func_key_id_seq'), 5, (SELECT "uuid" from feature_extension WHERE "feature" = 'pickup'));
 
 INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);
-INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, extension_id)
-VALUES (currval('func_key_id_seq'), 5, (SELECT "id" from extensions WHERE "typeval" = 'callrecord'));
+INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, feature_extension_uuid)
+VALUES (currval('func_key_id_seq'), 5, (SELECT "uuid" from feature_extension WHERE "feature" = 'callrecord'));
 
 INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);
-INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, extension_id)
-VALUES (currval('func_key_id_seq'), 5, (SELECT "id" from extensions WHERE "typeval" = 'incallfilter'));
+INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, feature_extension_uuid)
+VALUES (currval('func_key_id_seq'), 5, (SELECT "id" from feature_extension WHERE "feature" = 'incallfilter'));
 
 INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);
-INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, extension_id)
-VALUES (currval('func_key_id_seq'), 5, (SELECT "id" from extensions WHERE "typeval" = 'enablednd'));
+INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, feature_extension_uuid)
+VALUES (currval('func_key_id_seq'), 5, (SELECT "uuid" from feature_extension WHERE "feature" = 'enablednd'));
 
 INSERT INTO "func_key" (type_id, destination_type_id) VALUES (2, 8);
 INSERT INTO "func_key_dest_features" (func_key_id, destination_type_id, features_id)

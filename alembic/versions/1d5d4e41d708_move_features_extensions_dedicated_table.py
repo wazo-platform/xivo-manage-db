@@ -16,6 +16,7 @@ down_revision = '1ec7cdef9eeb'
 
 
 def upgrade():
+    # create 'feature_extension' table
     op.create_table(
         'feature_extension',
         sa.Column('uuid', UUID, server_default=sa.text('uuid_generate_v4()'),
@@ -31,6 +32,7 @@ def upgrade():
         columns=['uuid'],
     )
 
+    # move extensions having context=xivo-features from 'extensions' table into 'feature_extension' table
     op.execute('''
     INSERT INTO feature_extension (enabled, exten, feature) 
       SELECT 
@@ -40,6 +42,31 @@ def upgrade():
       FROM extensions
       WHERE context = 'xivo-features';
     ''')
+
+    # add new column 'feature_extension_uuid' for func keys having a 'extension_id' column
+    for t in ('func_key_dest_agent', 'func_key_dest_forward', 'func_key_dest_groupmember', 'func_key_dest_service'):
+        # add new column 'feature_extension_uuid'
+        op.execute(f'''
+        ALTER TABLE {t}
+        ADD feature_extension_uuid UUID REFERENCES feature_extension(uuid);
+        ''');
+
+        # populate feature_extension_uuid column
+        op.execute(f'''
+        UPDATE {t} t
+        SET feature_extension_uuid=fe.uuid
+        FROM feature_extension fe
+        WHERE 
+        fe.feature=(
+          SELECT extensions.typeval FROM extensions WHERE t.extension_id=extensions.id
+        );
+        ''');
+
+        # remove old column 'extension_id'
+        op.execute(f"ALTER TABLE {t} DROP COLUMN extension_id;");
+
+    # old features extensions in 'extensions' table removed
+    op.execute("DELETE * FROM extensions where context = 'xivo-features';");
 
 
 def downgrade():

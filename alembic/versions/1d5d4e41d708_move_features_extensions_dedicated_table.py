@@ -43,13 +43,13 @@ def upgrade():
       WHERE context = 'xivo-features';
     ''')
 
-    # add new column 'feature_extension_uuid' for func keys having a 'extension_id' column
+    # for func keys having a 'extension_id' column
     for t in ('func_key_dest_agent', 'func_key_dest_forward', 'func_key_dest_groupmember', 'func_key_dest_service'):
         # add new column 'feature_extension_uuid'
         op.execute(f'''
         ALTER TABLE {t}
         ADD feature_extension_uuid UUID REFERENCES feature_extension(uuid);
-        ''');
+        ''')
 
         # populate feature_extension_uuid column
         op.execute(f'''
@@ -60,13 +60,13 @@ def upgrade():
         fe.feature=(
           SELECT extensions.typeval FROM extensions WHERE t.extension_id=extensions.id
         );
-        ''');
+        ''')
 
         # remove old column 'extension_id'
-        op.execute(f"ALTER TABLE {t} DROP COLUMN extension_id;");
+        op.execute(f"ALTER TABLE {t} DROP COLUMN extension_id;")
 
     # old features extensions in 'extensions' table removed
-    op.execute("DELETE * FROM extensions where context = 'xivo-features';");
+    op.execute("DELETE FROM extensions where context = 'xivo-features';")
 
 
 def downgrade():
@@ -74,10 +74,34 @@ def downgrade():
     INSERT INTO extensions (commented, context, exten, type, typeval)
       SELECT 
         CASE enabled WHEN False THEN 1 ELSE 0 END as commented,
-        'xivo-features' as context,
+        TEXT 'xivo-features' as context,
         exten,
         TEXT 'extenfeatures' as type
         feature as typeval,
       FROM feature_extension;
     ''')
-    op.drop_table('feature_extension')
+
+    # for func keys having a 'feature_extension_uuid' column
+    for t in ('func_key_dest_agent', 'func_key_dest_forward', 'func_key_dest_groupmember',
+              'func_key_dest_service'):
+        # add new column 'extension_id'
+        op.execute(f'''
+            ALTER TABLE {t}
+            ADD extension_id integer REFERENCES extensions(id);
+            ''')
+
+        # populate feature_extension_uuid column
+        op.execute(f'''
+            UPDATE {t} t
+            SET extension_id=e.id
+            FROM extensions e
+            WHERE 
+            e.typeval=(
+              SELECT feature_extension.feature FROM feature_extension WHERE t.feature_extension_uuid=feature_extension.uuid
+            );
+            ''')
+
+        # remove previous column 'feature_extension_uuid'
+        op.execute(f"ALTER TABLE {t} DROP COLUMN feature_extension_uuid;")
+
+    op.execute("DROP TABLE feature_extension;")

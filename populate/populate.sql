@@ -119,7 +119,7 @@ VALUES (currval('func_key_id_seq'), 5, (SELECT "uuid" from feature_extension WHE
 
 INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);
 INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, feature_extension_uuid)
-VALUES (currval('func_key_id_seq'), 5, (SELECT "uuid" from extensions WHERE "feature" = 'calllistening'));
+VALUES (currval('func_key_id_seq'), 5, (SELECT "uuid" from feature_extension WHERE "feature" = 'calllistening'));
 
 INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);
 INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, feature_extension_uuid)

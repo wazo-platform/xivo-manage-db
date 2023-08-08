@@ -26,12 +26,6 @@ def upgrade():
         sa.Column('feature', sa.String(255), nullable=False),
     )
 
-    op.create_index(
-        index_name='feature_extension__idx__uuid',
-        table_name='feature_extension',
-        columns=['uuid'],
-    )
-
     # move extensions having context=xivo-features from 'extensions' table into 'feature_extension' table
     op.execute('''
     INSERT INTO feature_extension (enabled, exten, feature) 
@@ -76,8 +70,8 @@ def downgrade():
         CASE enabled WHEN False THEN 1 ELSE 0 END as commented,
         TEXT 'xivo-features' as context,
         exten,
-        TEXT 'extenfeatures' as type
-        feature as typeval,
+        'extenfeatures' as type,
+        feature as typeval
       FROM feature_extension;
     ''')
 

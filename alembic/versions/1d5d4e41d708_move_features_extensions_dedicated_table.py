@@ -1,7 +1,7 @@
 """move_features_extensions_dedicated_table
 
 Revision ID: 1d5d4e41d708
-Revises: 1ec7cdef9eeb
+Revises: 0ab992bdb5b2
 
 """
 
@@ -12,7 +12,7 @@ from sqlalchemy.dialects.postgresql import UUID
 
 # revision identifiers, used by Alembic.
 revision = '1d5d4e41d708'
-down_revision = '1ec7cdef9eeb'
+down_revision = '0ab992bdb5b2'
 
 
 def upgrade():

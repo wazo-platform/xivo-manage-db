@@ -1,7 +1,7 @@
 """contexts modify size limit to 79 chars
 
 Revision ID: 2c20d1f4ed7e
-Revises: 1ec7cdef9eeb
+Revises: 1c175d6b47c7
 
 """
 
@@ -11,7 +11,7 @@ import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 revision = '2c20d1f4ed7e'
-down_revision = '1ec7cdef9eeb'
+down_revision = '1c175d6b47c7'
 
 TBL_CONTEXT = 'context'
 TBL_CONTEXTINCLUDE = 'contextinclude'

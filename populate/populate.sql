@@ -10,39 +10,39 @@ INSERT INTO "contexttype" VALUES(DEFAULT, 'services', 0, 0, '');
 INSERT INTO "contexttype" VALUES(DEFAULT, 'others', 0, 0, '');
 
 
-INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*31.','extenfeatures','agentstaticlogin');
-INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*32.','extenfeatures','agentstaticlogoff');
-INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*30.','extenfeatures','agentstaticlogtoggle');
-INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*37.','extenfeatures','bsfilter');
-INSERT INTO "extensions" VALUES (DEFAULT,1,'xivo-features','*34','extenfeatures','calllistening');
-INSERT INTO "extensions" VALUES (DEFAULT,1,'xivo-features','*26','extenfeatures','callrecord');
-INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','*36','extenfeatures','directoryaccess');
-INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','*25','extenfeatures','enablednd');
-INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','*90','extenfeatures','enablevm');
-INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*90.','extenfeatures','enablevmslt');
-INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*23.','extenfeatures','fwdbusy');
-INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*22.','extenfeatures','fwdrna');
-INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*21.','extenfeatures','fwdunc');
-INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','*20','extenfeatures','fwdundoall');
-INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','*48378','extenfeatures','autoprov');
-INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','*27','extenfeatures','incallfilter');
-INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','*10','extenfeatures','phonestatus');
-INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*735.','extenfeatures','phoneprogfunckey');
-INSERT INTO "extensions" VALUES (DEFAULT,1,'xivo-features','_*8.','extenfeatures','pickup');
-INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','*9','extenfeatures','recsnd');
-INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*99.','extenfeatures','vmboxmsgslt');
-INSERT INTO "extensions" VALUES (DEFAULT,1,'xivo-features','_*93.','extenfeatures','vmboxpurgeslt');
-INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*97.','extenfeatures','vmboxslt');
-INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','*98','extenfeatures','vmusermsg');
-INSERT INTO "extensions" VALUES (DEFAULT,1,'xivo-features','*92','extenfeatures','vmuserpurge');
-INSERT INTO "extensions" VALUES (DEFAULT,1,'xivo-features','_*92.','extenfeatures','vmuserpurgeslt');
-INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*96.','extenfeatures','vmuserslt');
-INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*11.','extenfeatures','paging');
-INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','*40','extenfeatures','cctoggle');
-INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*41.','extenfeatures','meetingjoin');
-INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*50.','extenfeatures','groupmembertoggle');
-INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*51.','extenfeatures','groupmemberjoin');
-INSERT INTO "extensions" VALUES (DEFAULT,0,'xivo-features','_*52.','extenfeatures','groupmemberleave');
+INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'_*31.','agentstaticlogin');
+INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'_*32.','agentstaticlogoff');
+INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'_*30.','agentstaticlogtoggle');
+INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'_*37.','bsfilter');
+INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (false,'*34','calllistening');
+INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (false,'*26','callrecord');
+INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'*36','directoryaccess');
+INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'*25','enablednd');
+INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'*90','enablevm');
+INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'_*90.','enablevmslt');
+INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'_*23.','fwdbusy');
+INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'_*22.','fwdrna');
+INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'_*21.','fwdunc');
+INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'*20','fwdundoall');
+INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'*48378','autoprov');
+INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'*27','incallfilter');
+INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'*10','phonestatus');
+INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'_*735.','phoneprogfunckey');
+INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (false,'_*8.','pickup');
+INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'*9','recsnd');
+INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'_*99.','vmboxmsgslt');
+INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (false,'_*93.','vmboxpurgeslt');
+INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'_*97.','vmboxslt');
+INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'*98','vmusermsg');
+INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (false,'*92','vmuserpurge');
+INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (false,'_*92.','vmuserpurgeslt');
+INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'_*96.','vmuserslt');
+INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'_*11.','paging');
+INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'*40','cctoggle');
+INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'_*41.','meetingjoin');
+INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'_*50.','groupmembertoggle');
+INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'_*51.','groupmemberjoin');
+INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'_*52.','groupmemberleave');
 
 
 INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','parkext','700');
@@ -98,52 +98,52 @@ INSERT INTO "func_key_destination_type" (id, name) VALUES (1, 'user'),
 
 
 INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);
-INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, extension_id)
-VALUES (currval('func_key_id_seq'), 5, (SELECT "id" from extensions WHERE "typeval" = 'enablevm'));
+INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, feature_extension_uuid)
+VALUES (currval('func_key_id_seq'), 5, (SELECT "uuid" from feature_extension WHERE "feature" = 'enablevm'));
 
 INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);
-INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, extension_id)
-VALUES (currval('func_key_id_seq'), 5, (SELECT "id" from extensions WHERE "typeval" = 'vmusermsg'));
+INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, feature_extension_uuid)
+VALUES (currval('func_key_id_seq'), 5, (SELECT "uuid" from feature_extension WHERE "feature" = 'vmusermsg'));
 
 INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);
-INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, extension_id)
-VALUES (currval('func_key_id_seq'), 5, (SELECT "id" from extensions WHERE "typeval" = 'vmuserpurge'));
+INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, feature_extension_uuid)
+VALUES (currval('func_key_id_seq'), 5, (SELECT "uuid" from feature_extension WHERE "feature" = 'vmuserpurge'));
 
 INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);
-INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, extension_id)
-VALUES (currval('func_key_id_seq'), 5, (SELECT "id" from extensions WHERE "typeval" = 'phonestatus'));
+INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, feature_extension_uuid)
+VALUES (currval('func_key_id_seq'), 5, (SELECT "uuid" from feature_extension WHERE "feature" = 'phonestatus'));
 
 INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);
-INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, extension_id)
-VALUES (currval('func_key_id_seq'), 5, (SELECT "id" from extensions WHERE "typeval" = 'recsnd'));
+INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, feature_extension_uuid)
+VALUES (currval('func_key_id_seq'), 5, (SELECT "uuid" from feature_extension WHERE "feature" = 'recsnd'));
 
 INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);
-INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, extension_id)
-VALUES (currval('func_key_id_seq'), 5, (SELECT "id" from extensions WHERE "typeval" = 'calllistening'));
+INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, feature_extension_uuid)
+VALUES (currval('func_key_id_seq'), 5, (SELECT "uuid" from feature_extension WHERE "feature" = 'calllistening'));
 
 INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);
-INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, extension_id)
-VALUES (currval('func_key_id_seq'), 5, (SELECT "id" from extensions WHERE "typeval" = 'directoryaccess'));
+INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, feature_extension_uuid)
+VALUES (currval('func_key_id_seq'), 5, (SELECT "uuid" from feature_extension WHERE "feature" = 'directoryaccess'));
 
 INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);
-INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, extension_id)
-VALUES (currval('func_key_id_seq'), 5, (SELECT "id" from extensions WHERE "typeval" = 'fwdundoall'));
+INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, feature_extension_uuid)
+VALUES (currval('func_key_id_seq'), 5, (SELECT "uuid" from feature_extension WHERE "feature" = 'fwdundoall'));
 
 INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);
-INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, extension_id)
-VALUES (currval('func_key_id_seq'), 5, (SELECT "id" from extensions WHERE "typeval" = 'pickup'));
+INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, feature_extension_uuid)
+VALUES (currval('func_key_id_seq'), 5, (SELECT "uuid" from feature_extension WHERE "feature" = 'pickup'));
 
 INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);
-INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, extension_id)
-VALUES (currval('func_key_id_seq'), 5, (SELECT "id" from extensions WHERE "typeval" = 'callrecord'));
+INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, feature_extension_uuid)
+VALUES (currval('func_key_id_seq'), 5, (SELECT "uuid" from feature_extension WHERE "feature" = 'callrecord'));
 
 INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);
-INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, extension_id)
-VALUES (currval('func_key_id_seq'), 5, (SELECT "id" from extensions WHERE "typeval" = 'incallfilter'));
+INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, feature_extension_uuid)
+VALUES (currval('func_key_id_seq'), 5, (SELECT "uuid" from feature_extension WHERE "feature" = 'incallfilter'));
 
 INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);
-INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, extension_id)
-VALUES (currval('func_key_id_seq'), 5, (SELECT "id" from extensions WHERE "typeval" = 'enablednd'));
+INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, feature_extension_uuid)
+VALUES (currval('func_key_id_seq'), 5, (SELECT "uuid" from feature_extension WHERE "feature" = 'enablednd'));
 
 INSERT INTO "func_key" (type_id, destination_type_id) VALUES (2, 8);
 INSERT INTO "func_key_dest_features" (func_key_id, destination_type_id, features_id)

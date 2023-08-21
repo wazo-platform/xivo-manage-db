@@ -1,5 +1,25 @@
+- job:
+    name: check-migration
+    parent: wazo-tox
+    description: Compare migration scripts with fresh install (from xivo-dao)
+    required-projects:
+      - wazo-platform/wazo-tools
+      - wazo-platform/xivo-dao
+    vars:
+      tox_envlist: compare-db
+      zuul_work_dir: "{{ zuul.project.src_dir}}/../wazo-tools/compare-db"
+    pre-run: zuul.d/pre-run.yaml
+    post-run: zuul.d/fetch-logs.yaml
+    nodeset: vm-debian-11-m1s
+
 - project:
     templates:
       - wazo-tox-py39
       - wazo-tox-linters-310
       - debian-packaging-bullseye
+    wazo-check:
+      jobs:
+        - check-migration
+    wazo-gate:
+      jobs:
+        - check-migration

@@ -1,0 +1,47 @@
+---
+- hosts: all
+  tasks:
+    - name: Install requirements
+      become: yes
+      apt:
+        name:
+          - postgresql-client
+        state: present
+
+    - name: Start DB containers
+      command: docker-compose up -d
+      args:
+        chdir: "{{ zuul.project.src_dir}}/../wazo-tools/compare-db"
+
+    - name: Get postgresql-migrated container port
+      command: docker-compose port postgresql-migrated 5432
+      register: migrated_host_port
+      args:
+        chdir: "{{ zuul.project.src_dir}}/../wazo-tools/compare-db"
+
+    - name: Get postgresql-installed container port
+      command: docker-compose port postgresql-installed 5432
+      register: installed_host_port
+      args:
+        chdir: "{{ zuul.project.src_dir}}/../wazo-tools/compare-db"
+
+    - name: Create configuration file
+      copy:
+        dest: "{{ zuul.project.src_dir}}/../wazo-tools/compare-db/local.ini"
+        content: |
+          [database_uri]
+          migrated = postgresql://postgres:secret@{{ migrated_host_port.stdout }}/asterisk
+          installed = postgresql://postgres:secret@{{ installed_host_port.stdout }}/asterisk
+
+          [repos]
+          manage_db = ../../xivo-manage-db
+
+    - name: Export configuration file to variable (debug)
+      shell: cat local.ini
+      register: config_file_content
+      args:
+        chdir: "{{ zuul.project.src_dir}}/../wazo-tools/compare-db"
+
+    - name: Show configuration file variable (debug)
+      debug:
+        var: config_file_content

@@ -1,7 +1,7 @@
 """add_delete_cascade_schedule_schedulepath.py
 
 Revision ID: ee2692520bd4
-Revises: 71a9a51925d0
+Revises: 0d7b3f6ecde3
 
 """
 

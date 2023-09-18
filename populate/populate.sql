@@ -583,7 +583,7 @@ INSERT INTO "mail" VALUES (DEFAULT,'','example.wazo.community','','','');
 INSERT INTO "monitoring" VALUES (DEFAULT,0,NULL,NULL);
 
 
-INSERT INTO "provisioning" VALUES(DEFAULT, '', '', 0, 8667);
+INSERT INTO "provisioning" VALUES(DEFAULT, '', '', 0, 18667);
 
 /* The UUID "populate-uuid" will be replaced by pg-populate-db */
 /* The version is bumped automatically during the release process */

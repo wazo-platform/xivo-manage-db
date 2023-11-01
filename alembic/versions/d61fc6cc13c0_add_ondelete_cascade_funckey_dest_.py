@@ -1,14 +1,14 @@
 """add_ondelete_cascade_funckey_dest_conference
 
 Revision ID: d61fc6cc13c0
-Revises: 11aa576dba87
+Revises: 91b9efd85e0b
 
 """
 
 from alembic import op
 
 revision = 'd61fc6cc13c0'
-down_revision = '11aa576dba87'
+down_revision = '91b9efd85e0b'
 
 
 def upgrade():

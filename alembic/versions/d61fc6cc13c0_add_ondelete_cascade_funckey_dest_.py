@@ -8,7 +8,7 @@ Revises: 91b9efd85e0b
 from alembic import op
 
 revision = 'd61fc6cc13c0'
-down_revision = '91b9efd85e0b'
+down_revision = '2b68f2a8c0b3'
 
 
 def upgrade():

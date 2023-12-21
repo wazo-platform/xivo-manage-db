@@ -2,20 +2,18 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 from __future__ import annotations
 
-import time
-import sys
-import os
-
-from pwd import getpwnam
-
-import subprocess
 import getpass
-from typing import TypeVar, Callable, Any
+import os
+import subprocess
+import sys
+import time
+from pwd import getpwnam
+from typing import Any, Callable, TypeVar
 
 import psycopg2
-
 from wazo_uuid.uuid_ import get_wazo_uuid
 from xivo import db_helper
+
 from xivo_db import path
 from xivo_db.exception import DBError
 

@@ -4,12 +4,12 @@ from __future__ import annotations
 
 import argparse
 import logging
-import xivo_dao.alchemy.all  # noqa - imports all the sqlalchemy model
 
+import xivo_dao.alchemy.all  # noqa - imports all the sqlalchemy model
 from xivo_dao.helpers import db_manager
 from xivo_dao.helpers.db_manager import Base
-from xivo_db import alembic
-from xivo_db import postgres
+
+from xivo_db import alembic, postgres
 
 logger = logging.getLogger(__name__)
 

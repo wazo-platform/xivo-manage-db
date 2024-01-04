@@ -35,7 +35,6 @@ INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (false,'*92','v
 INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (false,'_*92.','vmuserpurgeslt');
 INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'_*96.','vmuserslt');
 INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'_*11.','paging');
-INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'*40','cctoggle');
 INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'_*41.','meetingjoin');
 INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'_*50.','groupmembertoggle');
 INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'_*51.','groupmemberjoin');

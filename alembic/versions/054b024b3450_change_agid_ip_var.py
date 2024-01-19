@@ -1,7 +1,7 @@
 """change-agid-ip-var
 
 Revision ID: 054b024b3450
-Revises: e1c0718176ec
+Revises: ec869d7bd01e
 
 """
 
@@ -11,7 +11,7 @@ import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 revision = '054b024b3450'
-down_revision = 'e1c0718176ec'
+down_revision = 'ec869d7bd01e'
 
 
 features_table = sa.sql.table(

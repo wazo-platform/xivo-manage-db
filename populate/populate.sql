@@ -41,21 +41,6 @@ INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'_*51.','
 INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'_*52.','groupmemberleave');
 
 
-INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','parkext','700');
-INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','parkpos','701-750');
-INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','context','parkedcalls');
-INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','parkinghints','no');
-INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','parkingtime','45');
-INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','comebacktoorigin','yes');
-INSERT INTO "features" VALUES (DEFAULT,0,0,1,'features.conf','general','courtesytone',NULL);
-INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','parkedplay','caller');
-INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','parkedcalltransfers','no');
-INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','parkedcallreparking','no');
-INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','parkedcallhangup','no');
-INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','parkedcallrecording','no');
-INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','parkeddynamic','no');
-INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','findslot','next');
-INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','parkedmusicclass','default');
 INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','transferdigittimeout','5');
 INSERT INTO "features" VALUES (DEFAULT,0,0,1,'features.conf','general','xfersound',NULL);
 INSERT INTO "features" VALUES (DEFAULT,0,0,1,'features.conf','general','xferfailsound',NULL);
@@ -140,16 +125,6 @@ VALUES (currval('func_key_id_seq'), 5, (SELECT "uuid" from feature_extension WHE
 INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);
 INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, feature_extension_uuid)
 VALUES (currval('func_key_id_seq'), 5, (SELECT "uuid" from feature_extension WHERE "feature" = 'enablednd'));
-
-INSERT INTO "func_key" (type_id, destination_type_id) VALUES (2, 8);
-INSERT INTO "func_key_dest_features" (func_key_id, destination_type_id, features_id)
-VALUES (
-    currval('func_key_id_seq'),
-    8,
-    (SELECT id FROM features WHERE filename = 'features.conf'
-                                AND category = 'general'
-                                AND var_name = 'parkext')
-);
 
 INSERT INTO "func_key" (type_id, destination_type_id) VALUES (3, 8);
 INSERT INTO "func_key_dest_features" (func_key_id, destination_type_id, features_id)

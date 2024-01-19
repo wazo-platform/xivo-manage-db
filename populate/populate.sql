@@ -35,7 +35,6 @@ INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (false,'*92','v
 INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (false,'_*92.','vmuserpurgeslt');
 INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'_*96.','vmuserslt');
 INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'_*11.','paging');
-INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'*40','cctoggle');
 INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'_*41.','meetingjoin');
 INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'_*50.','groupmembertoggle');
 INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'_*51.','groupmemberjoin');
@@ -69,7 +68,7 @@ INSERT INTO "features" VALUES (DEFAULT,0,0,0,'features.conf','general','atxferca
 INSERT INTO "features" VALUES (DEFAULT,1,0,0,'features.conf','featuremap','blindxfer','*1');
 INSERT INTO "features" VALUES (DEFAULT,1,0,0,'features.conf','featuremap','disconnect','*0');
 INSERT INTO "features" VALUES (DEFAULT,1,0,0,'features.conf','featuremap','atxfer','*2');
-INSERT INTO "features" VALUES (DEFAULT,1,0,0,'features.conf','applicationmap','togglerecord','*3,self,AGI(agi://${XIVO_AGID_IP}/call_recording)');
+INSERT INTO "features" VALUES (DEFAULT,1,0,0,'features.conf','applicationmap','togglerecord','*3,self,AGI(agi://${WAZO_AGID_IP}/call_recording)');
 
 
 INSERT INTO "func_key_type" ("id", "name") VALUES (1, 'speeddial'),

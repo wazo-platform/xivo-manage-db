@@ -1,0 +1,19 @@
+version: '3'
+services:
+  sync:
+    image: wazoplatform/wait
+    environment:
+      TIMEOUT: "${INTEGRATION_TEST_TIMEOUT}"
+
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DATABASE: asterisk
+    ports:
+      - "5432"
+    command: "-c 'log_min_duration_statement=0'"
+    volumes:
+      - type: tmpfs
+        target: /var/lib/postgresql/data
+      - "../..:/usr/src/xivo-manage-db"

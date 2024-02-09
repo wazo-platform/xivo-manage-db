@@ -75,7 +75,8 @@ INSERT INTO "func_key_destination_type" (id, name) VALUES (1, 'user'),
                                                           (10, 'custom'),
                                                           (11, 'agent'),
                                                           (12, 'bsfilter'),
-                                                          (13, 'groupmember');
+                                                          (13, 'groupmember'),
+                                                          (14, 'parking');
 
 
 INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);

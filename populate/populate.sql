@@ -544,9 +544,6 @@ INSERT INTO "dhcp" VALUES (DEFAULT,0,'','','');
 INSERT INTO "mail" VALUES (DEFAULT,'','example.wazo.community','','','');
 
 
-INSERT INTO "monitoring" VALUES (DEFAULT,0,NULL,NULL);
-
-
 INSERT INTO "provisioning" VALUES(DEFAULT, '', '', 0, 8667);
 
 /* The UUID "populate-uuid" will be replaced by pg-populate-db */

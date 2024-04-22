@@ -26,7 +26,7 @@ def upgrade():
         sa.Column(
             'main',
             sa.Boolean,
-            nullable=True,
+            nullable=False,
             server_default='false',
         ),
     )

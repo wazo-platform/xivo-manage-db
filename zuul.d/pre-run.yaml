@@ -9,18 +9,18 @@
         state: present
 
     - name: Start DB containers
-      command: docker-compose up -d
+      command: docker compose up -d
       args:
         chdir: "{{ zuul.project.src_dir}}/../wazo-tools/compare-db"
 
     - name: Get postgresql-migrated container port
-      command: docker-compose port postgresql-migrated 5432
+      command: docker compose port postgresql-migrated 5432
       register: migrated_host_port
       args:
         chdir: "{{ zuul.project.src_dir}}/../wazo-tools/compare-db"
 
     - name: Get postgresql-installed container port
-      command: docker-compose port postgresql-installed 5432
+      command: docker compose port postgresql-installed 5432
       register: installed_host_port
       args:
         chdir: "{{ zuul.project.src_dir}}/../wazo-tools/compare-db"

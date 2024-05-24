@@ -18,31 +18,26 @@ endpoint_sip_table = sa.sql.table(
     sa.sql.column("uuid"),
     sa.sql.column("template"),
     sa.sql.column("label"),
+    sa.sql.column("tenant_uuid"),
 )
 endpoint_sip_section_table = sa.sql.table(
     "endpoint_sip_section",
     sa.sql.column("endpoint_sip_uuid"),
     sa.sql.column("uuid"),
+    sa.sql.column("type"),
 )
 endpoint_sip_section_option_table = sa.sql.table(
     "endpoint_sip_section_option",
     sa.sql.column("endpoint_sip_section_uuid"),
     sa.sql.column("uuid"),
+    sa.sql.column("key"),
+    sa.sql.column("value"),
 )
 tenant_table = sa.sql.table(
     "tenant",
     sa.sql.column("uuid"),
     sa.sql.column("global_sip_template_uuid")
 )
-
-
-
-def find_tenants():
-    query = sa.sql.select([
-        tenant_table.c.uuid,
-        tenant_table.c.global_sip_template_uuid
-    ])
-    return query
 
 
 def get_sip_endpoint_global_templates():
@@ -55,72 +50,88 @@ def get_sip_endpoint_global_templates():
     where endpoint_sip.template and endpoint_sip.label = 'global';
     """
     query = sa.sql.select([
-        tenant_table.c.global_sip_template_uuid
+        endpoint_sip_table.c.uuid,
     ]).select_from(
-        endpoint_sip_table
+        endpoint_sip_table.join(
+            tenant_table,
+            tenant_table.c.global_sip_template_uuid == endpoint_sip_table.c.uuid
+        )
     )
     return query
 
 
-def get_global_sip_template_with_set_var_options():
-    query = sa.sql.select([
-        endpoint_sip_table.c.uuid,
-        endpoint_sip_table.c.tenant_uuid,
-        endpoint_sip_section_option_table.c.key,
-        endpoint_sip_section_option_table.c.value
-    ]).select_from(
-        endpoint_sip_section_option_table
-    ).join(
+def get_global_sip_template_with_timeout_configured():
+    target = endpoint_sip_section_option_table.join(
         endpoint_sip_section_table,
-        endpoint_sip_section_table.c.uuid == endpoint_sip_section_option_table.c.endpoint_sip_section_uuid
+        endpoint_sip_section_table.c.uuid == 
+        endpoint_sip_section_option_table.c.endpoint_sip_section_uuid
     ).join(
         endpoint_sip_table,
         endpoint_sip_table.c.uuid == endpoint_sip_section_table.c.endpoint_sip_uuid
+    )
+
+    # get endpoint uuid for templates with 'set_var' options in 'endpoint' sections
+    query = sa.sql.select([
+        sa.sql.distinct(endpoint_sip_table.c.uuid)
+    ]).select_from(
+        target
     ).where(
         sa.sql.and_(
             endpoint_sip_table.c.template,
             endpoint_sip_table.c.uuid.in_(get_sip_endpoint_global_templates()),
             endpoint_sip_section_table.c.type == 'endpoint',
             endpoint_sip_section_option_table.c.key == 'set_var',
+            endpoint_sip_section_option_table.c.value.startswith('TIMEOUT(absolute)='),
         )
     )
     return query
 
 
-def upgrade():
-    sip_templates_with_timeout_set_var = {
-        row.uuid
-        for row in get_global_sip_template_with_set_var_options()
-        if row.value.startswith('TIMEOUT(absolute)')
-    }
-    global_sip_templates = get_sip_endpoint_global_templates()
-
-    new_options = sa.sql.insert(endpoint_sip_section_option_table).values(
-        endpoint_sip_section_uuid=sa.sql.bindparam('endpoint_sip_uuid'),
-        key='set_var',
-        value='TIMEOUT(absolute)=36000'
-    )
-    global_sip_template_endpoint_sections = sa.sql.select([
-        endpoint_sip_section_table.c.uuid
-    ]).where(
-        sa.sql.and_(
-            endpoint_sip_section_table.c.endpoint_sip_uuid.in_(global_sip_templates),
-            endpoint_sip_section_table.c.type == 'endpoint',
+def upgrade() -> None:
+    new_options = sa.sql.insert(endpoint_sip_section_option_table).from_select(
+        [
+            'key',
+            'value',
+            'endpoint_sip_section_uuid'
+        ],
+        sa.sql.select([
+            sa.sql.literal('set_var'),
+            sa.sql.literal('TIMEOUT(absolute)=36000'),
+            endpoint_sip_section_table.c.uuid
+        ]).where(
+            sa.sql.and_(
+                endpoint_sip_section_table.c.endpoint_sip_uuid.in_(
+                    get_sip_endpoint_global_templates().where(
+                    endpoint_sip_table.c.uuid.notin_(
+                        get_global_sip_template_with_timeout_configured()
+                    )
+                )),
+                endpoint_sip_section_table.c.type == 'endpoint',
+            )
         )
     )
-
-    op.get_bind().execute(
-        new_options,
-        [
-            {
-                'endpoint_sip_uuid': row.uuid
-            }
-            for row in global_sip_template_endpoint_sections
-            if row.uuid not in sip_templates_with_timeout_set_var
-        ]
+    result = op.get_bind().execute(
+        new_options
     )
-
+    print(result.rowcount)
 
 
 def downgrade():
-    pass
+    # delete sip global templates' 'set_var' endpoint options with `TIMEOUT(absolute)=36000`
+    remove_timeout_options = sa.sql.delete(endpoint_sip_section_option_table.join(
+        endpoint_sip_section_table,
+        endpoint_sip_section_table.c.uuid == endpoint_sip_section_option_table.c.endpoint_sip_section_uuid
+    )).where(
+        sa.sql.and_(
+            endpoint_sip_section_table.c.type == 'endpoint',
+            endpoint_sip_section_option_table.c.key == 'set_var',
+            endpoint_sip_section_option_table.c.value == 'TIMEOUT(absolute)=36000',
+            endpoint_sip_section_table.c.endpoint_sip_uuid.in_(
+                get_sip_endpoint_global_templates()
+            )
+        )
+    )
+    result = op.get_bind().execute(
+        remove_timeout_options
+    )
+    print(result.rowcount)

@@ -40,15 +40,7 @@ tenant_table = sa.sql.table(
 )
 
 
-def get_sip_endpoint_global_templates():
-    """
-    select endpoint_sip.tenant_uuid, endpoint_sip.label, esc.endpoint_sip_uuid, 
-    esc.type as section_type, esco.key, esco.value as endpoint_uuid 
-    from endpoint_sip_section_option as esco 
-    left join endpoint_sip_section as esc on esc.uuid = esco.endpoint_sip_section_uuid 
-    left join endpoint_sip on esc.endpoint_sip_uuid = endpoint_sip.uuid 
-    where endpoint_sip.template and endpoint_sip.label = 'global';
-    """
+def get_sip_endpoint_global_templates() -> sa.sql.Selectable:
     query = sa.sql.select([
         endpoint_sip_table.c.uuid,
     ]).select_from(
@@ -102,23 +94,24 @@ def upgrade() -> None:
             sa.sql.and_(
                 endpoint_sip_section_table.c.endpoint_sip_uuid.in_(
                     get_sip_endpoint_global_templates().where(
-                    endpoint_sip_table.c.uuid.notin_(
-                        get_global_sip_template_with_timeout_configured()
-                    )
+                        endpoint_sip_table.c.uuid.notin_(
+                            get_global_sip_template_with_timeout_configured()
+                        )
                 )),
                 endpoint_sip_section_table.c.type == 'endpoint',
             )
         )
     )
-    result = op.get_bind().execute(
+
+    _ = op.get_bind().execute(
         new_options
     )
-    print(result.rowcount)
 
 
 def downgrade():
-    # delete sip global templates' 'set_var' endpoint options with `TIMEOUT(absolute)=36000`
-    remove_timeout_options = sa.sql.delete(endpoint_sip_section_option_table.join(
+    # delete sip global templates 'set_var' endpoint options with value `TIMEOUT(absolute)=36000`
+    sip_template_options = sa.sql.select([endpoint_sip_section_option_table.c.uuid]).select_from(
+        endpoint_sip_section_option_table.join(
         endpoint_sip_section_table,
         endpoint_sip_section_table.c.uuid == endpoint_sip_section_option_table.c.endpoint_sip_section_uuid
     )).where(
@@ -131,7 +124,11 @@ def downgrade():
             )
         )
     )
-    result = op.get_bind().execute(
+    remove_timeout_options = sa.sql.delete(endpoint_sip_section_option_table).where(
+        endpoint_sip_section_option_table.c.uuid.in_(
+            sip_template_options
+        )
+    )
+    _ = op.get_bind().execute(
         remove_timeout_options
     )
-    print(result.rowcount)

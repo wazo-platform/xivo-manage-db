@@ -26,4 +26,4 @@ RUN true \
 COPY ./pg_start ./pg_stop /usr/local/bin/
 
 EXPOSE 5432
-CMD ["/usr/lib/postgresql/13/bin/postgres", "-D", "/var/lib/postgresql/13/main", "--config-file=/etc/postgresql/13/main/postgresql.conf"]
+ENTRYPOINT ["/usr/lib/postgresql/13/bin/postgres", "-D", "/var/lib/postgresql/13/main", "--config-file=/etc/postgresql/13/main/postgresql.conf"]

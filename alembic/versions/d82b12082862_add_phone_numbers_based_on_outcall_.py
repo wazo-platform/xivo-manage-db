@@ -22,8 +22,6 @@ NON_SIGNIFICANT_PREFIX_LENGTH = 3
 E164_MAX_LENGHT = 15
 NATIONAL_NUMBER_LENGTH = 10
 
-inserted_number = set()
-
 dialpattern_table = sa.sql.table(
     'dialpattern',
     sa.sql.column('callerid'),
@@ -127,13 +125,11 @@ def _get_configured_caller_ids(outcall_tenants):
         )
     return configured_caller_ids
 
-def _insert_phone_number(configured_caller_id):
+def _insert_phone_number(existing_numbers, configured_caller_id):
+    if _number_exists(existing_numbers, configured_caller_id):
+        return
     number = configured_caller_id['number']
     tenant_uuid = configured_caller_id['tenant_uuid']
-    to_insert = (number, tenant_uuid)
-    if to_insert in inserted_number:
-        return
-    inserted_number.add(to_insert)
     query = phone_number_table.insert().values(
         number=number,
         tenant_uuid=tenant_uuid,
@@ -141,6 +137,7 @@ def _insert_phone_number(configured_caller_id):
         shared=True,
     )
     op.execute(query)
+    existing_numbers.append({'number': number, 'tenant_uuid': tenant_uuid})
 
 def _update_trunk_format(outcall_id, configured_caller_id):
     query = trunkfeatures_table.update().where(
@@ -222,7 +219,7 @@ def upgrade():
         _guess_caller_id_format(configured_caller_id)
         if _number_exists(existing_numbers, configured_caller_id):
             continue
-        _insert_phone_number(configured_caller_id)
+        _insert_phone_number(existing_numbers, configured_caller_id)
     trunk_outcall_map = _get_outcall_trunk_map()
     for outcall_id in outcall_tenants.keys():
         configured = False

@@ -142,11 +142,7 @@ def _update_trunk_format(outcall_id, configured_caller_id):
 def _is_plus_e164(number):
     if not number.startswith('+'):
         return False
-    if not number[1:].isdigit():
-        return False
-    if len(number) <= E164_MAX_LENGHT + 1:
-        return True
-    return False
+    return _is_e164(number[1:])
 
 def _is_e164(number):
     if not number.isdigit():

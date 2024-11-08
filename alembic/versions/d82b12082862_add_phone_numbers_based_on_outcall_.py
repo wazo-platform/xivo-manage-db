@@ -22,6 +22,8 @@ NON_SIGNIFICANT_PREFIX_LENGTH = 3
 E164_MAX_LENGHT = 15
 NATIONAL_NUMBER_LENGTH = 10
 
+inserted_number = set()
+
 dialpattern_table = sa.sql.table(
     'dialpattern',
     sa.sql.column('callerid'),
@@ -124,6 +126,10 @@ def _get_configured_caller_ids(outcall_tenants):
 def _insert_phone_number(configured_caller_id):
     number = configured_caller_id['number']
     tenant_uuid = configured_caller_id['tenant_uuid']
+    to_insert = (number, tenant_uuid)
+    if to_insert in inserted_number:
+        return
+    inserted_number.add(to_insert)
     query = phone_number_table.insert().values(
         number=number,
         tenant_uuid=tenant_uuid,

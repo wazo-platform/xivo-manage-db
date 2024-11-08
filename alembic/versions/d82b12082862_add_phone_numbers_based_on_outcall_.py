@@ -15,7 +15,7 @@ import sqlalchemy as sa
 revision = 'd82b12082862'
 down_revision = '59c0eedf8853'
 
-CALLER_ID_ALL_REGEX = re.compile(r'^".*" <(\+?\d{3,15})>$')
+CALLER_ID_ALL_REGEX = re.compile(r'^"(.*)" <(\+?\d{3,15})>$')
 VALID_PHONE_NUMBER_RE = re.compile(r'^\+?\d{3,15}$')
 MIN_NUMBER_COMPARISON_LENGTH = 9
 NON_SIGNIFICANT_PREFIX_LENGTH = 3
@@ -40,6 +40,7 @@ phone_number_table = sa.sql.table(
     sa.sql.column('number'),
     sa.sql.column('tenant_uuid'),
     sa.sql.column('shared'),
+    sa.sql.column('caller_id_name'),
 )
 trunk_outcall_table = sa.sql.table(
     'outcalltrunk',
@@ -63,12 +64,14 @@ def _extract_number_from_caller_id(callerid):
         raise ValueError('Caller ID is empty')
 
     if (matches := CALLER_ID_ALL_REGEX.match(callerid)):
-        number = matches.group(1)
+        name = matches.group(1)
+        number = matches.group(2)
     else:
+        name = None
         number = callerid
     
     if VALID_PHONE_NUMBER_RE.match(number):
-        return number
+        return name, number
     
     raise ValueError(f'Invalid caller ID: {callerid}')
 
@@ -109,7 +112,7 @@ def _get_configured_caller_ids(outcall_tenants):
     dialpatterns = op.get_bind().execute(query)
     for dialpattern in dialpatterns:
         try:
-            number = _extract_number_from_caller_id(dialpattern.callerid)
+            name, number = _extract_number_from_caller_id(dialpattern.callerid)
         except ValueError:
             continue
 
@@ -117,6 +120,7 @@ def _get_configured_caller_ids(outcall_tenants):
         configured_caller_ids.append(
             {
                 'number': number,
+                'caller_id_name': name,
                 'outcall_id': outcall_id,
                 'tenant_uuid': outcall_tenants[outcall_id],
             }
@@ -133,6 +137,7 @@ def _insert_phone_number(configured_caller_id):
     query = phone_number_table.insert().values(
         number=number,
         tenant_uuid=tenant_uuid,
+        caller_id_name=configured_caller_id['caller_id_name'],
         shared=True,
     )
     op.execute(query)

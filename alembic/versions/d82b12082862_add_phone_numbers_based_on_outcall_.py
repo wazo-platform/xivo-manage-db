@@ -115,14 +115,15 @@ def _get_configured_caller_ids(outcall_tenants):
             continue
 
         outcall_id = int(dialpattern.typeid)
-        configured_caller_ids.append(
-            {
-                'number': number,
-                'caller_id_name': name,
-                'outcall_id': outcall_id,
-                'tenant_uuid': outcall_tenants[outcall_id],
-            }
-        )
+        if outcall_id in outcall_tenants:
+            configured_caller_ids.append(
+                {
+                    'number': number,
+                    'caller_id_name': name,
+                    'outcall_id': outcall_id,
+                    'tenant_uuid': outcall_tenants[outcall_id],
+                }
+            )
     return configured_caller_ids
 
 def _insert_phone_number(existing_numbers, configured_caller_id):

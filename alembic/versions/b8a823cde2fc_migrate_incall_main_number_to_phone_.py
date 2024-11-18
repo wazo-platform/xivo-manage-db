@@ -54,6 +54,7 @@ def _get_existing_phone_numbers():
         numbers.append({
             'number': phone_number.number,
             'tenant_uuid': phone_number.tenant_uuid,
+            'main': phone_number.main
         })
     return numbers
 
@@ -97,7 +98,6 @@ def _insert_main_phone_numbers(existing_numbers, new_numbers):
     )
     if actually_new_numbers:
         op.get_bind().execute(query, actually_new_numbers)
-    existing_numbers.extend(actually_new_numbers)
 
 
 def _lastn(number, length):

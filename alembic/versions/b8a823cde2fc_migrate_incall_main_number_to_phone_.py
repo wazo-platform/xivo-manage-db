@@ -14,12 +14,9 @@ import re
 revision = 'b8a823cde2fc'
 down_revision = 'a93b2625be0d'
 
-CALLER_ID_ALL_REGEX = re.compile(r'^"(.*)" <(\+?\d{3,15})>$')
 VALID_PHONE_NUMBER_RE = re.compile(r'^\+?\d{3,15}$')
 MIN_NUMBER_COMPARISON_LENGTH = 9
 NON_SIGNIFICANT_PREFIX_LENGTH = 3
-E164_MAX_LENGHT = 15
-NATIONAL_NUMBER_LENGTH = 10
 
 
 incall_table = sa.sql.table(

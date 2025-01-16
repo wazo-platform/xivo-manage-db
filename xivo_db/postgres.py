@@ -50,12 +50,11 @@ def init_db(db_name: str, db_user: str, db_user_password: str, pg_db_uri: str) -
         return
 
     conn.autocommit = True
-    with conn:
-        with conn.cursor() as cursor:
-            if not db_helper.db_user_exists(cursor, db_user):
-                db_helper.create_db_user(cursor, db_user, db_user_password)
-            if not db_helper.db_exists(cursor, db_name):
-                db_helper.create_db(cursor, db_name, db_user)
+    with conn.cursor() as cursor:
+        if not db_helper.db_user_exists(cursor, db_user):
+            db_helper.create_db_user(cursor, db_user, db_user_password)
+        if not db_helper.db_exists(cursor, db_name):
+            db_helper.create_db(cursor, db_name, db_user)
 
 
 @run_as('postgres')

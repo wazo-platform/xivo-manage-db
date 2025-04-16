@@ -1,0 +1,38 @@
+"""add ondelete cascade funckey dest
+
+Revision ID: 4e6562f15b59
+Revises: 7e13ede8dbb1
+
+"""
+
+import sqlalchemy as sa
+
+from alembic import op
+
+
+# revision identifiers, used by Alembic.
+revision = '4e6562f15b59'
+down_revision = '7e13ede8dbb1'
+
+
+def upgrade():
+    op.drop_constraint("func_key_dest_user_user_id_fkey", "func_key_dest_user", type_="foreignkey")
+    op.create_foreign_key(
+        None,
+        "func_key_dest_user",
+        "userfeatures",
+        ["user_id"],
+        ["id"],
+        ondelete="CASCADE",
+    )
+
+
+def downgrade():
+    op.drop_constraint("func_key_dest_user_user_id_fkey", "func_key_dest_user", type_="foreignkey")
+    op.create_foreign_key(
+        None,
+        "func_key_dest_user",
+        "userfeatures",
+        ["user_id"],
+        ["id"]
+    )

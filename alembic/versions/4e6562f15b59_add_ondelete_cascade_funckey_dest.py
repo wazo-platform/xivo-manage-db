@@ -26,6 +26,16 @@ def upgrade():
         ondelete="CASCADE",
     )
 
+    op.drop_constraint("func_key_dest_queue_queue_id_fkey", "func_key_dest_queue", type_="foreignkey")
+    op.create_foreign_key(
+        None,
+        "func_key_dest_queue",
+        "queuefeatures",
+        ["queue_id"],
+        ["id"],
+        ondelete="CASCADE",
+    )
+
 
 def downgrade():
     op.drop_constraint("func_key_dest_user_user_id_fkey", "func_key_dest_user", type_="foreignkey")
@@ -34,5 +44,14 @@ def downgrade():
         "func_key_dest_user",
         "userfeatures",
         ["user_id"],
+        ["id"]
+    )
+
+    op.drop_constraint("func_key_dest_queue_queue_id_fkey", "func_key_dest_queue", type_="foreignkey")
+    op.create_foreign_key(
+        None,
+        "func_key_dest_queue",
+        "queuefeatures",
+        ["queue_id"],
         ["id"]
     )

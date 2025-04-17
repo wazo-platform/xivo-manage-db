@@ -57,6 +57,27 @@ def upgrade():
     )
 
 
+    op.drop_constraint("func_key_dest_groupmember_group_id_fkey", "func_key_dest_groupmember", type_="foreignkey")
+    op.create_foreign_key(
+        None,
+        "func_key_dest_groupmember",
+        "groupfeatures",
+        ["group_id"],
+        ["id"],
+        ondelete="CASCADE",
+    )
+
+    op.drop_constraint("func_key_dest_groupmember_feature_extension_uuid_fkey", "func_key_dest_groupmember", type_="foreignkey")
+    op.create_foreign_key(
+        None,
+        "func_key_dest_groupmember",
+        "feature_extension",
+        ["feature_extension_uuid"],
+        ["uuid"],
+        ondelete="CASCADE",
+    )
+
+
 def downgrade():
     op.drop_constraint("func_key_dest_user_user_id_fkey", "func_key_dest_user", type_="foreignkey")
     op.create_foreign_key(
@@ -89,6 +110,24 @@ def downgrade():
     op.create_foreign_key(
         None,
         "func_key_dest_service",
+        "feature_extension",
+        ["feature_extension_uuid"],
+        ["uuid"],
+    )
+
+    op.drop_constraint("func_key_dest_groupmember_group_id_fkey", "func_key_dest_groupmember", type_="foreignkey")
+    op.create_foreign_key(
+        None,
+        "func_key_dest_groupmember",
+        "groupfeatures",
+        ["group_id"],
+        ["id"],
+    )
+
+    op.drop_constraint("func_key_dest_groupmember_feature_extension_uuid_fkey", "func_key_dest_groupmember", type_="foreignkey")
+    op.create_foreign_key(
+        None,
+        "func_key_dest_groupmember",
         "feature_extension",
         ["feature_extension_uuid"],
         ["uuid"],

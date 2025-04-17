@@ -46,6 +46,16 @@ def upgrade():
         ondelete="CASCADE",
     )
 
+    op.drop_constraint("func_key_dest_service_feature_extension_uuid_fkey", "func_key_dest_service", type_="foreignkey")
+    op.create_foreign_key(
+        None,
+        "func_key_dest_service",
+        "feature_extension",
+        ["feature_extension_uuid"],
+        ["uuid"],
+        ondelete="CASCADE",
+    )
+
 
 def downgrade():
     op.drop_constraint("func_key_dest_user_user_id_fkey", "func_key_dest_user", type_="foreignkey")
@@ -73,4 +83,13 @@ def downgrade():
         "parking_lot",
         ["parking_lot_id"],
         ["id"]
+    )
+
+    op.drop_constraint("func_key_dest_service_feature_extension_uuid_fkey", "func_key_dest_service", type_="foreignkey")
+    op.create_foreign_key(
+        None,
+        "func_key_dest_service",
+        "feature_extension",
+        ["feature_extension_uuid"],
+        ["uuid"],
     )

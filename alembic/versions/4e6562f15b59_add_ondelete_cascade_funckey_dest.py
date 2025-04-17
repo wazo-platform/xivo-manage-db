@@ -127,6 +127,26 @@ def upgrade():
         ondelete="CASCADE",
     )
 
+    op.drop_constraint("func_key_dest_agent_agent_id_fkey", "func_key_dest_agent", type_="foreignkey")
+    op.create_foreign_key(
+        None,
+        "func_key_dest_agent",
+        "agentfeatures",
+        ["agent_id"],
+        ["id"],
+        ondelete="CASCADE",
+    )
+
+    op.drop_constraint("func_key_dest_agent_feature_extension_uuid_fkey", "func_key_dest_agent", type_="foreignkey")
+    op.create_foreign_key(
+        None,
+        "func_key_dest_agent",
+        "feature_extension",
+        ["feature_extension_uuid"],
+        ["uuid"],
+        ondelete="CASCADE",
+    )
+
 
 def downgrade():
     op.drop_constraint("func_key_dest_user_user_id_fkey", "func_key_dest_user", type_="foreignkey")
@@ -223,6 +243,24 @@ def downgrade():
     op.create_foreign_key(
         None,
         "func_key_dest_forward",
+        "feature_extension",
+        ["feature_extension_uuid"],
+        ["uuid"],
+    )
+
+    op.drop_constraint("func_key_dest_agent_agent_id_fkey", "func_key_dest_agent", type_="foreignkey")
+    op.create_foreign_key(
+        None,
+        "func_key_dest_agent",
+        "agentfeatures",
+        ["agent_id"],
+        ["id"],
+    )
+
+    op.drop_constraint("func_key_dest_agent_feature_extension_uuid_fkey", "func_key_dest_agent", type_="foreignkey")
+    op.create_foreign_key(
+        None,
+        "func_key_dest_agent",
         "feature_extension",
         ["feature_extension_uuid"],
         ["uuid"],

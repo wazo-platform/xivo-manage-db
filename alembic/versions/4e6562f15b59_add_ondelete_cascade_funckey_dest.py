@@ -14,254 +14,65 @@ from alembic import op
 revision = '4e6562f15b59'
 down_revision = '7e13ede8dbb1'
 
+relationships = [
+    ("func_key_dest_user", "user_id", "userfeatures", "id"),
+    ("func_key_dest_queue", "queue_id", "queuefeatures", "id"),
+    ("func_key_dest_parking", "parking_lot_id", "parking_lot", "id"),
+    ("func_key_dest_service", "feature_extension_uuid", "feature_extension", "uuid"),
+    ("func_key_dest_groupmember", "group_id", "groupfeatures", "id"),
+    ("func_key_dest_groupmember", "feature_extension_uuid", "feature_extension", "uuid"),
+    ("func_key_dest_group", "group_id", "groupfeatures", "id"),
+    ("func_key_dest_paging", "paging_id", "paging", "id"),
+    ("func_key_dest_park_position", "parking_lot_id", "parking_lot", "id"),
+    ("func_key_dest_features", "features_id", "features", "id"),
+    ("func_key_dest_forward", "feature_extension_uuid", "feature_extension", "uuid"),
+    ("func_key_dest_agent", "agent_id", "agentfeatures", "id"),
+    ("func_key_dest_agent", "feature_extension_uuid", "feature_extension", "uuid"),
+]
+
+
+def create_cascade_foreign_key_delete_orphans(
+        source_table_name, source_column_name, target_table_name, target_column_name
+    ):
+    op.drop_constraint(
+        f"{source_table_name}_{source_column_name}_fkey", source_table_name, type_="foreignkey"
+    )
+    op.execute(
+        f'DELETE FROM {source_table_name} WHERE {source_column_name} NOT IN '
+        f'(SELECT DISTINCT {target_column_name} FROM {target_table_name});'
+    )
+    op.create_foreign_key(
+        None,
+        source_table_name,
+        target_table_name,
+        [source_column_name],
+        [target_column_name],
+        ondelete="CASCADE",
+    )
+
+
+def delete_cascade_foreign_key(
+        source_table_name, source_column_name, target_table_name, target_column_name
+    ):
+    op.drop_constraint(
+        f"{source_table_name}_{source_column_name}_fkey", source_table_name, type_="foreignkey"
+    )
+    op.create_foreign_key(
+        None,
+        source_table_name,
+        target_table_name,
+        [source_column_name],
+        [target_column_name],
+    )
+
 
 def upgrade():
-    op.drop_constraint("func_key_dest_user_user_id_fkey", "func_key_dest_user", type_="foreignkey")
-    op.create_foreign_key(
-        None,
-        "func_key_dest_user",
-        "userfeatures",
-        ["user_id"],
-        ["id"],
-        ondelete="CASCADE",
-    )
-
-    op.drop_constraint("func_key_dest_queue_queue_id_fkey", "func_key_dest_queue", type_="foreignkey")
-    op.create_foreign_key(
-        None,
-        "func_key_dest_queue",
-        "queuefeatures",
-        ["queue_id"],
-        ["id"],
-        ondelete="CASCADE",
-    )
-
-    op.drop_constraint("func_key_dest_parking_parking_lot_id_fkey", "func_key_dest_parking", type_="foreignkey")
-    op.create_foreign_key(
-        None,
-        "func_key_dest_parking",
-        "parking_lot",
-        ["parking_lot_id"],
-        ["id"],
-        ondelete="CASCADE",
-    )
-
-    op.drop_constraint("func_key_dest_service_feature_extension_uuid_fkey", "func_key_dest_service", type_="foreignkey")
-    op.create_foreign_key(
-        None,
-        "func_key_dest_service",
-        "feature_extension",
-        ["feature_extension_uuid"],
-        ["uuid"],
-        ondelete="CASCADE",
-    )
-
-
-    op.drop_constraint("func_key_dest_groupmember_group_id_fkey", "func_key_dest_groupmember", type_="foreignkey")
-    op.create_foreign_key(
-        None,
-        "func_key_dest_groupmember",
-        "groupfeatures",
-        ["group_id"],
-        ["id"],
-        ondelete="CASCADE",
-    )
-
-    op.drop_constraint("func_key_dest_groupmember_feature_extension_uuid_fkey", "func_key_dest_groupmember", type_="foreignkey")
-    op.create_foreign_key(
-        None,
-        "func_key_dest_groupmember",
-        "feature_extension",
-        ["feature_extension_uuid"],
-        ["uuid"],
-        ondelete="CASCADE",
-    )
-
-    op.drop_constraint("func_key_dest_group_group_id_fkey", "func_key_dest_group", type_="foreignkey")
-    op.create_foreign_key(
-        None,
-        "func_key_dest_group",
-        "groupfeatures",
-        ["group_id"],
-        ["id"],
-        ondelete="CASCADE",
-    )
-
-    op.drop_constraint("func_key_dest_paging_paging_id_fkey", "func_key_dest_paging", type_="foreignkey")
-    op.create_foreign_key(
-        None,
-        "func_key_dest_paging",
-        "paging",
-        ["paging_id"],
-        ["id"],
-        ondelete="CASCADE",
-    )
-
-    op.drop_constraint("func_key_dest_park_position_parking_lot_id_fkey", "func_key_dest_park_position", type_="foreignkey")
-    op.create_foreign_key(
-        None,
-        "func_key_dest_park_position",
-        "parking_lot",
-        ["parking_lot_id"],
-        ["id"],
-        ondelete="CASCADE",
-    )
-
-    op.drop_constraint("func_key_dest_features_features_id_fkey", "func_key_dest_features", type_="foreignkey")
-    op.create_foreign_key(
-        None,
-        "func_key_dest_features",
-        "features",
-        ["features_id"],
-        ["id"],
-        ondelete="CASCADE",
-    )
-
-    op.drop_constraint("func_key_dest_forward_feature_extension_uuid_fkey", "func_key_dest_forward", type_="foreignkey")
-    op.create_foreign_key(
-        None,
-        "func_key_dest_forward",
-        "feature_extension",
-        ["feature_extension_uuid"],
-        ["uuid"],
-        ondelete="CASCADE",
-    )
-
-    op.drop_constraint("func_key_dest_agent_agent_id_fkey", "func_key_dest_agent", type_="foreignkey")
-    op.create_foreign_key(
-        None,
-        "func_key_dest_agent",
-        "agentfeatures",
-        ["agent_id"],
-        ["id"],
-        ondelete="CASCADE",
-    )
-
-    op.drop_constraint("func_key_dest_agent_feature_extension_uuid_fkey", "func_key_dest_agent", type_="foreignkey")
-    op.create_foreign_key(
-        None,
-        "func_key_dest_agent",
-        "feature_extension",
-        ["feature_extension_uuid"],
-        ["uuid"],
-        ondelete="CASCADE",
-    )
+    for source_table, source_column, target_table, target_column in relationships:
+        create_cascade_foreign_key_delete_orphans(
+            source_table, source_column, target_table, target_column
+        )
 
 
 def downgrade():
-    op.drop_constraint("func_key_dest_user_user_id_fkey", "func_key_dest_user", type_="foreignkey")
-    op.create_foreign_key(
-        None,
-        "func_key_dest_user",
-        "userfeatures",
-        ["user_id"],
-        ["id"]
-    )
-
-    op.drop_constraint("func_key_dest_queue_queue_id_fkey", "func_key_dest_queue", type_="foreignkey")
-    op.create_foreign_key(
-        None,
-        "func_key_dest_queue",
-        "queuefeatures",
-        ["queue_id"],
-        ["id"]
-    )
-
-    op.drop_constraint("func_key_dest_parking_parking_lot_id_fkey", "func_key_dest_parking", type_="foreignkey")
-    op.create_foreign_key(
-        None,
-        "func_key_dest_parking",
-        "parking_lot",
-        ["parking_lot_id"],
-        ["id"]
-    )
-
-    op.drop_constraint("func_key_dest_service_feature_extension_uuid_fkey", "func_key_dest_service", type_="foreignkey")
-    op.create_foreign_key(
-        None,
-        "func_key_dest_service",
-        "feature_extension",
-        ["feature_extension_uuid"],
-        ["uuid"],
-    )
-
-    op.drop_constraint("func_key_dest_groupmember_group_id_fkey", "func_key_dest_groupmember", type_="foreignkey")
-    op.create_foreign_key(
-        None,
-        "func_key_dest_groupmember",
-        "groupfeatures",
-        ["group_id"],
-        ["id"],
-    )
-
-    op.drop_constraint("func_key_dest_groupmember_feature_extension_uuid_fkey", "func_key_dest_groupmember", type_="foreignkey")
-    op.create_foreign_key(
-        None,
-        "func_key_dest_groupmember",
-        "feature_extension",
-        ["feature_extension_uuid"],
-        ["uuid"],
-    )
-
-    op.drop_constraint("func_key_dest_group_group_id_fkey", "func_key_dest_group", type_="foreignkey")
-    op.create_foreign_key(
-        None,
-        "func_key_dest_group",
-        "groupfeatures",
-        ["group_id"],
-        ["id"],
-    )
-
-    op.drop_constraint("func_key_dest_paging_paging_id_fkey", "func_key_dest_paging", type_="foreignkey")
-    op.create_foreign_key(
-        None,
-        "func_key_dest_paging",
-        "paging",
-        ["paging_id"],
-        ["id"],
-    )
-
-    op.drop_constraint("func_key_dest_park_position_parking_lot_id_fkey", "func_key_dest_park_position", type_="foreignkey")
-    op.create_foreign_key(
-        None,
-        "func_key_dest_park_position",
-        "parking_lot",
-        ["parking_lot_id"],
-        ["id"],
-    )
-
-    op.drop_constraint("func_key_dest_features_features_id_fkey", "func_key_dest_features", type_="foreignkey")
-    op.create_foreign_key(
-        None,
-        "func_key_dest_features",
-        "features",
-        ["features_id"],
-        ["id"],
-    )
-
-    op.drop_constraint("func_key_dest_forward_feature_extension_uuid_fkey", "func_key_dest_forward", type_="foreignkey")
-    op.create_foreign_key(
-        None,
-        "func_key_dest_forward",
-        "feature_extension",
-        ["feature_extension_uuid"],
-        ["uuid"],
-    )
-
-    op.drop_constraint("func_key_dest_agent_agent_id_fkey", "func_key_dest_agent", type_="foreignkey")
-    op.create_foreign_key(
-        None,
-        "func_key_dest_agent",
-        "agentfeatures",
-        ["agent_id"],
-        ["id"],
-    )
-
-    op.drop_constraint("func_key_dest_agent_feature_extension_uuid_fkey", "func_key_dest_agent", type_="foreignkey")
-    op.create_foreign_key(
-        None,
-        "func_key_dest_agent",
-        "feature_extension",
-        ["feature_extension_uuid"],
-        ["uuid"],
-    )
+    for source_table, source_column, target_table, target_column in relationships:
+        delete_cascade_foreign_key(source_table, source_column, target_table, target_column)

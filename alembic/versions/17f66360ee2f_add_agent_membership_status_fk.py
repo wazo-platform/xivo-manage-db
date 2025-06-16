@@ -24,9 +24,22 @@ def upgrade():
         ["id"],
         ondelete="CASCADE",
     )
+    op.create_foreign_key(
+        None,
+        "agent_membership_status",
+        "queuefeatures",
+        ["queue_id"],
+        ["id"],
+        ondelete="CASCADE",
+    )
 
 
 def downgrade():
+    op.drop_constraint(
+        "agent_membership_status_queue_id_fkey",
+        "agent_membership_status",
+        type_="foreignkey",
+    )
     op.drop_constraint(
         "agent_membership_status_agent_id_fkey",
         "agent_membership_status",

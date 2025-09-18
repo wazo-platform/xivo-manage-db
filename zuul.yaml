@@ -14,9 +14,9 @@
 
 - project:
     templates:
-      - wazo-tox-py39
-      - wazo-tox-linters-310
-      - debian-packaging-bullseye
+      - wazo-tox-py311
+      - wazo-tox-linters-py311
+      - debian-packaging-bookworm
     wazo-check:
       jobs:
         - check-migration

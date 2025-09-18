@@ -8,8 +8,9 @@ import os
 import subprocess
 import sys
 import time
+from collections.abc import Callable
 from pwd import getpwnam
-from typing import Any, Callable, TypeVar
+from typing import Any, TypeVar
 
 import psycopg2
 from wazo_uuid.uuid_ import get_wazo_uuid

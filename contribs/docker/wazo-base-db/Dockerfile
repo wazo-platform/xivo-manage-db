@@ -4,7 +4,7 @@ LABEL maintainer="Wazo Maintainers <dev@wazo.community>"
 ENV DEBIAN_FRONTEND=noninteractive
 ENV LC_ALL=C.UTF-8
 ENV BUILD_PACKAGES="libpq-dev"
-ENV PYTHON_PACKAGES="alembic==1.4.3 psycopg2-binary==2.8.6 sqlalchemy==1.3.22 sqlalchemy-utils==0.36.8 https://github.com/wazo-platform/xivo-lib-python/archive/master.zip"
+ENV PYTHON_PACKAGES="alembic==1.8.1 psycopg2-binary==2.9.5 sqlalchemy==1.4.46 sqlalchemy-utils==0.38.2 https://github.com/wazo-platform/xivo-lib-python/archive/master.zip"
 ENV PG_PACKAGES="postgresql-15 postgresql-contrib-15 postgresql-client"
 
 #Locales must be configured before installing postgres, otherwise the database encoding defaults to SQL_ASCII

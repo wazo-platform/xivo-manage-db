@@ -10,13 +10,13 @@
       zuul_work_dir: "{{ zuul.project.src_dir}}/../wazo-tools/compare-db"
     pre-run: zuul.d/pre-run.yaml
     post-run: zuul.d/fetch-logs.yaml
-    nodeset: vm-debian-11-m1s
+    nodeset: vm-debian-12-m1s
 
 - project:
     templates:
-      - wazo-tox-py39
-      - wazo-tox-linters-310
-      - debian-packaging-bullseye
+      - wazo-tox-py311
+      - wazo-tox-linters-py311
+      - debian-packaging-bookworm
     wazo-check:
       jobs:
         - check-migration

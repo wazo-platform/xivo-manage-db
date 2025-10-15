@@ -2,7 +2,7 @@ FROM wazoplatform/wazo-confd-db
 LABEL maintainer="Wazo Maintainers <dev@wazo.community>"
 
 USER root
-ENV PG_CONF="/etc/postgresql/13/main/postgresql.conf"
+ENV PG_CONF="/etc/postgresql/15/main/postgresql.conf"
 
 #Insert data required for running integration tests
 COPY contribs/docker/wazo-confd-db-test/initdb.sql /usr/src/initdb.sql

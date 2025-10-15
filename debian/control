@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Wazo Maintainers <dev@wazo.community>
 Build-Depends: debhelper (>= 12), dh-python, python3-all, python3-setuptools
 Standards-Version: 3.9.6
-X-Python3-Version: >= 3.9
+X-Python3-Version: >= 3.11
 
 Package: xivo-manage-db
 Architecture: all
@@ -14,7 +14,6 @@ Depends: ${python3:Depends},
          python3-alembic,
          python3-psycopg2,
          python3-sqlalchemy,
-         python3-tz,
          python3-unidecode,
          systemd,
          sudo,

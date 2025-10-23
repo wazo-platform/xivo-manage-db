@@ -17,9 +17,9 @@ down_revision = '22b03291f3ac'
 
 def upgrade():
     op.add_column('voicemail', sa.Column('shared', sa.Boolean, nullable=False, server_default=sa.text('false')))
-    op.create_index('voicemail_shared_tenant_unique_key', 'voicemail', ['shared','context'], unique=True, postgresql_where=('shared'))
+    op.create_index('voicemail__idx__unique_shared_per_context', 'voicemail', ['shared','context'], unique=True, postgresql_where=('shared'))
 
 
 def downgrade():
-    op.drop_index('voicemail_shared_tenant_unique_key', 'voicemail')
+    op.drop_index('voicemail__idx__unique_shared_per_context', 'voicemail')
     op.drop_column('voicemail', 'shared')

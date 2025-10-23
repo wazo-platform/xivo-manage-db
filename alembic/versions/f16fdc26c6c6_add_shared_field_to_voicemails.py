@@ -8,6 +8,7 @@ Revises: 22b03291f3ac
 import sqlalchemy as sa
 
 from alembic import op
+from sqlalchemy.sql import text
 
 
 # revision identifiers, used by Alembic.
@@ -16,8 +17,8 @@ down_revision = '22b03291f3ac'
 
 
 def upgrade():
-    op.add_column('voicemail', sa.Column('shared', sa.Boolean, nullable=False, server_default=sa.text('false')))
-    op.create_index('voicemail__idx__unique_shared_per_context', 'voicemail', ['shared','context'], unique=True, postgresql_where=('shared'))
+    op.add_column('voicemail', sa.Column('shared', sa.Boolean, nullable=False, server_default=text('false')))
+    op.create_index('voicemail__idx__unique_shared_per_context', 'voicemail', ['shared','context'], unique=True, postgresql_where=(text('shared is true')))
 
 
 def downgrade():

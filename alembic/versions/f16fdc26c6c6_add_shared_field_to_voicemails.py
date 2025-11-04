@@ -1,7 +1,7 @@
 """Add shared field to voicemails
 
 Revision ID: f16fdc26c6c6
-Revises: 22b03291f3ac
+Revises: 040b55af6f67
 
 """
 
@@ -13,7 +13,7 @@ from sqlalchemy.sql import text
 
 # revision identifiers, used by Alembic.
 revision = 'f16fdc26c6c6'
-down_revision = '22b03291f3ac'
+down_revision = '040b55af6f67'
 
 
 def upgrade():

@@ -479,22 +479,22 @@ DROP FUNCTION IF EXISTS "fill_leaveempty_calls" (timestamptz, timestamptz);
 CREATE FUNCTION "fill_leaveempty_calls" (period_start timestamptz, period_end timestamptz)
 RETURNS void AS
 $$
-WITH 
+WITH
 leave_call as (
-    SELECT main.id, main.callid, main.time AS leave_time, main.queuename, 
-        (SELECT time FROM queue_log 
-        WHERE callid = main.callid AND queuename = main.queuename 
-        AND time <= main.time AND event = 'ENTERQUEUE' 
-        ORDER BY time DESC LIMIT 1) AS enter_time, 
-        stat_queue.id as stat_queue_id 
-    FROM queue_log AS main 
+    SELECT main.id, main.callid, main.time AS leave_time, main.queuename,
+        (SELECT time FROM queue_log
+        WHERE callid = main.callid AND queuename = main.queuename
+        AND time <= main.time AND event = 'ENTERQUEUE'
+        ORDER BY time DESC LIMIT 1) AS enter_time,
+        stat_queue.id as stat_queue_id
+    FROM queue_log AS main
     LEFT JOIN stat_queue ON stat_queue.name = main.queuename
     WHERE event='LEAVEEMPTY'
 ),
 leave_call_in_range AS (
     SELECT *
     FROM leave_call
-    WHERE enter_time BETWEEN $1 AND $2 
+    WHERE enter_time BETWEEN $1 AND $2
 )
 INSERT INTO stat_call_on_queue (callid, time, waittime, stat_queue_id, status)
 SELECT

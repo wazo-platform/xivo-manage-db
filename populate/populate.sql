@@ -476,7 +476,7 @@ ALTER FUNCTION "fill_simple_calls" (period_start timestamptz, period_end timesta
 
 
 DROP FUNCTION IF EXISTS "fill_leaveempty_calls" (timestamptz, timestamptz);
-CREATE OR REPLACE FUNCTION "fill_leaveempty_calls" (period_start timestamptz, period_end timestamptz)
+CREATE FUNCTION "fill_leaveempty_calls" (period_start timestamptz, period_end timestamptz)
 RETURNS void AS
 $$
 WITH 

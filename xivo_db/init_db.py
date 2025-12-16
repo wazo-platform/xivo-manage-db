@@ -31,7 +31,7 @@ def _enable_extensions(app_db_uri: str) -> None:
 
 def _populate_db() -> None:
     logger.info('Populating database...')
-    with open(path.POPULATE_SQL) as file_:
+    with open(path.POPULATE_SQL, encoding="UTF-8") as file_:
         sql_content = file_.read()
 
     session = Session()

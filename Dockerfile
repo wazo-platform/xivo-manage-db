@@ -10,7 +10,6 @@ RUN true \
     && xivo-configure-uuid \
     && mkdir /usr/share/xivo-manage-db /usr/lib/xivo-manage-db \
     && cp -a alembic alembic.ini populate /usr/share/xivo-manage-db \
-    && ln -s /usr/local/bin/pg-populate-db /usr/lib/xivo-manage-db/pg-populate-db \
     && pg_start \
     && alembic -c alembic.ini branches \
     && alembic -c alembic.ini show head \

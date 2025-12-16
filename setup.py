@@ -22,6 +22,5 @@ setup(
     },
     scripts=[
         'bin/pg-drop-db',
-        'bin/pg-populate-db',
     ],
 )

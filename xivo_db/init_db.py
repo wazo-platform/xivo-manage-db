@@ -7,10 +7,12 @@ import argparse
 import logging
 
 import xivo_dao.alchemy.all  # noqa - imports all the sqlalchemy model
+from sqlalchemy.sql import text
+from wazo_uuid.uuid_ import get_wazo_uuid
 from xivo_dao.helpers import db_manager
-from xivo_dao.helpers.db_manager import Base
+from xivo_dao.helpers.db_manager import Base, Session
 
-from xivo_db import alembic, postgres
+from xivo_db import alembic, path, postgres
 
 logger = logging.getLogger(__name__)
 
@@ -27,9 +29,25 @@ def _enable_extensions(app_db_uri: str) -> None:
         postgres.enable_extension(extension, app_db_uri)
 
 
-def _populate_db(app_db_uri: str) -> None:
+def _populate_db() -> None:
     logger.info('Populating database...')
-    postgres.populate_db(app_db_uri)
+    with open(path.POPULATE_SQL, encoding="UTF-8") as file_:
+        sql_content = file_.read()
+
+    session = Session()
+    try:
+        session.execute(text(sql_content))
+        session.execute(
+            text("UPDATE infos SET uuid = :uuid"),
+            {"uuid": str(get_wazo_uuid())},
+        )
+        session.commit()
+    except Exception as e:
+        session.rollback()
+        raise e
+    finally:
+        session.close()
+        Session.remove()
 
 
 def _drop_db(pg_db_uri: str, app_db_name: str) -> None:
@@ -61,7 +79,7 @@ def main() -> None:
         )
         _enable_extensions(parsed_args.app_db_uri)
         _create_tables()
-        _populate_db(parsed_args.app_db_uri)
+        _populate_db()
 
 
 def _parse_args() -> argparse.Namespace:

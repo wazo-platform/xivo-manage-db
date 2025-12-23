@@ -13,7 +13,6 @@ from pwd import getpwnam
 from typing import Any, TypeVar
 
 import psycopg2
-from wazo_uuid.uuid_ import get_wazo_uuid
 from xivo import db_helper
 
 from xivo_db import path
@@ -68,12 +67,6 @@ def enable_extension(extension: str, app_db_uri: str) -> None:
 def drop_db(pg_db_uri: str, app_db_name: str) -> None:
     _call_as_postgres(
         path.PG_DROP_DB.format(pg_db_uri=pg_db_uri, app_db_name=app_db_name)
-    )
-
-
-def populate_db(app_db_uri: str) -> None:
-    _call_as_postgres(
-        path.PG_POPULATE_DB.format(wazo_uuid=get_wazo_uuid(), app_db_uri=app_db_uri)
     )
 
 

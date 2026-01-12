@@ -449,7 +449,6 @@ CREATE TYPE "queue_statistics" AS (
     max_hold_time integer,
     mean_hold_time integer
 );
-ALTER TYPE "queue_statistics" OWNER TO asterisk;
 
 
 DROP FUNCTION IF EXISTS "fill_simple_calls" (timestamptz, timestamptz);
@@ -472,7 +471,6 @@ $$
           "time" BETWEEN $1 AND $2;
 $$
 LANGUAGE SQL;
-ALTER FUNCTION "fill_simple_calls" (period_start timestamptz, period_end timestamptz) OWNER TO asterisk;
 
 
 DROP FUNCTION IF EXISTS "fill_leaveempty_calls" (timestamptz, timestamptz);
@@ -506,7 +504,6 @@ SELECT
 FROM leave_call_in_range;
 $$
 LANGUAGE SQL;
-ALTER FUNCTION "fill_leaveempty_calls" (period_start timestamptz, period_end timestamptz) OWNER TO asterisk;
 
 DROP FUNCTION IF EXISTS "set_agent_on_pauseall" ();
 CREATE FUNCTION "set_agent_on_pauseall" ()
@@ -524,7 +521,6 @@ BEGIN
 END;
 $$
 LANGUAGE plpgsql;
-ALTER FUNCTION "set_agent_on_pauseall" () OWNER TO asterisk;
 
 
 CREATE TRIGGER "change_queue_log_agent"
@@ -546,7 +542,7 @@ INSERT INTO "mail" VALUES (DEFAULT,'','example.wazo.community','','','');
 
 INSERT INTO "provisioning" VALUES(DEFAULT, '', '', 0, 8667);
 
-/* The UUID "populate-uuid" will be replaced by pg-populate-db */
+/* The UUID "populate-uuid" will be replaced by init_db.py */
 /* The version is bumped automatically during the release process */
 INSERT INTO "infos" (uuid, wazo_version, live_reload_enabled, timezone, configured) VALUES ('populate-uuid', '26.02', 'True', 'Europe/Paris', 'False');
 

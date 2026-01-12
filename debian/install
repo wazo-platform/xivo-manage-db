@@ -1,5 +1,4 @@
 bin/pg-drop-db /usr/lib/xivo-manage-db/
-bin/pg-populate-db /usr/lib/xivo-manage-db/
 alembic usr/share/xivo-manage-db/
 alembic.ini usr/share/xivo-manage-db/
 populate usr/share/xivo-manage-db/

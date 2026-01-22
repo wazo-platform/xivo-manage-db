@@ -23,3 +23,6 @@
     wazo-gate:
       jobs:
         - check-migration
+    experimental:
+      jobs:
+        - wazo-acceptance-bookworm

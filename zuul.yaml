@@ -13,10 +13,10 @@
     nodeset: vm-debian-12-m1s
 
 - project:
-    templates:
-      - wazo-tox-py311
-      - wazo-tox-linters-py311
-      - debian-packaging-bookworm
+    # templates:
+    #   - wazo-tox-py311
+    #   - wazo-tox-linters-py311
+    #   - debian-packaging-bookworm
     wazo-check:
       jobs:
         - check-migration

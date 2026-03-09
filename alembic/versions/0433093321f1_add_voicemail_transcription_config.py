@@ -38,16 +38,10 @@ def upgrade():
         ),
         sa.UniqueConstraint('tenant_uuid'),
     )
-    op.create_index(
-        f'{TABLE}__idx__tenant_uuid',
-        TABLE,
-        ['tenant_uuid'],
-    )
 
     # Populate default config for all existing tenants
     op.execute(text(f'INSERT INTO {TABLE} (tenant_uuid) SELECT uuid FROM tenant'))
 
 
 def downgrade():
-    op.drop_index(f'{TABLE}__idx__tenant_uuid', TABLE)
     op.drop_table(TABLE)

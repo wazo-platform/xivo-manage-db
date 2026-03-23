@@ -41,17 +41,41 @@ func_key_table = sa.sql.table(
 def upgrade():
     conn = op.get_bind()
 
+    calllistening_uuids = (
+        sa.select([feature_extension_table.c.uuid])
+        .where(feature_extension_table.c.feature == FEATURE)
+    )
+
+    # Collect func_key IDs before deleting the dest_service rows
+    func_key_ids = [
+        row[0] for row in conn.execute(
+            sa.select([func_key_dest_service_table.c.func_key_id])
+            .where(
+                func_key_dest_service_table.c.feature_extension_uuid.in_(
+                    calllistening_uuids
+                )
+            )
+        )
+    ]
+
     # Remove func_key_dest_service entries referencing calllistening
     conn.execute(
         func_key_dest_service_table
         .delete()
         .where(
             func_key_dest_service_table.c.feature_extension_uuid.in_(
-                sa.select([feature_extension_table.c.uuid])
-                .where(feature_extension_table.c.feature == FEATURE)
+                calllistening_uuids
             )
         )
     )
+
+    # Remove func_key entries that pointed to calllistening destinations
+    if func_key_ids:
+        conn.execute(
+            func_key_table
+            .delete()
+            .where(func_key_table.c.id.in_(func_key_ids))
+        )
 
     # Remove the feature extension itself
     conn.execute(

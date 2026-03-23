@@ -11,7 +11,6 @@ INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'_*31.','
 INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'_*32.','agentstaticlogoff');
 INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'_*30.','agentstaticlogtoggle');
 INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'_*37.','bsfilter');
-INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (false,'*34','calllistening');
 INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (false,'*26','callrecord');
 INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'*36','directoryaccess');
 INSERT INTO "feature_extension" (enabled, exten, feature) VALUES (true,'*25','enablednd');
@@ -98,10 +97,6 @@ VALUES (currval('func_key_id_seq'), 5, (SELECT "uuid" from feature_extension WHE
 INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);
 INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, feature_extension_uuid)
 VALUES (currval('func_key_id_seq'), 5, (SELECT "uuid" from feature_extension WHERE "feature" = 'recsnd'));
-
-INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);
-INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, feature_extension_uuid)
-VALUES (currval('func_key_id_seq'), 5, (SELECT "uuid" from feature_extension WHERE "feature" = 'calllistening'));
 
 INSERT INTO "func_key" (type_id, destination_type_id) VALUES (1, 5);
 INSERT INTO "func_key_dest_service" (func_key_id, destination_type_id, feature_extension_uuid)

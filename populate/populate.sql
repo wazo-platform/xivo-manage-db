@@ -267,6 +267,8 @@ INSERT INTO "asterisk_file_section" (name, priority, asterisk_file_id) VALUES
 INSERT INTO "asterisk_file_variable" (key, value, asterisk_file_section_id) VALUES
   ('user_agent', 'Wazo PBX', (SELECT id FROM asterisk_file_section WHERE name = 'global' AND asterisk_file_id = (SELECT id FROM asterisk_file WHERE name = 'pjsip.conf'))),
   ('endpoint_identifier_order', 'auth_username,username,ip', (SELECT id FROM asterisk_file_section WHERE name = 'global' AND asterisk_file_id = (SELECT id FROM asterisk_file WHERE name = 'pjsip.conf')));
+INSERT INTO "asterisk_file_variable" (key, value, asterisk_file_section_id) VALUES
+  ('taskpool_max_size', 100, (SELECT id FROM asterisk_file_section WHERE name = 'system' AND asterisk_file_id = (SELECT id FROM asterisk_file WHERE name = 'pjsip.conf')));
 
 INSERT INTO "staticvoicemail" VALUES (DEFAULT,0,0,0,'voicemail.conf','general','maxmsg',100);
 INSERT INTO "staticvoicemail" VALUES (DEFAULT,0,0,0,'voicemail.conf','general','silencethreshold',256);

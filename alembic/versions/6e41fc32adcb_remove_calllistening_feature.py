@@ -30,6 +30,12 @@ func_key_dest_service_table = sa.sql.table(
     sa.sql.column('feature_extension_uuid'),
 )
 
+func_key_mapping_table = sa.sql.table(
+    'func_key_mapping',
+    sa.sql.column('func_key_id'),
+    sa.sql.column('template_id'),
+)
+
 func_key_table = sa.sql.table(
     'func_key',
     sa.sql.column('id'),
@@ -69,8 +75,15 @@ def upgrade():
         )
     )
 
-    # Remove func_key entries that pointed to calllistening destinations
     if func_key_ids:
+        # Remove func_key_mapping entries before deleting func_keys (FK constraint)
+        conn.execute(
+            func_key_mapping_table
+            .delete()
+            .where(func_key_mapping_table.c.func_key_id.in_(func_key_ids))
+        )
+
+        # Remove func_key entries that pointed to calllistening destinations
         conn.execute(
             func_key_table
             .delete()

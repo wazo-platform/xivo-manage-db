@@ -1,7 +1,7 @@
 """add stat_queue_id to stat_agent_periodic
 
 Revision ID: 091ab2e3ff4d
-Revises: 0dd9e46ce2bc
+Revises: cb49d48129fd
 
 """
 
@@ -12,7 +12,7 @@ from alembic import op
 
 # revision identifiers, used by Alembic.
 revision = '091ab2e3ff4d'
-down_revision = '0dd9e46ce2bc'
+down_revision = 'cb49d48129fd'
 
 
 def upgrade():

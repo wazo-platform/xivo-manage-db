@@ -248,6 +248,9 @@ INSERT INTO "asterisk_file_variable" (key, value, asterisk_file_section_id) VALU
 INSERT INTO "asterisk_file_variable" (key, value, asterisk_file_section_id) VALUES ('rtpend', '20000', (SELECT id FROM asterisk_file_section
                                                                                                           WHERE name = 'general'
                                                                                                           AND asterisk_file_id = (SELECT id FROM asterisk_file WHERE name = 'rtp.conf')));
+INSERT INTO "asterisk_file_variable" (key, value, asterisk_file_section_id) VALUES ('stunaddr_reresolve_ttl_0', 'yes', (SELECT id FROM asterisk_file_section
+                                                                                                          WHERE name = 'general'
+                                                                                                          AND asterisk_file_id = (SELECT id FROM asterisk_file WHERE name = 'rtp.conf')));
 INSERT INTO "asterisk_file_section" (name, priority, asterisk_file_id) VALUES ('ice_host_candidates', NULL, (SELECT id FROM asterisk_file WHERE name = 'rtp.conf'));
 INSERT INTO "asterisk_file" (name) VALUES ('hep.conf');
 INSERT INTO "asterisk_file_section" (name, priority, asterisk_file_id) VALUES ('general', 0, (SELECT id FROM asterisk_file WHERE name = 'hep.conf'));
